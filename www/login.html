@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <title>登录</title>
+</head>
+<body>
+<div id="main">
+	<div class="login bg-color">
+		<div class="logo">
+			<a href="index.html"><img src="images/48.png" alt=""></a>
+			<p><a href="index.html" style="color:#f8b62b;">义达度假</a></p>
+		</div>
+		<div class="info">
+			<p>
+				<em></em>
+				<input type="text" class="user" placeholder="输入手机号">
+			</p>
+			<p>
+				<em></em>
+				<input type="password" class="pwd" placeholder="输入密码">
+			</p>
+			<button class="login-btn btn-style">登录</button>
+		</div>
+		<div class="operate cf">
+			<p class="fl"><a href="register.html">我要注册</a></p>
+			<p class="fr"><a href="forget_pwd.html">忘记密码</a></p>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+	var token = getLocalStorage('token');
+	var phone = getLocalStorage('myLoginPhone');
+	var pwd = getLocalStorage('myLoginPwd');
+	$(".user").val(phone);
+	$(".pwd").val(pwd);
+	console.log(token);
+	$(function(){
+		$(".login-btn").on('click',function(){
+			phone = $(".user").val();
+			pwd = $(".pwd").val();
+			var url = kBaseUserUrl + "login";
+			var data = {phone: phone,password: pwd};
+			if(!phone || !pwd){
+				ZMAlert("请输入手机号或密码!");
+				return;
+			}
+			if(!/^[\d]$/.test(phone) && phone.length < 11){
+				ZMAlert("手机号格式不正确!");
+				return;
+			}
+			ajaxPOSTRequest(url,data,handleRequest);
+		});
+
+		function handleRequest(result){
+			if(result.errorCode == 0){
+            	setLocalStorage('token', result.message['token']);
+            	setLocalStorage('myLoginPhone', phone);
+            	setLocalStorage('myLoginPwd', pwd);
+            	location.href = "personal.html";
+            }else{
+            	ZMAlert(result.message['content'],function(){});
+            }
+		}
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>填写订单</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="holiday_road.html">返回</a>
+		<p class="title">填写订单</p>
+	</div>
+	<div class="road-order bg-color">
+		<div class="part1 bg-f">
+			<div class="part1-1 border-b">
+				<h2 class="cf">
+					<span class="fl" id="travel_name"></span>
+					<!-- <span class="price fr" id="yida_price">￥0.00</span> -->
+				</h2>
+				<p class="cf">
+					<em></em>
+					<span class="fl">请提前24小时预订</span>
+					<span class="jifen fr" id="return_integral">返积分0</span>
+				</p>
+			</div>
+			<div class="part1-2 border-b cf" style="border-bottom:0;">
+				<span class="fl">路线人数</span>
+				<p class="number-style mr-15 cf">
+					<span class="reduce">-</span>
+					<input type="text" value="1" id="house_num" disabled>
+					<span class="add">+</span>
+				</p>
+			</div>
+            
+			<div class="part1-3">
+				<div class="son-part2" id="favorable">
+	                <p><span>优惠活动</span></p>
+	                <a style="position:relative;float:right;bottom:30px;"></a>
+	            </div>
+	            <div class="youhui-intro">
+	                <!-- <p>满100元减10元</p>
+	                <p>第一次购买优惠10元</p> -->
+	            </div>
+			</div>
+		</div>
+		<div class="part2 bg-f">
+			<h2 class="htitle-style border-b cf" id="to_date">
+                <em class="fl"></em>
+                <span class="fl">查看选择班期(价格日历)</span>
+                <a class="arrow fr"></a>
+            </h2>
+			<div class="part4-ui">
+                <ul class="ui-style cf" id="add_route">
+                    <li style="margin-left:10px;"><a id="route_schedule_date"></a></li>
+                    <!-- <li><a href="#">国庆节</a></li>
+                    <li><a href="#">09/05</a></li>
+                    <li><a href="#">09/07</a></li>
+                    <li><a href="#">09/10</a></li>
+                    <li><a href="#">09/15</a></li>
+                    <li><a href="#">...</a></li> -->
+                </ul>
+            </div>
+		</div>
+		<div class="part3 bg-f pl-20">
+            <h3 class="htitle-style" style="height:.24rem;">
+                <em class="fl"></em>
+                <span class="fl">出游人信息</span>
+                <!-- <a class="arrow fr" href="#"></a> -->
+            </h3>
+			<!-- <h2>出游人信息</h2> -->
+			<ul class="ul-style">
+				<li class="cf">
+					<span class="mr-40">预订人姓名</span>
+					<input type="text" placeholder="请填写预订人姓名" id="contact">
+				</li>
+				<li class="cf" style="border-bottom:none;">
+					<span class="mr-40">预订人手机</span>
+					<input type="text" placeholder="请填写预订人手机" id="phone">
+					<!-- <span class="icon fr"><em></em></span> -->
+				</li>
+			</ul>
+		</div>
+		<div class="pay-type pl-10 cf bg-f">
+			<span class="pay1 mr-15 fl" style="font-size: .18rem;">支付方式</span>
+			<div class="pay fl">
+				<em class="emhover"></em>
+				<span style="font-size: .16rem;">支付宝</span>
+			</div>
+			<!-- <div class="pay fl">
+				<em></em>
+				<span>支付宝</span>
+			</div> -->
+		</div>
+		<div class="deal pl-10 bg-color">
+			<em><img src="images/right4.png" alt="" class="sel"></em>
+			<p style="font-size: .18rem;">我已阅读并接受<a class="to_message">《路线预订须知》</a></p>
+		</div>
+		<div class="sumbit pl-10 bg-f">
+			<span style="font-size: .18rem;">应付金额&nbsp;<em id="total">￥0</em></span>
+			<button class="submit-btn">提交订单</button>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+$(function(){
+    var token = getLocalStorage("token");
+    console.log(token);
+    var route_id = getLocalStorage("route_id");   /*获取路线列表页ID*/
+    var route_schedule_id = getLocalStorage("route_schedule_id");
+    var route_schedule_price = getLocalStorage("route_schedule_price");
+    var route_schedule_date = getLocalStorage("route_schedule_date");
+    $("#route_schedule_date").text(route_schedule_date);
+    var yida_price=route_schedule_price;
+    var url=kBaseSightspotOrderUrl+"?token="+token+"&route_schedule_id="+route_schedule_id;
+    ajaxGetRequest(url, {}, handleSpotDetail);
+    var route_list;
+    var reduce_money=0;
+    var reduce_money1=0;
+    var reduce_money2=0;
+    var satisfy1=0;
+    var satisfy2=0;
+    var favorable_length=0;
+    var total;
+    function handleSpotDetail(result){
+        console.log(result);
+        if(result.errorCode == 0){
+            // 优惠
+            favorable_length=result.message.favorable.length;
+            if(result.message.is_first_order==true&&result.message.first_order_favorable!=false){
+                reduce_money=result.message.first_order_favorable;
+            }
+            total=yida_price;
+            if(favorable_length>1){
+                reduce_money1=parseInt(result.message.favorable[0].reduce);
+                reduce_money2=parseInt(result.message.favorable[1].reduce);
+                satisfy1=parseInt(result.message.favorable[0].satisfy);
+                satisfy2=parseInt(result.message.favorable[1].satisfy);
+                if(total>=satisfy2){
+                    total-=reduce_money2;
+                }else if(total>=satisfy1){
+                    total-=reduce_money1;
+                }
+            }else if(favorable_length>0){
+                reduce_money1=result.message.favorable[0].reduce;
+                satisfy1=result.message.favorable[0].satisfy;
+                if(total>=satisfy1){
+                    total-=reduce_money1;
+                }
+            }
+            // 优惠显示
+            var favorable_html='';
+            if(result.message.first_order_favorable!=false){
+                favorable_html+='<p>首单立减'+result.message.first_order_favorable+'元</p>';
+                if(result.message.favorable.length>0){
+                    for(var i=0;i<result.message.favorable.length;i++){
+                        favorable_html+="<p>满"+result.message.favorable[i].satisfy+"元立减"+result.message.favorable[i].reduce+"元</p>";
+                    }
+                }
+            }else if(result.message.favorable.length>0){
+                for(var i=0;i<result.message.favorable.length;i++){
+                    favorable_html+="<p>满"+result.message.favorable[i].satisfy+"元立减"+result.message.favorable[i].reduce+"元</p>";
+                }
+            }else{
+                favorable_html+="<p>暂无！</p>";
+            }
+            
+            $(".youhui-intro").append(favorable_html);
+            var message = result.message.route;
+            route_list = result.message.route_schedule_list;
+            $("#travel_name").text(message.name);
+            $("#yida_price").text("￥"+message.price);
+            $("#return_integral").text("返积分"+message.return_integral);
+            $("#total").text("￥"+(total-reduce_money));
+            // 路线列表
+            // if(route_list.length>0){
+            //     for(var i=0;i<route_list.length;i++){
+            //         if(route_list[i].remark==""){
+            //             var arr_day=route_list[i].day.split("-"); 
+            //             arr_day=arr_day.join("");
+            //             arr_day=arr_day.substring(4,6)+"/"+arr_day.substring(6,8);
+            //             var route_html='<li class="route_detail" data-id="'+route_list[i].id+'" data-price="'+route_list[i].price+'"><a>'+arr_day+'</a></li>';
+            //         }else{
+            //             var route_html='<li class="route_detail" data-id="'+route_list[i].id+'" data-price="'+route_list[i].price+'"><a>'+route_list[i].remark+'</a></li>';
+            //         }
+            //         $("#add_route").append(route_html);
+            //     }
+            // } 
+        }else if (result.errorCode == -1) {
+            // 提示登陆注册
+            ZMAlert("请登陆!",successFunc);
+            function successFunc(){
+                location.href = "login.html";
+            }
+        }
+    }
+
+    // 常用信息
+    var com_info_url = kBaseUserUrl + "contact/index?token=" + token;
+    ajaxGetRequest(com_info_url,{},comInfoCallback);
+    function comInfoCallback(result){
+        console.log(result);
+        if(result.errorCode == 0){
+            // 显示常用信息
+            var message=result.message.contact;
+            var name=message[0].name;
+            var id_card=message[0].id_card;
+            var contact_phone=message[0].contact_phone;
+            $("#contact").val(name);
+            $("#phone").val(contact_phone);
+        }
+    }
+
+    // 预定跳路线详情页
+    $("body").on("click",".route_detail",function(){
+        route_schedule_id=$(this).data("id");
+        route_schedule_price=$(this).data("price");
+        setLocalStorage("route_schedule_id",route_schedule_id);
+        setLocalStorage("route_schedule_price",route_schedule_price);
+        location.href="holiday-order.html";
+    })
+    
+    // 购买数量加减
+    var num = 1;
+    $(".add").click(function(){
+        num++;
+        $("#house_num").val(num);
+        total=num*yida_price;
+        if(favorable_length>1){
+            if(total>=satisfy2){
+                total-=reduce_money2;
+            }else if(total>=satisfy1){
+                total-=reduce_money1;
+            }
+        }else if(favorable_length>0){
+            if(total>=satisfy1){
+                total-=reduce_money1;
+            }
+        }
+        $("#total").text("￥"+(total-reduce_money));
+    });
+    $(".reduce").click(function(){
+        if(num == 1){
+            num = 1;
+        }else {
+            num--;
+        }
+        $("#house_num").val(num);
+        total=num*yida_price;
+        if(favorable_length>1){
+            if(total>=satisfy2){
+                total-=reduce_money2;
+            }else if(total>=satisfy1){
+                total-=reduce_money1;
+            }
+        }else if(favorable_length>0){
+            if(total>=satisfy1){
+                total-=reduce_money1;
+            }
+        }
+        $("#total").text("￥"+(total-reduce_money));
+        // $("#total").text("￥"+num*yida_price);
+    });
+    // 提交订单
+    $(".submit-btn").on("click",function(){
+        var number=$("#house_num").val();
+        var contact=$("#contact").val();
+        var phone=$("#phone").val();
+        var regContact =/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/;//联系方式
+        data={
+            number:number,
+            contact:contact,
+            phone:phone
+        }
+        if(contact==''){
+            ZMAlert("联系人不能为空！");
+            return false;
+        }else if(phone==''){
+            ZMAlert("联系方式不能为空！");
+            return false;
+        }else if(!regContact.test(phone)){
+            ZMAlert("联系方式不正确！");
+            return false;
+        }
+        ajaxPOSTRequest(url, data, handleSubmitOrder);
+        var out_trade_no;
+        function handleSubmitOrder(result){
+            console.log(result);
+            var message = result.message;
+            ZMAlert(message,successFunc);
+
+            function successFunc(){
+                if(result.errorCode == 0){
+                    out_trade_no = result.out_trade_no;
+                    // if(confirm("是否支付？")){
+                    //     $.ajax({
+                    //         type: 'POST',
+                    //         url: kBaseFrontendUrl+"payment/analog",
+                    //         dataType: 'json',
+                    //         data:{out_trade_no: out_trade_no, status:1},
+                    //         success: function(msg){
+                    //             ZMAlert(msg.message);
+                    //         }
+                    //     });
+                    // }
+                    location.href="iframe.html?token="+token+"&out_trade_no="+out_trade_no;
+                }
+            }
+        }
+    })
+    // 跳转价格日历
+    $("#to_date").on("click",function(){
+        // 价格页返回标志
+        setLocalStorage("updata_date_return",0);
+        location.href="updata_date.html";
+    })
+    // 门票预定需知
+    $(".to_message").on("click",function(){
+        setLocalStorage("to_message",4);
+        location.href="message.html";
+    })
+
+});
+</script>
+</body>
+</html>

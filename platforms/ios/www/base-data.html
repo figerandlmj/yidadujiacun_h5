@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css?v=2015102310">
+    <link rel="stylesheet" type="text/css" href="css/personal.css?v=2015102310">
+    <title>基础资料</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="personal.html">返回</a>
+		<p class="title">基础资料</p>
+		<button class="updata-btn">完成</button>
+	</div>
+	<div class="base-data bg-color">
+		<form id="myForm" method="post" action="" enctype="multipart/form-data">
+			<div class="part">
+				<p class="head-pic cf">
+					<label class="fl">头像</label>
+					<a href="javascript:void(0);" class="update-avatar">
+						<em class="fr"></em>
+						<img class="avatar fr" src="" alt="" id="ImgPh">
+					</a>
+					<input  type="file" name="avatar" id="inputstyle" style="width:80px;height:46px;position:relative;left:70px;opacity:0;"/>
+				</p>
+				<p>
+					<label>用户名</label>
+					<input class="username" type="text" placeholder="请输入您的用户名">
+				</p>
+				<p>
+					<label>手机号码</label>
+					<input class="phone" type="text" placeholder="请输入您的手机号">
+				</p>
+			</div>
+			<div class="part">
+				<p class="cf">
+					<label>姓名</label>
+					<input class="realname" type="text" placeholder="请输入您的姓名">
+				</p>
+				<p>
+					<label>性别</label>
+					<select class="gender">
+						<option value="0">未知</option>
+						<option value="1">男</option>
+						<option value="2">女</option>
+					</select>
+					<!-- <input class="gender" type="text" placeholder="男"> -->
+				</p>
+				<p>
+					<label>生日</label>
+					<input class="birthday" type="text" name="birthday" placeholder="请选择您的生日" onclick="WdatePicker()">
+				</p>
+				<p class="select-type">
+					<label>证件类型</label>
+					<input class="type" type="text" placeholder="请选择您的证件类型" id="credential_type" data-id="1" readonly>
+				</p>
+				<div class="credential_type bg-f">
+					<p data-id="1">身份证</p>
+					<p data-id="2">其他</p>
+				</div>
+				<p>
+					<label>证件号码</label>
+					<input class="credential_number" type="text" placeholder="请输入您的证件号码">
+				</p>
+			</div>
+			<div class="part">
+				<p>
+					<label>联系地址</label>
+					<input class="contact_address" type="text" placeholder="请输入您的联系地址">
+				</p>
+				<p>
+					<label>邮箱</label>
+					<input class="email" type="text" placeholder="邮箱">
+				</p>
+				<p>
+					<label>QQ</label>
+					<input class="qq" type="text" placeholder="请输入您的QQ">
+				</p>
+				<p>
+					<label>传真</label>
+					<input class="fax" type="text" placeholder="请输入您的传真">
+				</p>
+			</div>
+		</form>
+	</div>
+	
+</div>
+</body>
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/index.js"></script>
+<script type="text/javascript" src="js/uploadPreview.min.js"></script>
+<script type="text/javascript" src="js/uploadPreview.js"></script>
+<script type="text/javascript" src="js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="js/jquery.form.js"></script>
+<script src="js/formValidatorRegex.js"></script>
+<script>
+// 上传头像
+$("#inputstyle").uploadPreview({Img: "ImgPh",Height:30, Width:30});
+/*查看资料*/
+var token = getLocalStorage('token');
+console.log(token);
+var url = kBaseGetDataUrl + token;
+$("#myForm").attr("action", url);
+ajaxGetRequest(url, {}, checkData);
+function checkData(result){
+	console.log(result);
+	if(result.errorCode == 0){
+		if(result.message['avatar'] !=null){
+			$(".avatar").attr("src",kBaseImagePath+result.message['avatar']);
+		}else{
+			$(".avatar").attr("src","images/avatar.png");
+		}
+		$(".username").val(result.message['username']);
+		$(".phone").val(result.message['phone']);
+		$(".realname").val(result.message['realname']);
+		$(".gender").val(result.message['gender']);
+		// $(".gender option").each(function(){
+		// 	if($(this).val()==result.message['gender']){
+		// 		$(this).attr("selected",true);
+		// 	}
+		// })
+		$(".birthday").val(result.message['birthday']);
+		if(result.message['credential_type'] ==1){
+			$("#credential_type").val("身份证");
+		}else if(result.message['credential_type'] ==2){
+			$("#credential_type").val("其它");
+		}
+		// $(".credential_type").val(result.message['credential_type']);
+		$(".credential_number").val(result.message['credential_number']);
+		$(".contact_address").val(result.message['contact_address']);
+		$(".email").val(result.message['email']);
+		$(".qq").val(result.message['qq']);
+		$(".fax").val(result.message['fax']);
+	}
+}
+
+
+/*编辑资料*/
+$(".updata-btn").on("click",function(){
+	var avatar_attr = $("#inputstyle").val();     /*头像*/
+	var username = $(".username").val();			/*用户名*/
+	var phone = $(".phone").val();					/*手机号*/
+	var realname = $(".realname").val();			/*姓名*/
+	var gender = $(".gender").val();				/*性别*/
+	var birthday =$(".birthday").val();				/*生日*/
+	var credential_type_id = $(".select-type input").data("id");	/*证件类型*/
+	// var credential_type = $(".select-type input").val();
+	var credential_number = $(".credential_number").val();			/*证件号码*/
+	var contact_address = $(".contact_address").val();				/*联系地址*/
+	var email = $(".email").val();									/*邮箱*/
+	var qq = $(".qq").val();										/*QQ*/
+	var fax = $(".fax").val();
+	var regPhone = /(^13\d{9}$)|(^14)[5,7]\d{8}$|(^15[0,1,2,3,5,6,7,8,9]\d{8}$)|(^17)[6,7,8]\d{8}$|(^18\d{9}$)/g ;//手机
+	 var regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+    var regQq = /^[1-9]{1}[0-9]{4,8}$/;
+    var regIdcard=/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/;
+
+	var data = {
+		// avatar_attr: avatar_attr,
+		username: username,
+		realname: realname,
+		gender: gender,
+		// birthday: birthday,
+		credential_type: credential_type_id,
+		// credential_type: credential_type,
+		credential_number: credential_number,
+		contact_address: contact_address,
+		email: email,
+		qq: qq,
+		fax: fax
+	};
+
+	var options = {  
+	   // target: '#output',          //把服务器返回的内容放入id为output的元素中      
+	   // beforeSubmit: showRequest,  //提交前的回调函数  
+	   // url: url,                 //默认是form的action， 如果申明，则会覆盖  
+	   // type: "type",               //默认是form的method（get or post），如果申明，则会覆盖  
+	   data:data,
+	   dataType: "json",           //html(默认), xml, script, json...接受服务端返回的类型  
+	   success: handleRequest     //提交后的回调函数  
+	   // clearForm: true,          //成功提交后，清除所有表单元素的值  
+	   // resetForm: true,          //成功提交后，重置所有表单元素的值  
+	   // timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求  
+	}
+	if(phone==""){
+		ZMAlert("手机号不能为空！",function(){});
+	}else if(!regPhone.test(phone)){
+		ZMAlert("无效手机号!",function(){});
+	}else if(email!="" && !regEmail.test(email)){
+		ZMAlert("无效邮箱!",function(){});
+	}else if(qq!="" && !regQq.test(qq)){
+		ZMAlert("无效QQ!",function(){});
+	}else if(credential_type_id==0 && credential_number!="" && !regIdcard.test(credential_number)){
+		ZMAlert("无效身份证!",function(){});
+	}else if(token){
+		$("#myForm").ajaxSubmit(options); 
+	} 
+
+});
+
+function handleRequest(result){
+	ZMAlert(result.message,successFunc);
+	function successFunc(){
+		if(result.errorCode == 0){
+			location.href = "personal.html";
+		}
+	}
+}
+</script>
+</html>

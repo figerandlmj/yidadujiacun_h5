@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <link rel="stylesheet" type="text/css" href="css/others.css">
+    <title>填写订单</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="goods_detail.html">返回</a>
+		<p class="title">填写订单</p>
+	</div>
+	<div class="res-order bg-color">
+		<div class="part1 bg-f">
+			<ul class="order-style">
+				<li class="first border-b cf" style="padding-bottom: .05rem;">
+					<span class="fl" style="margin:10px 10px 6px 10px"><img src="images/8.jpg" width="70px" height="70px" id="image_path"></span>
+					<p class="cl" style="padding-top:10px;margin-left:10px;" id="name"></p>
+				</li>
+				<li class="cf">
+					<span class="mr-15 fcolor-9a fl">购买数量</span>
+					<p class="number-style mr-15 cf">
+						<span class="reduce">-</span>
+						<span class="number-ticket" id="product_num">1</span>
+						<!-- <input class="number-ticket" type="text" value="1" id="product_num" disabled> -->
+						<span class="add">+</span>
+					</p>
+					<!-- <p class="prefer fl">惠：满5人立减10元</p> -->
+				</li>
+				<li class="cf" style="border-bottom:none;">
+					<span class="mr-15 fcolor-9a">义达价</span>
+					<span class="price mr-15" style="margin-right:.1rem">￥<i id="yida_price">0</i></span><br>
+					<span class="mr-15 fcolor-9a" style="margin-right:.1rem">积分价</span>
+					<span class="price mr-15"><i id="integral_price">0</i>积分</span>
+					<!-- <span class="jifen">返积分155</span> -->
+				</li>
+			</ul>
+		</div>
+		<div class="part2 bg-f">
+			<h2>收件人信息</h2>
+			<ul class="ul-style">
+				<li class="cf">
+					<span class="mr-40">收件人姓名</span>
+					<input type="text" placeholder="请输入收件人姓名" id="contact">
+				</li>
+				<li class="cf">
+					<span class="mr-40">手机号码</span>
+					<input type="text" placeholder="请输入手机号码" id="contact_phone">
+					<!-- <span class="icon fr"><em></em></span> -->
+				</li>
+				<li class="cf" style="border-bottom:none;">
+					<span class="mr-40">收货地址</span>
+					<input type="text" placeholder="请输入收货地址" id="deliver_address">
+					<!-- <span class="icon fr"><em></em></span> -->
+				</li>
+			</ul>
+		</div>
+		<div class="part4 bg-f">
+			<div class="pay-type pl-10 cf">
+				<span class="pay1 mr-15 fl">支付方式</span>
+				<div class="pay fl" data-way="1">
+					<em class="emhover"></em>
+					<span>支付宝</span>
+				</div>
+				<div class="pay fl" data-way="2">
+					<em></em>
+					<span>积  分</span>
+				</div>
+				<input type="hidden" class="pay-type-input" value="1">
+			</div>
+			<div style="width:100%;height:30px;background:#e8ebef;"></div>
+			<div class="sumbit pl-10">
+				<span>应付金额&nbsp;<em id="total">￥0</em></span>
+				<button class="submit-btn">提交订单</button>
+			</div>
+		</div>
+	</div>
+	<div class="wrap-mask"></div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/My97DatePicker/WdatePicker.js"></script>
+<script>
+	$(function(){
+		var token = getLocalStorage("token");
+	    var product_id = getLocalStorage("product_id");
+	    var product_num = getLocalStorage("product_num");
+	    console.log(product_id);
+	    var url=kBaseProductOrderUrl+"?token="+token+"&product_id="+product_id;
+	    ajaxGetRequest(url, {}, handleProductDetail);
+	    var yida_price=0;
+	    var integral_price=0;
+	    var reduce_money=0;
+	    // var reduce_money1=0;
+	    // var reduce_money2=0;
+	    var satisfy1=0;
+	    var satisfy2=0;
+	    var favorable_length=0;
+	    var total;
+	    function handleProductDetail(result){
+	    	console.log(result);
+	        if(result.errorCode == 0){
+	        	var message = result.message.product;
+	            var image_path=kBaseImagePath+message.image_path;
+	            $("#image_path").attr("src",image_path);
+	            $("#name").text(message.name);
+	            $("#product_num").text(product_num);
+	            yida_price=message.yida_price;
+	            integral_price=message.integral_price;
+	            $("#yida_price").text(yida_price);
+	            $("#integral_price").text(integral_price);
+	        	// 优惠
+	            // favorable_length=result.message.favorable.length;
+	            // if(result.message.is_first_order==true&&result.message.first_order_favorable!=false){
+	            //     reduce_money=result.message.first_order_favorable;
+	            // }
+	            total=yida_price*product_num;
+	            // if(favorable_length>1){
+	            //     reduce_money1=parseInt(result.message.favorable[0].reduce);
+	            //     reduce_money2=parseInt(result.message.favorable[1].reduce);
+	            //     satisfy1=parseInt(result.message.favorable[0].satisfy);
+	            //     satisfy2=parseInt(result.message.favorable[1].satisfy);
+	            //     if(total>=satisfy2){
+	            //         total-=reduce_money2;
+	            //     }else if(total>=satisfy1){
+	            //         total-=reduce_money1;
+	            //     }
+	            // }else if(favorable_length>0){
+	            //     reduce_money1=result.message.favorable[0].reduce;
+	            //     satisfy1=result.message.favorable[0].satisfy;
+	            //     if(total>=satisfy1){
+	            //         total-=reduce_money1;
+	            //     }
+	            // }
+	            $("#total").text("￥"+(total-reduce_money));
+	        }else if (result.errorCode == -1) {
+	            // 提示登陆注册
+	            ZMAlert("您还未登录，请登录后重试！",successFunc);
+				function successFunc(){
+					location.href = "login.html";
+				}
+	        }
+	    }
+
+	    // 常用信息
+	    var com_info_url = kBaseUserUrl + "contact/index?token=" + token;
+	    ajaxGetRequest(com_info_url,{},comInfoCallback);
+	    function comInfoCallback(result){
+	        console.log(result);
+	        if(result.errorCode == 0){
+	            // 显示常用信息
+	            var message=result.message.contact;
+	            var name=message[0].name;
+	            var id_card=message[0].id_card;
+	            var contact_phone=message[0].contact_phone;
+	            $("#contact").val(name);
+	            $("#contact_phone").val(contact_phone);
+	        }
+	    }
+
+	    // 支付方式
+		var pay_way=1;
+		$(".pay").on("click",function(){
+			pay_way=$(this).data("way");
+			$(".pay-type-input").val(pay_way);
+			product_num= $("#product_num").text();
+			if(pay_way==1){
+				 $("#total").text("￥"+(yida_price*product_num-reduce_money));
+			}else if(pay_way==2){
+				 $("#total").text((integral_price*product_num-reduce_money)+"积分");
+			}
+			$(this).find("em").addClass("emhover");
+			$(this).siblings().find("em").removeClass("emhover");
+		})
+
+		// 购买数量加减
+		var num = product_num;
+		$(".add").click(function(){
+			num++;
+			$("#product_num").text(num);
+			if(pay_way==1){
+				total=num*yida_price;
+			}else if(pay_way==2){
+				total=num*integral_price;
+			}
+			// if(favorable_length>1){
+	  //           if(total>=satisfy2){
+	  //               total-=reduce_money2;
+	  //           }else if(total>=satisfy1){
+	  //               total-=reduce_money1;
+	  //           }
+	  //       }else if(favorable_length>0){
+	  //           if(total>=satisfy1){
+	  //               total-=reduce_money1;
+	  //           }
+	  //       }
+	        var pay_type_input=$(".pay-type-input").val();
+	        if(pay_type_input==1){
+	        	$("#total").text("￥"+(total-reduce_money));
+	        }else{
+	        	$("#total").text((total-reduce_money)+"积分");
+	        }
+			// $("#total").text("￥"+num*yida_price);
+		});
+		$(".reduce").click(function(){
+			if(num == 1){
+				num = 1;
+			}else {
+				num--;
+			}
+			$("#product_num").text(num);
+			if(pay_way==1){
+				total=num*yida_price;
+			}else if(pay_way==2){
+				total=num*integral_price;
+			}
+	        // if(favorable_length>1){
+	        //     if(total>=satisfy2){
+	        //         total-=reduce_money2;
+	        //     }else if(total>=satisfy1){
+	        //         total-=reduce_money1;
+	        //     }
+	        // }else if(favorable_length>0){
+	        //     if(total>=satisfy1){
+	        //         total-=reduce_money1;
+	        //     }
+	        // }
+	        var pay_type_input=$(".pay-type-input").val();
+	        if(pay_type_input==1){
+	        	$("#total").text("￥"+(total-reduce_money));
+	        }else{
+	        	$("#total").text((total-reduce_money)+"积分");
+	        }
+			// $("#total").text("￥"+num*yida_price);
+		});
+
+		
+		// 提交订单
+		$(".submit-btn").on("click",function(){
+			var number=$("#product_num").text();
+			var contact=$("#contact").val();
+			var contact_phone=$("#contact_phone").val();
+			var deliver_address=$("#deliver_address").val();
+			var regContact =/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/;//联系方式
+			data={
+				number:number,
+                contact:contact,
+                contact_phone:contact_phone,
+                deliver_address:deliver_address,
+                pay_way:pay_way
+            }
+            if(contact==''){
+            	ZMAlert("收件人不能为空！");
+            	return false;
+            }else if(contact_phone==''){
+            	ZMAlert("联系方式不能为空！");
+            	return false;
+            }else if(!regContact.test(contact_phone)){
+            	ZMAlert("联系方式不正确！");
+            	return false;
+            }else if(deliver_address==''){
+            	ZMAlert("收货地址不能为空！");
+            	return false;
+            }
+            
+            ajaxPOSTRequest(url, data, handleSubmitOrder);
+		    var out_trade_no;
+		    function handleSubmitOrder(result){
+		        console.log(result);
+		        var message = result.message;
+		        ZMAlert(message,successFunc);
+
+		        function successFunc(){
+		            if(result.errorCode == 0){
+		                out_trade_no = result.out_trade_no;
+		                // if(confirm("是否支付？")){
+		                //     $.ajax({
+		                //         type: 'POST',
+		                //         url: kBaseFrontendUrl+"payment/analog",
+		                //         dataType: 'json',
+		                //         data:{out_trade_no: out_trade_no, status:1},
+		                //         success: function(msg){
+		                //             ZMAlert(msg.message);
+		                //         }
+		                //     });
+		                // }
+		                location.href="iframe.html?token="+token+"&out_trade_no="+out_trade_no;
+		            }
+		        }
+		    }
+		})
+	});
+
+</script>
+</body>
+</html>

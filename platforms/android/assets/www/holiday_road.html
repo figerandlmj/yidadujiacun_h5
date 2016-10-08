@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/idangerous.swiper.css">
+    <link rel="stylesheet" type="text/css" href="css/banner.css">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>度假路线</title>
+</head>
+<body>
+<div id="main">
+    <div class="header cf">
+        <a class="back">返回</a>
+        <p class="title">度假路线</p>
+        <p class="header-right">
+            <!-- <a class="share fr">分享</a> -->
+            <a class="shoucan fr" id="collection">收藏</a>
+        </p>
+    </div>
+    <div class="holiday-road bg-color">
+        <!-- <div class="banner">
+            <img src="" alt="">
+            <div class="bottom-bar"></div>
+            <p>
+                <span class="fl" id="starting"></span>
+                <span class="fr"><em class="fl"></em><label id="satisfaction">0</label>%满意度</span>
+            </p>
+        </div> -->
+        <div class="banner">
+            <div class="device">
+                <a class="arrow-left" href="#" style="display: none"></a> 
+                <a class="arrow-right" href="#" style="display: none"></a>
+                <div class="swiper-container">
+                    <div class="swiper-wrapper" id="sight-banner">
+                        <!-- <div class="swiper-slide"> <img src="images/banner9.jpg"> </div>
+                        <div class="swiper-slide"> <img src="images/banner9.jpg"> </div>
+                        <div class="swiper-slide"> <img src="images/banner9.jpg"></div>
+                        <div class="swiper-slide"> <img src="images/banner9.jpg"></div>
+                        <div class="swiper-slide"> <img src="images/banner9.jpg"></div> -->
+                    </div>
+                </div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+        <div class="statis">
+            <div class="bottom-bar"></div>
+            <p>
+                <span class="fl" id="starting"></span>
+                <span class="fr"><em class="fl"></em><label id="satisfaction">0</label>%满意度</span>
+            </p>
+        </div>
+
+        <div class="part1 bg-f pl-10 cf">
+            <div class="part1-left pl-20 fl">
+                <p class="p-title" style="padding-right:10px;" id="name"></p>
+                <p class="p1"><em></em>请提前24小时预订门票</p>
+                <p class="type" id="sight_type">
+                    <!-- <span>夕阳游</span>
+                    <span>亲子游</span> -->
+                </p>
+            </div>
+            <div class="part1-right fl">
+                <p class="price1">￥0</p>
+                <p class="price2">￥0</p>
+                <p class="pay">在线支付</p>
+                <p class="pay2 route_detail" id="reverse"><a>预订</a></p>
+            </div>
+        </div>
+        <div class="part2 bg-f mb-9">
+            <div class="son-part2">
+                <em class="fl"></em>
+                <p class="youhui-intro" style="display:block;"></p>
+                <!-- <a></a> -->
+            </div>
+           <!--  <div>
+                <p>满100元减10元</p>
+                <p>第一次购买优惠10元</p>
+            </div> -->
+        </div>
+        <div class="part3 bg-f mb-9" id="evaluate">
+            <h2 class="htitle-style border-b cf" id="evaluate_btn">
+                <em class="fl"></em>
+                <span class="fl">点评 (<i id="review">0</i>)</span>
+                <a class="arrow fr review-btn" href="javascript:;"></a>
+            </h2>
+           <!--  <div class="part3-bottom cf">
+                <div class="review-style">
+                    <p class="user cf">
+                        <em class="fl"></em>
+                        <span class="num fl">3584850</span>
+                        <a href="#" class="family fr">家庭出游</a>
+                    </p>
+                    <p class="review-con">不错了，感觉还是挺好的一次游玩，门票又不贵，还是挺不错的。下次还在义达这儿购买。</p>
+                    <p class="date fr">2015-09-01</p>
+                </div>
+            </div> -->
+        </div>
+        <div class="part4 bg-f mb-9">
+            <h2 class="htitle-style border-b cf" id="to_date">
+                <em class="fl"></em>
+                <span class="fl">查看选择班期(价格日历)</span>
+                <a class="arrow fr"></a>
+            </h2>
+            <div class="part4-ui">
+                <ul class="ui-style cf" id="add_route">
+                    <!-- <li><a href="#">中秋节</a></li>
+                    <li><a href="#">国庆节</a></li>
+                    <li><a href="#">09/05</a></li>
+                    <li><a href="#">09/07</a></li>
+                    <li><a href="#">09/10</a></li>
+                    <li><a href="#">09/15</a></li>
+                    <li><a href="#">...</a></li> -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="part5 bg-f mb-9" style="padding-bottom:10px;">
+            <h2 class="htitle-style border-b cf">
+                <em class="fl"></em>
+                <span class="fl">行程介绍</span>
+            </h2>
+            <p class="text border-b" id="stroke"></p>
+            <p class="p1 border-b pl-10">费用包含</p>
+            <p class="text border-b" id="detail"></p>
+            <p class="p1 border-b que pl-10" id="to_service">常见问题
+                <span>(与客服系统沟通)</span>
+                <a class="arrow fr review-btn" href="javascript:;" style="display: inline-block;float: right;width: .08rem;height: .13rem;background: url(images/arrow11.png);margin: .14rem 2% 0 0;"></a>
+            </p>
+        </div>
+
+         <div class="part5 bg-f mb-9" style="padding-bottom:10px;">
+            <h2 class="htitle-style border-b cf">
+                <em class="fl"></em>
+                <span class="fl" >路线简介</span>
+            </h2>
+            <p class="text border-b" id="description" ></p>
+        </div>
+        
+        <div class="part6 bg-f mb-9" id="strategy_list">
+            <!-- <h2 class="htitle-style border-b cf">
+                <em class="fl"></em>
+                <span class="fl">相关游记</span>
+            </h2>
+            <div class="pic-list">
+                <ul class="mui-flex" id="strategy_list">
+                    <li class="cell"><img src="images/pic5.jpg" alt=""></li>
+                    <li class="cell"><img src="images/pic6.jpg" alt=""></li>
+                    <li class="cell"><img src="images/pic7.jpg" alt=""></li>
+                </ul>
+            </div> -->
+        </div>
+    </div>
+    <div class="share-box">
+        <h2 class="shareTo">分享到</h2>
+        <ul class="mui-flex">
+            <li class="cell -mob-share-weixin">
+                <a>
+                    <em></em>
+                    <p>微信</p>
+                </a>
+            </li>
+            <li class="cell -mob-share-qzone">
+                <a>
+                    <em></em>
+                    <p>空间</p>
+                </a>
+            </li>
+            <li class="cell -mob-share-weixin">
+                <a>
+                    <em></em>
+                    <p>微信朋友圈</p>
+                </a>
+            </li>
+            <li class="cell -mob-share-qq">
+                <a>
+                    <em></em>
+                    <p>QQ好友</p>
+                </a>
+            </li>
+        </ul>
+        <div class="share-reset">取消</div>
+    </div>
+</div>
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=ecd551ee2f8c"></script>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/idangerous.swiper.min.js"></script>
+<script type="text/javascript" src="js/swiper.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+    var token = getLocalStorage("token");
+    var route_id = getLocalStorage("route_id");   /*获取路线列表页ID*/
+    var data = {route_id: route_id};
+    var road_list;
+    /*获取路线详情页数据*/
+    ajaxGetRequest(kBaseRoadDetailUrl+token, data, handleRoadDetail);
+    function handleRoadDetail(result){
+        console.log(result);
+        if(result.errorCode == 0){
+            // 收藏显示
+            if(result.message.is_collected==true){
+                $("#collection").text("已收藏");
+                $("#collection").addClass("removeCollection");
+            }else{
+                $("#collection").text("收藏");
+                $("#collection").addClass("collection");
+            }
+            
+            var roadDetailJson = result.message.route;
+
+            /*景点轮播图*/
+            var sightBannerJson = roadDetailJson.image;
+            var bannerHtml = "";
+            for(var i=0; i<sightBannerJson.length; i++){
+                bannerHtml += '<div class="swiper-slide">';
+                bannerHtml +=   '<img src="'+kBaseImagePath+sightBannerJson[i]+'" width="640" height="240px">';
+                bannerHtml += '</div>';
+            }
+            $("#sight-banner").html(bannerHtml);
+            ZMSlide();
+            $(".pagination").hide();
+
+            // $(".holiday-road .banner img").attr("src", kBaseImagePath + roadDetailJson.image[0]);
+            $("#name").text(roadDetailJson.name);
+            $("#satisfaction").text(roadDetailJson.satisfaction);
+            if(roadDetailJson.start!=null){
+                $("#starting").text(roadDetailJson.start+"出发");
+            }
+            if(roadDetailJson.stroke!=""){
+                $("#stroke").html(roadDetailJson.stroke);
+                $("#stroke").find("img").each(function(){
+                    var this_src=$(this).attr("src");
+                    $(this).attr("src",kBaseImagePath02+this_src);
+                })
+            }else{
+                $("#stroke").html("暂无！");
+            }
+            if(roadDetailJson.detail!=""){
+                $("#detail").html(roadDetailJson.detail);
+                $("#detail").find("img").each(function(){
+                    var this_src=$(this).attr("src");
+                    $(this).attr("src",kBaseImagePath02+this_src);
+                })
+            }else{
+                $("#detail").html("暂无！");
+            }
+            if(roadDetailJson.description!=""){
+                var description=roadDetailJson.description;
+                $("#description").html(description);
+                $("#description").find("img").each(function(){
+                    var this_src=$(this).attr("src");
+                    $(this).attr("src",kBaseImagePath02+this_src);
+                })
+            }else{
+                $("#description").html("暂无！");
+            }
+            
+            $(".holiday-road #review").text(roadDetailJson.evaluate_num);
+             $(".holiday-road .part1 .price1").text("￥"+roadDetailJson.origin_price);
+             $(".holiday-road .part1 .price2").text("￥"+roadDetailJson.price);
+            if(roadDetailJson.type_name !=null){
+                $("#sight_type").html("<span>"+roadDetailJson.type_name+"</span>");
+            }
+            road_list=result.message.route_schedule_list;
+            // 路线列表
+            if(road_list.length>0){
+                // 预定默认第一个路线
+                $("#reverse").attr("data-id",road_list[0].id);
+                $("#reverse").attr("data-price",road_list[0].price);
+                if(road_list[0].remark==""){
+                    var arr_day=road_list[0].day.split("-"); 
+                    arr_day=arr_day.join("");
+                    arr_day=arr_day.substring(4,6)+"/"+arr_day.substring(6,8);
+                    $("#reverse").attr("data-date",arr_day);
+                }else{
+                    $("#reverse").attr("data-date",road_list[0].remark);
+                }
+                // 优惠
+                var favorable_html='';
+                if(road_list[0].first_favorable!=0){
+                    favorable_html+='首单立减'+road_list[0].first_favorable+'元';
+                    // if(result.message.favorable.length>0){
+                    //     for(var i=0;i<result.message.favorable.length;i++){
+                    //         favorable_html+="<p>满"+result.message.favorable[i].satisfy+"元立减"+result.message.favorable[i].reduce+"元</p>";
+                    //     }
+                    // }
+                }
+                // else if(result.message.favorable.length>0){
+                //     for(var i=0;i<result.message.favorable.length;i++){
+                //         favorable_html+="<p>满"+result.message.favorable[i].satisfy+"元立减"+result.message.favorable[i].reduce+"元</p>";
+                //     }
+                // }
+                else{
+                    favorable_html+="暂无！";
+                }
+                $(".youhui-intro").append(favorable_html);
+
+                // 路线列表
+                for(var i=0;i<road_list.length;i++){
+                    if(road_list[i].remark==""){
+                        var arr_day=road_list[i].day.split("-"); 
+                        arr_day=arr_day.join("");
+                        arr_day=arr_day.substring(4,6)+"/"+arr_day.substring(6,8);
+                        var route_html='<li class="route_detail" data-id="'+road_list[i].id+'" data-price="'+road_list[i].price+'" data-date="'+arr_day+'"><a>'+arr_day+'</a></li>';
+                    }else{
+                        var route_html='<li class="route_detail" data-id="'+road_list[i].id+'" data-price="'+road_list[i].price+'" data-date="'+road_list[i].remark+'"><a>'+road_list[i].remark+'</a></li>';
+                    }
+                    $("#add_route").append(route_html);
+                }
+            }
+            // 点评列表
+            if(roadDetailJson.evaluate_num>0){
+                var evaluate_html='<div class="part3-bottom cf"><div class="review-style"><p class="user cf"><em class="fl"></em><span class="num fl">'+roadDetailJson.evaluate.username+'</span><a href="#" class="family fr">'+roadDetailJson.evaluate.create_time+'</a></p><p class="review-con">'+roadDetailJson.evaluate.content+'</p></div></div>';
+                $("#evaluate").append(evaluate_html);
+            }
+            // 相关游记列表
+            var strategy_list=result.message.strategy_list;
+            if(strategy_list.length>0){
+                var strategy_list_html="";
+                strategy_list_html+='<h2 class="htitle-style border-b cf">';
+                strategy_list_html+='    <em class="fl"></em>';
+                strategy_list_html+='    <span class="fl">相关游记</span>';
+                strategy_list_html+='</h2>';
+                strategy_list_html+='<div class="pic-list">';
+                strategy_list_html+='    <ul class="mui-flex" id="strategy_list">';
+                for(var i=0;i<strategy_list.length;i++){
+                    strategy_list_html+='<li class="cell strategy_li" data-id="'+strategy_list[i].id+'">';
+                    if(strategy_list[i].image_path==""){
+                        html +=     '<img src="images/default.png" alt="">';
+                    }else{
+                       strategy_list_html+='<img src="'+kBaseImagePath+strategy_list[i].image_path+'" alt="">';
+                    }
+                    strategy_list_html+='</li>';
+                }
+                strategy_list_html+='    </ul>';
+                strategy_list_html+='</div>';
+               
+                $("#strategy_list").append(strategy_list_html);
+            }
+        }
+    }
+    // 点击游记进入详情页
+    $("body").on("click",".strategy_li",function(){
+        var strategy_id=$(this).data("id");
+        setLocalStorage("strategy_id",strategy_id);
+        // setLocalStorage("from_strategy_detail_return",3);
+        location.href="secery.html";
+    })
+    // 预定跳路线详情页
+    $("body").on("click",".route_detail",function(){
+        if(road_list.length>0){
+            route_schedule_id=$(this).data("id");
+            route_schedule_price=$(this).data("price");
+            route_schedule_date=$(this).data("date");
+            setLocalStorage("route_schedule_id",route_schedule_id);
+            setLocalStorage("route_schedule_price",route_schedule_price);
+            setLocalStorage("route_schedule_date",route_schedule_date);
+            location.href="holiday-order.html";
+        }else{
+            ZMAlert("预订班期为空！");
+        }
+    });
+    /*跳转评价列表*/
+    $("#evaluate_btn").on("click",function(){
+        var data = {item_id: route_id};
+        ajaxGetRequest(kBaseEvaluateListUrl, data, handReviewList);
+        function handReviewList(result){
+            if(result.errorCode == 0){
+                setLocalStorage("review_return",1);
+                location.href = "review.html";
+            }
+        }    
+    });
+
+    /*收藏按钮*/
+    $("#collection").on("click",function(){
+        var item_id = route_id;
+        if($(this).hasClass("collection")){
+            var url = kBaseCollectionUrl + token;
+            var data = {
+                item_id: item_id,
+                type:2
+            }
+            ajaxPOSTRequest(url, data, handleCollection);
+            function handleCollection(result){
+                console.log(result);
+                ZMAlert(result.message,callback);
+                function callback(){
+                    if(result.errorCode==0){
+                        $("#collection").text("已收藏");
+                        $("#collection").removeClass("collection");
+                        $("#collection").addClass("removeCollection");
+                    }
+                }
+            }
+        }else{
+            var url = kBaseRemoveCollectionUrl + token+"&item_id="+item_id+"&type="+2;
+            ajaxGetRequest(url, {}, handleCollection02);
+            function handleCollection02(result){
+                ZMAlert(result.message,callback02);
+                function callback02(){
+                   if(result.errorCode==0){
+                        $("#collection").text("收藏");
+                        $("#collection").addClass("collection");
+                        $("#collection").removeClass("removeCollection");
+                    }
+                }
+                
+            }
+        }
+        
+    });
+    // 返回到路线列表页或收藏列表页 
+    $(".back").on("click",function(){
+        var holiday_road_return=getLocalStorage("holiday_road_return");
+        if(holiday_road_return ==1 ){
+            location.href="road-list.html";
+        }else if(holiday_road_return ==2 ){
+            location.href="browse_history.html";
+        }else{ 
+            location.href="myCollection.html";
+        } 
+    })
+    // 跳转客服页面
+    $("#to_service").on("click",function(){
+        location.href="service.html";
+    })
+    // 跳转价格日历
+    $("#to_date").on("click",function(){
+        // 价格页返回标志
+        setLocalStorage("updata_date_return",1);
+        location.href="updata_date.html";
+    })
+</script>
+</body>
+</html>

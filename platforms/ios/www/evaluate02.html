@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <title>评价</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="secery.html">返回</a>
+		<p class="title">评价</p>
+	</div>
+	<div class="evaluate bg-color">
+		<div class="evaluate-con bg-f" style="padding-bottom:10px;">
+			<!-- <h3 class="title cf" style="font-size:12px;">
+				<span class="fl">是否推荐：</span>
+				<input type="radio" name="recommend" checked="checked" style="margin-top: 6px;" value="1"/>推荐&nbsp;&nbsp;&nbsp;
+				<input type="radio" name="recommend" value="0"/>不推荐
+			</h3> -->
+			<h3 class="title cf">
+				<span class="fl">评价内容：</span>
+				<em class="fl star1 star" data-id="1"></em>
+				<em class="fl star1 star" data-id="2"></em>
+				<em class="fl star1 star" data-id="3"></em>
+				<em class="fl star1 star" data-id="4"></em>
+				<em class="star-dark fl star1 star" data-id="5"></em>
+			</h3>
+			<div class="write-con">
+				<textarea placeholder="请输入相关评价内容" id="content"></textarea>
+				<!-- <div class="file1 cf">
+					<div class="file1-img fl">
+						<img src="" alt="">
+					</div>
+					<span>手机晒图</span>
+					<input type="file">
+				</div> -->
+			</div>
+			<button class="btn-style">提交</button>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+
+	// 星星点击
+	var star;
+	$(".star").on("click",function(){
+		star=$(this).data("id");
+		$(".star").removeClass("star2");
+		$(".star").addClass("star1");
+		var index=$(this).index();
+		for(var i=0;i<index;i++){
+			$(".star").eq(i).removeClass("star1");
+			$(".star").eq(i).addClass("star2");
+		}
+	})
+	var token = getLocalStorage('token');
+	var strategy_id = getLocalStorage("strategy_id");
+	var url = kBaseFrontendUrl+"strategy/evaluate?token="+token+"&strategy_id="+strategy_id;
+	// var recommend=$("input[name='recommend']:checked").val();
+	$(".btn-style").on("click",function(){
+		var content=$("#content").val();
+		var data = {star:star,content: content};
+		ajaxPOSTRequest(url, data, callback);
+	})
+		
+	function callback(result){
+		console.log(result);
+		ZMAlert(result.message,successFunc);
+		function successFunc(){
+			if(result.errorCode == 0){
+				location.href="secery.html";
+			}
+		}
+	}
+</script>
+</body>
+</html>

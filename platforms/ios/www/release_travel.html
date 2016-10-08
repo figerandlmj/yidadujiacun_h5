@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>发布游记</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="myTravel.html">返回</a>
+		<p class="title">发布游记</p>
+	</div>
+	<div class="release-trvael">
+		<h2 class="trvael-title pl-10 bg-color">
+			<span class="fl"><img src="images/20.png" alt=""></span>开始您的精彩故事
+		</h2>
+		<form id="myForm" method="post" action="" enctype="multipart/form-data">
+			<div class="part">
+				<span>游记攻略标题</span>
+				<input class="travelTitle" type="text" placeholder="游记攻略标题">
+			</div>
+			<div class="part part1 cf" >
+				<p class="fl cf"><input class="startCity fl" value="" placeholder="请输入出发城市"></p>
+				<em><img src="images/21.png" alt=""></em>
+				<p class="fr cf"><input class="endCity fl" value="" placeholder="请输入目的城市"></p>
+			</div>
+			<!-- <div class="part">
+				<span>目的地</span>
+				<input class="destination" type="text" placeholder="请输入详细目的地">
+			</div> -->
+			<div class="part part2 cf">
+				<p class="fl"><input class=" Wdate startTime fl" onFocus="WdatePicker({lang:'zh-cn'})" value="" placeholder="请选择出发时间"></p>
+				<p class="fr"><input class="Wdate backTime fl" onFocus="WdatePicker({lang:'zh-cn'})" value="" placeholder="请选择返程时间"></p>
+			</div>
+			<div class="label cf">
+				<span class="label-left fl">标签</span>
+				<div class="label-right fr">
+					<div class="right-style" id="tagID">
+						<!-- <input type="checkbox" checked><span>景点</span>
+						<input type="checkbox"><span>酒店</span>
+						<input type="checkbox"><span>购物</span>
+						<input type="checkbox"><span>美食</span>
+						<input type="checkbox"><span>交通</span>
+						<input type="checkbox"><span>娱乐</span> -->
+					</div>
+					<div class="right-style">
+						<span class="fl">其他</span>
+						<input class="tagNames" class="fr" type="text" placeholder="多个标签之间用空格分开">
+					</div>
+				</div>
+			</div>
+			<div class="part">
+				<span>人均花销(选填)</span>
+				<input class="averagePrice" type="text" placeholder="请输入人均花销">
+			</div>
+			<div class="part">
+				<span>人数</span>
+				<input class="number" type="text" placeholder="请输入人数">
+			</div>
+			<div class="part">
+				<span>途经景点数</span>
+				<input class="sight-number" type="text" placeholder="请输入途经景点数">
+			</div>
+			<div class="part" style="height: 1rem;">
+				<span class="fl">封面图片</span>
+				<input  type="file" name="image" id="inputstyle" style="width:80px;height:80px;position:relative;right:80px;opacity:0;"/>
+				<img class="avatar fl" src="images/default.png" alt="" id="ImgPh" style="margin-left:10px;margin-top:10px;width:110px;height:80px">
+			</div>
+			<div class="next-step bg-color">
+				<a class="next-btn">保存进入下一步</a>
+			</div>
+		</form>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/uploadPreview.min.js"></script>
+<script type="text/javascript" src="js/uploadPreview.js"></script>
+<script type="text/javascript" src="js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="js/jquery.form.js"></script>
+<script>
+
+	// 上传头像
+	$("#inputstyle").uploadPreview({Img: "ImgPh",Height:30, Width:30});
+	/*获取游记标签*/
+	ajaxGetRequest(kBaseTravleTagsUrl, {}, handleTravelTags);
+	function handleTravelTags(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			var tagsJson = result.message.tag;
+			var html = "";
+			for(var i=0; i<tagsJson.length; i++){
+				html += '<input class="checkboxs" type="checkbox" value="'+tagsJson[i].id+'"><span>'+tagsJson[i].name+'</span>';
+			}
+			$("#tagID").html(html);
+		}
+	}
+	/*发布游记*/
+	var token = getLocalStorage("token");
+	$(".next-btn").on("click", function(){
+		// if(!$(".release-trvael input").val()){
+		// 	alert("信息填写不完整!");
+		// 	return;
+		// }
+		var url = kBaseReleaseTravelUrl + token;
+		$("#myForm").attr("action", url);
+		var tag_ids=[];
+		$(".checkboxs").each(function(){
+			if($(this).prop('checked')){
+				tag_ids.push($(this).val());
+				// alert(tag_ids);
+			}
+		})
+		var data = {
+			title: $(".travelTitle").val(),	
+		    start_date:$(".startTime").val(),
+		    return_date: $(".backTime").val(),	
+		    destination: $(".destination").val(),
+		    start_city: $(".startCity").val(),		
+		    to_city: $(".endCity").val(),
+		    average_price: $(".averagePrice").val(),
+		    number: $(".number").val(),
+		    sight_number: $(".sight-number").val(),
+		    tag_ids: tag_ids,
+		    tag_names: $(".tagNames").val()
+		};
+
+		var options = {  
+		   // target: '#output',          //把服务器返回的内容放入id为output的元素中      
+		   // beforeSubmit: showRequest,  //提交前的回调函数  
+		   // url: url,                 //默认是form的action， 如果申明，则会覆盖  
+		   // type: "type",               //默认是form的method（get or post），如果申明，则会覆盖  
+		   data:data,
+		   dataType: "json",           //html(默认), xml, script, json...接受服务端返回的类型  
+		   success: handleRelease     //提交后的回调函数  
+		   // clearForm: true,          //成功提交后，清除所有表单元素的值  
+		   // resetForm: true,          //成功提交后，重置所有表单元素的值  
+		   // timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求  
+		} 
+		if($(".travelTitle").val()!=""){
+			$("#myForm").ajaxSubmit(options); 
+		}else{
+			ZMAlert("请输入游记标题！",function(){});
+		}
+		// ajaxPOSTRequest(url, data, handleRelease);
+		function handleRelease(result){
+			console.log(result);
+			ZMAlert(result.message.content,successFunc);
+			function successFunc(){
+				if(result.errorCode == 0){
+					setLocalStorage("strategy_id",result.message.strategy_id);
+					location.href = "submit-travel.html";
+				}
+			}
+		}
+	});
+</script>
+</html>

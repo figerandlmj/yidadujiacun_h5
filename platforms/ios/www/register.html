@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <title>注册</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="login.html">返回</a>
+		<p class="title">注册</p>
+	</div>
+	<div class="register bg-color">
+		<ul class="reg-style">
+			<li>
+				<em class="tel-number"></em>
+				<input class="phone" name="phone" type="text" placeholder="请输入手机号码">
+			</li>
+			<li>
+				<em class="auth-code"></em>
+				<input class="salt" type="text" placeholder="请输入验证码">
+				<!-- <button class="get get-salt fr">获取验证码</button> -->
+				<input class="get get-salt fr" type="button" value="获取验证码" />
+			</li>
+			<li>
+				<em class="pwd"></em>
+				<input class="password" type="password" placeholder="请输入密码">
+			</li>
+			<li>
+				<em class="new-pwd"></em>
+				<input class="confirm-pwd" type="password" placeholder="请重复密码">
+			</li>
+		</ul>
+		<button class="reg-btn btn-style">注册</button>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/formValidatorRegex.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+	$(function(){
+		// var salt = getLocalStorage('salt');
+		/*注册按钮*/
+		$(".reg-btn").on('click',function(){
+			var phone = $('input[name="phone"]').val();
+			var code = $('.salt').val();
+			var pwd = $(".password").val();
+			var confirm_pwd = $(".confirm-pwd").val();
+			// var url = kBaseUserUrl + "register";
+			var data = {
+				phone: phone,
+				salt: code,
+				password: pwd,
+				confirm_password: confirm_pwd
+			}
+
+			/*数据验证*/
+			if(!phone || !code || !pwd || !confirm_pwd){
+				ZMAlert("信息填写不完整!");
+			}else if(!eval('/'+regexEnum.mobile+'/').test(phone) 
+				|| phone.length < 11){
+				ZMAlert("手机号格式不正确!");
+			}else if(pwd != confirm_pwd){
+				ZMAlert("两次密码不一致!");
+			}else{
+				/*注册*/
+				ajaxPOSTRequest(kBaseRegisterUrl,data,handleRegister);
+			}
+			
+		});
+		function handleRegister(result){
+			ZMAlert(result.message['content'],successFunc);
+			function successFunc(){
+				if(result.errorCode == 0){
+	    			setLocalStorage('token', result.message['token']);
+					location.href = "login.html";
+				}
+			}
+		}
+
+		/*获取验证码*/
+		$(".get").on('click',function(){
+			var phone = $(".phone").val();
+			if(!phone){
+				ZMAlert("请输入手机号!");
+				return;
+			}else if(!phone || !eval('/'+regexEnum.mobile+'/').test(phone) 
+				|| phone.length < 11){
+				ZMAlert("手机号格式不正确!");
+				return;
+			}
+			var btn=$(this);
+			settime(btn);
+			var data = {phone: phone, type: 1};
+			// ajax 获取验证码
+			ajaxPOSTRequest(kBaseUserUrl + "getPhoneSalt", data, handleCaptcha);
+			function handleCaptcha(result) {
+				ZMAlert(result.message['content']);
+			}
+		});
+		//倒计时60秒
+	    var countdown=60;
+	    function settime(val) {
+	        if (countdown == 0) {
+	            val.attr("disabled", false); 
+	            val.val("重新发送");
+	            val.css({
+	                "background":"#fe8836"
+	            });
+	            countdown = 60;
+	            return false;
+	        } else {
+	            val.attr("disabled", true); 
+	            val.val("正在获取"+countdown);
+	            val.css({
+	                "background":"#ccc"
+	            });
+	            countdown--;
+	        }
+	        setTimeout(function() {
+	        settime(val)
+	        },1000)
+	    } 
+
+
+	});
+</script>
+</body>
+</html>

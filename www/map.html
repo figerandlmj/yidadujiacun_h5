@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name ="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css?v=001">
+    <style type="text/css">
+        #allmap{width:100%;height:500px;}
+    </style>
+    <title>地图</title>
+</head>
+<body>
+    <div id="main">
+        <div id="allmap"></div>
+        <div class="map">
+            <a class="back" href="javascript:history.go(-1);">返回</a>
+            <!-- <a class="map-nav">刷新</a> -->
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=EF505c8299ab5f1c2a98caf47b8d5c07&callback"></script>
+<script type="text/javascript">
+    //百度地图API功能
+    $(function(){
+        // 导航
+        // $(".map-nav").on("click",function(){
+        //     window.location.reload();
+        // })
+        //自适应屏幕宽高
+        $("#allmap").css({
+            "min-height":$(window).height()
+        })
+        $(window).resize(function(){
+            $("#allmap").css({
+                "min-height":$(window).height()
+            })
+        });
+        $(".main").css({
+            "padding-bottom":"0px"
+        })
+        // 百度地图API功能
+        var address=getLocalStorage("address");
+        var map = new BMap.Map("allmap");
+        var point = new BMap.Point(116.404, 39.915);
+        map.centerAndZoom(point,12);
+        // 创建地址解析器实例
+        var myGeo = new BMap.Geocoder();
+        // 将地址解析结果显示在地图上,并调整地图视野
+        myGeo.getPoint(address, function(point){
+          // alert(address);
+          // alert(JSON.stringify(point))
+            if (point) {
+                map.centerAndZoom(point, 16);
+                // map.addOverlay(new BMap.Marker(point));
+                if(address != ""){
+                    var opts = {
+                      width : 200,     // 信息窗口宽度
+                      height: 60,     // 信息窗口高度
+                      title : ""  // 信息窗口标题
+                    }
+                }
+                //创建标注图标
+                var myIcon = new BMap.Icon("images/red.png", new BMap.Size(100,85));
+                var marker = new BMap.Marker(point,{icon:myIcon});  // 创建标注
+                map.addOverlay(marker);// 将标注添加到地图中
+                var infoWindow = new BMap.InfoWindow("<p>"+address+"</p>", opts);  // 创建信息窗口对象 
+                marker.addEventListener("click", function(){          
+                 map.openInfoWindow(infoWindow,point); //开启信息窗口
+                });
+
+            }else{
+                ZMAlert("您的地址没有解析到结果!");
+            }
+        }, "");
+       
+
+        // var map = new BMap.Map("allmap");
+        // // 经纬度和地址
+        // var longitude=getLocalStorage("longitude");
+        // var latitude=getLocalStorage("latitude");
+        // var address=getLocalStorage("address");
+
+        // if(longitude == "" || latitude == ""){
+        //     var point = new BMap.Point(116.404, 39.915);
+        //     var opts = {
+        //       width : 60,     // 信息窗口宽度
+        //       height: 30,     // 信息窗口高度
+        //       title : "天安门"  // 信息窗口标题
+        //     }
+        // }else{
+        //     var point = new BMap.Point(longitude, latitude);
+        //     var opts = {
+        //       width : 60,     // 信息窗口宽度
+        //       height: 30,     // 信息窗口高度
+        //       title : address  // 信息窗口标题
+        //     }
+        // }
+        // map.centerAndZoom(point, 12);
+        // //创建标注图标
+        // var myIcon = new BMap.Icon("images/red.png", new BMap.Size(78,85));
+        // var marker = new BMap.Marker(point,{icon:myIcon});  // 创建标注
+        // map.addOverlay(marker);// 将标注添加到地图中
+        // var infoWindow = new BMap.InfoWindow("", opts);  // 创建信息窗口对象 
+        // marker.addEventListener("click", function(){          
+        //  map.openInfoWindow(infoWindow,point); //开启信息窗口
+        // });
+
+    })
+</script>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <title>忘记密码</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="forget_pwd.html">返回</a>
+		<p class="title">忘记密码</p>
+	</div>
+	<div class="register bg-color">
+		<ul class="reg-style">
+			<li>
+				<em class="pwd"></em>
+				<input class="new-pwd" type="password" placeholder="请输入新密码">
+			</li>
+			<li>
+				<em class="pwd"></em>
+				<input class="comfirm-pwd" class="type" type="password" placeholder="请重新输入密码">
+			</li>
+		</ul>
+		<a class="newPwd-sub btn-style">提交</a>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/formValidatorRegex.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+$(function(){
+
+	$(".newPwd-sub").on("click",function(){
+		var password = $(".new-pwd").val();
+		var confirm_password = $(".comfirm-pwd").val();
+		var token=getLocalStorage("password_token");
+		var phone=getLocalStorage("password_phone");
+		var data = {
+			phone:phone,
+			token:token,
+			password:password,
+			confirm_password:confirm_password
+		};
+		var url=kBaseUserUrl+"forget/two";
+		ajaxPOSTRequest(url, data, callback);
+		function callback(result) {
+			console.log(result);
+			ZMAlert(result.message,successFunc);
+			function successFunc(){
+				if(result.errorCode == 0){
+					location.href = "login.html";
+				}
+			}
+		}
+	});
+	
+});
+</script>
+</body>
+</html>

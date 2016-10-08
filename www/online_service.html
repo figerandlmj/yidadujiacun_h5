@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <title>在线客服</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="service.html">返回</a>
+		<p class="title">在线客服</p>
+	</div>
+	<div class="online-service bg-color">
+		<!-- <div class="service-list cf">
+			<img src="images/56.png" alt="" class="fl">
+			<div class="service1">
+				<p>您好，现在由义达旅游为您提供服务！<em></em></p>
+			</div>
+		</div> -->
+		<div class="service-list cf">
+			<img src="images/56.png" alt="" class="fl">
+			<div class="service1">
+				<p>您好，现在由义达旅游为您提供服务！<em></em></p>
+				<div class="cf"></div>
+				<ul id="Column">
+					<!-- <li class="htitle-style">
+						<span>账户服务</span>
+						<a href="#" class="arrow"></a>
+					</li>
+					<li class="htitle-style">
+						<span>度假村相关</span>
+						<a href="#" class="arrow"></a>
+					</li>
+					<li class="htitle-style">
+						<span>线路相关</span>
+						<a href="#" class="arrow"></a>
+					</li>
+					<li class="htitle-style">
+						<span>线路相关</span>
+						<a href="#" class="arrow"></a>
+					</li> -->
+				</ul>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+	ajaxGetRequest(kBaseColumnUrl, {}, handleColumn);
+	function handleColumn(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			var columnJson = result.message.column;
+			var html = "";
+			for(var i=0; i<columnJson.length; i++){
+				html += '<li class="htitle-style" data-id="'+columnJson[i].id+'">';
+				html += 	'<span>'+columnJson[i].name+'</span>';
+				html += 	'<a class="arrow"></a>';
+				html += '</li>';
+			}
+			$("#Column").html(html);
+		}
+	}
+	$(".htitle-style").live("click",function(){
+		var column_id=$(this).data("id");
+		setLocalStorage("column_id",column_id);
+		// 文章列表页返回标志
+		setLocalStorage("column_return",0);
+		location.href="online_service02.html";
+	})
+</script>
+</body>
+</html>

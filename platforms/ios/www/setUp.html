@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <title>设置</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="personal.html">返回</a>
+		<p class="title">设置</p>
+	</div>
+	<div class="setUp bg-color">
+		<ul class="bg-f">
+			<li class="first">
+				<p class="fl">新消息提醒</p>
+				<span class="new-off"></span>
+			</li>
+			<li class="clear">
+				<a>
+					<p>清除缓存</p>
+					<em></em>
+				</a>
+			</li>
+			<li>
+				<a class="updata-pwd" href="updata_pwd.html">
+					<p>修改密码</p>
+					<em></em>
+				</a>
+			</li>
+		</ul>
+		<button class="exit-btn">退出当前账号</button>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+$(function(){
+
+	var token = getLocalStorage('token');
+	console.log(token);
+	var islogin=0;
+	var url = kBaseUserUrl + "logout" + "?token=" + token;
+	function callback(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			islogin=1;
+			ZMAlert(result.message, function(){setLocalStorage('token', "");location.href = "personal.html";});
+		}
+	}
+
+	/*退出登陆*/
+	$(".exit-btn").on("click",function(){
+		ajaxGetRequest(url,{},callback);
+	});
+	/*修改密码*/
+	$(".updata-pwd").on("click",function(){
+		if(islogin == 1){
+			location.href = "updata_pwd.html";
+		}
+	});
+	$(".clear").on("click",function(){
+		ZMAlert("清除成功！");
+	})
+	$(".new-off").on("click",function(){
+		$(this).toggleClass("new-on");
+	})
+
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <title>我的积分</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="personal.html">返回</a>
+		<p class="title">我的积分</p>
+		<p class="itegral to_message"><a>积分说明</a></p>
+	</div>
+	<div class="myItegral bg-color">
+		<div class="top bg-f">
+			<img src="images/wallet02.png" alt="">
+			<p class="info">当前积分</p>
+			<span>￥<i id="itegral">0</i></span>
+		</div>
+		<div class="bottom bg-f">
+			<p>每次预订产品成交后都会获得相应积分， 积分达到条件，可以兑换现金。</p>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+$(function(){
+	var token = getLocalStorage('token');
+	var url = kBaseMyIntegralUrl + token;
+	console.log(token)
+	if(token){
+		ajaxGetRequest(url, {}, handleIntegral);
+		function handleIntegral(result){
+			console.log(result);
+			if(result.errorCode == 0){
+				$(".myItegral #itegral").text(result.message);
+			}
+		}
+	}
+	$(".to_message").on("click",function(){
+		setLocalStorage("to_message",1);
+		location.href="message.html";
+	})
+})	
+</script>
+</body>
+</html>

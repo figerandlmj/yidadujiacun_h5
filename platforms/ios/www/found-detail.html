@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <title>发现详情</title>
+</head>
+<body>
+<div id="main">
+	<div class="header">
+		<a class="back">返回</a>
+		<p class="title">发现</p>
+	</div>
+	<div class="article">
+		<h2 class="htitle-style">
+			<em></em>
+			<span id="title"></span>
+		</h2>
+		<div class="article-con">
+			<img src="" alt="" id="image_path" width="100%" height="240px">
+			<!-- <p id="">游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字</p> -->
+		</div>
+	</div>
+	<!-- <div class="article">
+		<h2 class="htitle-style">
+			<em></em>
+			<span>最具书卷气：先锋书店</span>
+		</h2>
+		<div class="article-con">
+			<img src="images/img2.jpg" alt="">
+			<p>游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字</p>
+		</div>
+	</div> -->
+</div>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+	
+    var strategy_id=getLocalStorage("strategy_id");
+	ajaxGetRequest(kBaseStrategDetailUrl, {strategy_id:strategy_id}, handleFound);
+	function handleFound(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			var dates = result.message.dates;
+			var strategy = result.message.strategy;
+			$("#title").text(strategy.title);
+			$("#image_path").attr("src",kBaseImagePath+strategy.image_path);
+			var html = "";
+			for(var i=0; i<dates.length; i++){
+				html +='<div class="article">';
+				html +=	'<h2 class="htitle-style">';
+				html +=		'<em></em>';
+				if(i==0){
+					html +=		'<span>详情</span>';
+				}
+				html +=	'</h2>';
+				html +=	'<div class="article-con article-con02">';
+				// html +=		'<img src="images/img2.jpg" alt="">';
+				html +=		'<p>'+dates[i].content+'</p>';
+				html +=	'</div>';
+				html +='</div>';
+			}
+			$("#main").append(html);
+			$(".article-con02").find("img").each(function(){
+                var this_src=$(this).attr("src");
+                $(this).attr("src",kBaseImagePath02+this_src);
+            })
+		}
+	}
+	// 返回到发现列表页或收藏列表页
+	$(".back").on("click",function(){
+		var found_detail_return=getLocalStorage("found_detail_return");
+		if(found_detail_return ==1 ){
+			location.href="found.html";
+		}else if(found_detail_return ==2 ){
+			location.href="myTravel.html";
+		}else{ 
+			location.href="myCollection.html";
+		}
+	})
+</script>
+</body>
+</html>

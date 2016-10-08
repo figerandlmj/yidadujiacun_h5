@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <link rel="stylesheet" type="text/css" href="css/others.css">
+    <title>发布游记</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="release_travel.html">返回</a>
+		<p class="title">发布游记</p>
+	</div>
+	<div class="release-trvael sub-travel bg-color">
+		<h2 class="trvael-title pl-10">
+			<p class="steps">2</p>
+			<span>分享精彩每天从下面开始</span>
+		</h2>
+		<div class="content bg-f">
+		<form id="myForm" method="post" action="" enctype="multipart/form-data">
+			<div class="wrap-content">
+				<div class="con-top border-b cf">
+					<p class="days fl">第1天</p>
+					<!-- <p class="tags fr">
+						<span>景点</span>
+						<span>酒店</span>
+						<span>购物</span>
+						<span>美食</span>
+						<span>交通</span>
+						<span>娱乐</span>
+					</p> -->
+				</div>
+				<div class="con-middle border-b">
+					<p class="user-photo fl"></p>
+					<input type="hidden" value="1" name="date_sort[]"/>
+					<textarea class="fr" placeholder="说点什么..." name="content[]"></textarea>
+					<div class="cf"></div>
+					<!-- <div class="file cf">
+						<div class="file-img fl">
+							<img src="images/file_img.png" alt="">
+						</div>
+						<span class="fl">上传图片</span>
+						<input  type="file">
+					</div> -->
+				</div>
+			</div>
+				<div class="con-bottom cf">
+					<div class="addDays fl"><span class="add_button">增加一天</span></div>
+					<div class="remind fr"><p>温馨提示：当您行程多天，点击左侧添加天数，让每天行程都不落下！</p></div>
+				</div>
+			</div>
+			<!-- <div class="submit"><button>提交游记</button></div> -->
+			<div class="submit" style="margin-bottom:30px;"><div class="submit_btn">提交游记</div></div>
+		</form>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/index.js"></script>
+<script type="text/javascript" src="js/jquery.form.js"></script>
+<script>
+$(function(){
+
+	var num = 1;
+	$(".addDays").on("click",function(){
+		num ++;
+		var html = "";
+		html += '<div class="con-top border-b cf">';
+		html += 	'<p class="days fl">第'+num+'天</p>';
+		// html += 	'<p class="tags fr">';
+		// html += 		'<span>景点</span>';
+		// html += 		'<span>酒店</span>';
+		// html += 		'<span>购物</span>';
+		// html += 		'<span>美食</span>';
+		// html += 		'<span>交通</span>';
+		// html += 		'<span>娱乐</span>';
+		// html += 	'</p>';
+		html += '</div>';
+		html += '<div class="con-middle border-b">';
+		html += 	'<p class="user-photo fl"></p>';
+		html += 	'<input type="hidden" value="'+num+'" name="date_sort[]"/>';
+		html += 	'<textarea class="fr" placeholder="说点什么..." name="content[]"></textarea>';
+		html += 	'<div class="cf"></div>';
+		// html += 	'<div class="file cf">';
+		// html += 		'<div class="file-img fl">';
+		// html += 		'<img src="images/file_img.png" alt="">';
+		// html += 		'</div>';
+		// html += 		'<span class="fl">上传图片</span>';
+		// html += 		'<input  type="file">';
+		// html += 	'</div>';
+		html += '</div>';
+		$(".wrap-content").append($(html));
+	});
+	var token = getLocalStorage("token");
+	var strategy_id = getLocalStorage("strategy_id");
+	var url = kBaseSubmitTravelUrl + token;
+	$("#myForm").attr("action", url);
+	$(".submit").on("click",function(){
+		var options = {  
+		   // target: '#output',          //把服务器返回的内容放入id为output的元素中      
+		   // beforeSubmit: showRequest,  //提交前的回调函数  
+		   // url: url,                 //默认是form的action， 如果申明，则会覆盖  
+		   // type: "type",               //默认是form的method（get or post），如果申明，则会覆盖  
+		   data:{strategy_id:strategy_id},
+		   dataType: "json",           //html(默认), xml, script, json...接受服务端返回的类型  
+		   success: handleSubmit     //提交后的回调函数  
+		   // clearForm: true,          //成功提交后，清除所有表单元素的值  
+		   // resetForm: true,          //成功提交后，重置所有表单元素的值  
+		   // timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求  
+		}  
+		if(token){
+			$("#myForm").ajaxSubmit(options); 
+		}
+	});
+	function handleSubmit(result){
+		ZMAlert(result.message,successFunc);
+		function successFunc(){
+			if(result.errorCode == 0){
+				location.href="myTravel.html";
+			}
+		}
+	}
+
+
+
+	// $(".submit").on("click",function(){
+	// 	if(token){
+	// 		var url = kBaseSubmitTravelUrl + token;
+	// 		var data = {date_sort: 1,content: $("textarea").val()}
+	// 		ajaxPOSTRequest(url, data, handleSubmit);
+	// 		function handleSubmit(result){
+	// 			ZMAlert(result.message);
+	// 			if(result.errorCode == 0){
+	// 			}
+	// 		}
+	// 	}
+	// })
+
+});
+</script>
+</html>

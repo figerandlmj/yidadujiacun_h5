@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>480</key>
+	<array>
+		<string>launch4_1</string>
+		<string>launch4_2</string>
+		<string>launch4_3</string>
+	</array>
+	<key>568</key>
+	<array>
+		<string>launch5_1</string>
+		<string>launch5_2</string>
+		<string>launch5_3</string>
+	</array>
+	<key>667</key>
+	<array>
+		<string>launch6_1</string>
+		<string>launch6_2</string>
+		<string>launch6_3</string>
+	</array>
+	<key>736</key>
+	<array>
+		<string>launch6p_1</string>
+		<string>launch6p_2</string>
+		<string>launch6p_3</string>
+	</array>
+</dict>
+</plist>

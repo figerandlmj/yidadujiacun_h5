@@ -1,0 +1,91 @@
+.header input {
+	width: 100%;
+	height: .4rem;
+	line-height: .4rem;
+	font-size: .18rem;
+	color: #818182;
+	background: #b4e398 url(../images/search.png) no-repeat .1rem center;
+	background-size: .15rem .13rem;
+	border-radius: .05rem;
+	padding-left: .3rem;
+	box-sizing: border-box;
+	margin-top: .07rem;
+}
+.consult {
+	width: 100%;
+	position: relative;
+}
+.consult img {
+	width: 100%;
+	height: 100%;
+}
+.consult .mark {
+	width: 100%;
+	height: 100%;
+	background: #000;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	opacity: 0.35;
+	z-index: 2;
+}
+.wid-119 {
+	width: 119px;
+	text-align: center;
+}
+.consult .consult-online p,.consult .consult-tel p {
+	font-size: .12rem;
+	color: #fff;
+	margin-top: 10%;
+}
+.consult .consult-online img,.consult .consult-tel img {
+	display: inline-block;
+	width: 50%;
+	height: 50%;
+}
+.consult .consult-online {
+	position: absolute;
+	top: 20%;
+	left: 10%;
+	z-index: 3;
+}
+.consult .consult-tel {
+	position: absolute;
+	top: 20%;
+	right: 10%;
+	z-index: 3;
+}
+.service-nav {
+	margin-bottom: .08rem;
+}
+.service-nav ul li {
+	color: #6b6b6b;
+	font-size: .12rem;
+	text-align: center;
+}
+.service-nav ul li img {
+	margin: .08rem auto;
+	width: 50%;
+	height: 50%;
+}
+.service-nav ul li p {
+	padding-bottom: .08rem;
+}
+.play-list {
+	padding-left: .1rem;
+}
+.play-list .play {
+	padding: .15rem .2rem .15rem .1rem;
+	border-bottom: 1px solid #eee;
+}
+.play-list .play p {
+	font-size: .18rem;
+	color: #505050;
+}
+.play-list .play p a {
+	color: #003ba7;
+}
+
+
+
+/*在线客服*/

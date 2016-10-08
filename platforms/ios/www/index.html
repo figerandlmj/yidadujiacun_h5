@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/idangerous.swiper.css">
+    <link rel="stylesheet" type="text/css" href="css/banner.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <title>义达旅行</title>
+</head>
+<body>
+<div id="main">
+	<div class="index">
+		<div class="par-search" style="position:fixed;top:0;">
+			<div class="search cf">
+				<div class="city">
+					<p class="select-city"><a><label class="current_city"></label><em class="arrow"></em></a></p>
+				</div>
+				<div class="son-search">
+					<input type="text" placeholder="搜索旅行地" class="sight_name">
+					<em id="search"></em>
+				</div>
+			</div>
+		</div>
+		<div style="clear:both;height:.54rem;"></div>
+		<div class="banner">
+			<div class="device" id="device">
+				<a class="arrow-left" href="#" style="display: none"></a> 
+				<a class="arrow-right" href="#" style="display: none"></a>
+				<div class="swiper-container">
+					<div class="swiper-wrapper" id="index-Banner" style="height:215px;">
+						<!-- <div class="swiper-slide"> <img src="images/banner6.jpg"></div>
+						<div class="swiper-slide"> <img src="images/banner6.jpg"></div>
+						<div class="swiper-slide"> <img src="images/banner6.jpg"></div>
+						<div class="swiper-slide"> <img src="images/banner6.jpg"></div>
+						<div class="swiper-slide"> <img src="images/banner6.jpg"></div> -->
+					</div>
+				</div>
+				<div class="pagination"></div>
+			</div>
+		</div>
+		<div class="list">
+			<ul class="cf">
+				<li><a href="holiday.html"><img src="images/list1.png" alt=""></a></li>
+				<li><a href="road-list.html"><img src="images/list2.png" alt=""></a></li>
+				<li><a href="strategy.html"><img src="images/list3.png" alt=""></a></li>
+				<li><a href="mall.html" class="mall"><img src="images/list4.png" alt=""></a></li>
+			</ul>
+		</div>
+		<div class="zhuanti cf">
+			<a href="private.html" class="private">
+				<span>私人定制</span>
+				<img src="images/zhuanti1.jpg" alt="" >
+			</a>
+			<a href="favourable_activity.html" class="youhui">
+				<span>优惠活动</span>
+				<img src="images/zhuanti2.jpg" alt="">
+			</a>
+		</div>
+		<div class="img" id="bottom_img" style="margin-bottom:10px;">
+			<!-- <img src="images/img11.jpg" alt="">
+			<div class="mark">
+				<p class="big-font">泰国曼谷</p>
+				<p class="small-font">奢华六日游</p>
+			</div> -->
+		</div>
+		<div class="wrap-nav">
+			<ul class="son-nav cf mui-flex">
+				<li class="cell hover">
+					<a class="index-click">
+						<span class="home"></span>
+						<p>首页</p>
+					</a>
+				</li>
+				<li class="cell">
+					<a class="found-click" href="found.html">
+						<span class="found"></span>
+						<p>发现</p>
+					</a>
+				</li>
+				<li class="cell">
+					<a class="service-click" href="service.html">
+						<span class="service"></span>
+						<p>客服</p>
+					</a>
+				</li>
+				<li class="cell">
+					<a class="personal-click" href="personal.html">
+						<span class="personal"></span>
+						<p>个人</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div id="allmap" style="display:none;"></div>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript">
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+var app = {
+    // Application Constructor
+    initialize: function() {
+        this.bindEvents();
+    },
+    // Bind Event Listeners
+    //
+    // Bind any events that are required on startup. Common events are:
+    // 'load', 'deviceready', 'offline', and 'online'.
+    bindEvents: function() {
+        document.addEventListener('deviceready', this.onDeviceReady, false);
+    },
+    // deviceready Event Handler
+    //
+    // The scope of 'this' is the event. In order to call the 'receivedEvent'
+    // function, we must explicitly call 'app.receivedEvent(...);'
+    onDeviceReady: function() {
+        app.receivedEvent('deviceready');
+        
+        //通过百度sdk来获取经纬度,并且alert出经纬度信息
+       var noop = function(){}
+       window.locationService.getCurrentPosition(function(pos){
+           alert(JSON.stringify(pos))
+           window.locationService.stop(noop,noop)
+       },function(e){
+           alert(JSON.stringify(e))
+           window.locationService.stop(noop,noop)
+       });
+    },
+    // Update DOM on a Received Event
+    receivedEvent: function(id) {
+        var parentElement = document.getElementById(id);
+        var listeningElement = parentElement.querySelector('.listening');
+        var receivedElement = parentElement.querySelector('.received');
+
+        listeningElement.setAttribute('style', 'display:none;');
+        receivedElement.setAttribute('style', 'display:block;');
+
+        console.log('Received Event: ' + id);
+
+
+    }
+};
+
+app.initialize();
+</script>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/idangerous.swiper.min.js"></script>
+<script type="text/javascript" src="js/swiper.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=YYCvzjyZsL4CqX4qU3Do4yWG"></script>
+<script>
+/*首页*/
+$(function(){
+	circleMask();
+	ajaxGetRequest(kBaseIndexUrl, {}, handleIndex);
+	function handleIndex(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			// 头部轮播
+			var bannerTopJson = result.message.banner_top;
+			var html = "";
+			for(var i=0; i<bannerTopJson.length; i++){
+				html += '<div class="swiper-slide">';
+				html += '<a data-url="'+bannerTopJson[i].app_url+'" target="_black" class="app_url">';
+				html +=  '<img src="'+kBaseImagePath + bannerTopJson[i].image_path+'" height="215">';
+				html +=  '</a>';
+				html +=  '</div>';
+			}
+			$("#index-Banner").html(html);
+			ZMSlide();
+			// 底部图片
+			var bannerBottomJson = result.message.banner_bottom;
+			var bottom_html = "";
+			for(var i=0; i<bannerBottomJson.length; i++){
+				bottom_html += '<a data-url="'+bannerBottomJson[i].app_url+'" target="_black" class="app_url">';
+				bottom_html +=  '<img src="'+kBaseImagePath + bannerBottomJson[i].image_path+'" width="100%" height="180" style="margin-top:10px;">';
+				bottom_html +=  '</a>';
+			}
+			$("#bottom_img").html(bottom_html);
+			$("#circle_mask").hide();
+
+		}
+	}
+	
+	// 搜索
+	$("#search").on("click",function(){
+		var sight_name=$(".sight_name").val();
+		setLocalStorage("sight_type_id","");
+		setLocalStorage("sight_name",sight_name);
+		setLocalStorage("return_holiday_list",1);
+		location.href = "holiday-list.html";
+	})
+	// 定位功能
+	var current_city=getLocalStorage("current_city");
+	var is_location=getLocalStorage("is_location");
+	if(current_city!=""){
+		$(".current_city").text(current_city);
+	}else if(is_location !=1 ){
+		$(".current_city").text("定位中");
+		getLocation();
+	}
+
+	function getLocation() {
+		alert(888);
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(showPosition, showError);	
+		} else {
+			ZMAlert("浏览器不支持地理定位！");
+		}
+	}
+		
+	function showPosition(position) {
+		var latlon = position.coords.latitude+','+position.coords.longitude;
+		var latitude = position.coords.latitude;
+		var longitude= position.coords.longitude;
+		alert(longitude +" "+ latitude);
+		//google
+		var location_url = 'http://maps.google.cn/maps/api/geocode/json?latlng=' + latlon + '&language=CN';
+		$.ajax({
+			type: "GET",
+			url: location_url,
+			success: function (json) {
+				if (json.status == 'OK') {
+					var result = json.results;
+					// console.log(result);
+					var back_url=kBaseFrontendUrl+"default/setLocation";
+					var back_data={
+						latitude: latitude,
+						longitude: longitude,
+						location_json:result
+					}
+					ajaxPOSTRequest(back_url, back_data, callback);
+					function callback(result){
+						// console.log(result);
+						if(result.errorCode == 0){
+							ZMAlert("定位成功！");
+							$(".current_city").text(result.message.app_city_name);
+							setLocalStorage("current_city",result.message.app_city_name);
+						}
+						setLocalStorage("is_location",1);
+					}
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				ZMAlert("地址位置获取失败");
+			}
+		});
+	}
+	function showError(error) {
+		switch (error.code) {
+			case error.PERMISSION_DENIED:
+				ZMAlert("定位失败,用户拒绝请求地理定位");
+				break;
+			case error.POSITION_UNAVAILABLE:
+				ZMAlert("定位失败,位置信息是不可用");
+				break;
+			case error.TIMEOUT:
+				ZMAlert("定位失败,请求获取用户位置超时");
+				break;
+			case error.UNKNOWN_ERROR:
+				ZMAlert("定位失败,定位系统失效");
+				break;
+		}
+	}
+	$(".select-city").on("click",function(){
+		var current_select_city=$(".current_city").text();
+		setLocalStorage("current_select_city",current_select_city);
+		setLocalStorage("select_city",1);
+		location.href="city_select.html";
+	})
+
+	// if(current_city!=""){
+	// 	$(".current_city").text(current_city);
+	// }else{
+	// 	$(".current_city").text("定位中");
+	// 	baiduMap();
+	// }
+	
+	// 百度地图API功能
+	function baiduMap(){
+		var map = new BMap.Map("allmap");
+	    var point = new BMap.Point(116.331398,39.897445);
+	    map.centerAndZoom(point,12);
+
+	    var geoc = new BMap.Geocoder();   
+
+	    var geolocation = new BMap.Geolocation();
+	    geolocation.getCurrentPosition(function(r){
+	        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+	            var mk = new BMap.Marker(r.point);
+	            map.addOverlay(mk);
+	            map.panTo(r.point);
+	            // alert('您的位置：'+r.point.lng+','+r.point.lat);
+
+	            var pt = r.point;
+	            geoc.getLocation(pt, function(rs){
+	                var addComp = rs.addressComponents;
+	                $(".current_city").text(addComp.city);
+	                alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+	            });  
+	        }
+	        else {
+	            ZMAlert('failed'+this.getStatus());
+	        }        
+	    },{enableHighAccuracy: true})
+	    //关于状态码
+	    //BMAP_STATUS_SUCCESS   检索成功。对应数值“0”。
+	    //BMAP_STATUS_CITY_LIST 城市列表。对应数值“1”。
+	    //BMAP_STATUS_UNKNOWN_LOCATION  位置结果未知。对应数值“2”。
+	    //BMAP_STATUS_UNKNOWN_ROUTE 导航结果未知。对应数值“3”。
+	    //BMAP_STATUS_INVALID_KEY   非法密钥。对应数值“4”。
+	    //BMAP_STATUS_INVALID_REQUEST   非法请求。对应数值“5”。
+	    //BMAP_STATUS_PERMISSION_DENIED 没有权限。对应数值“6”。(自 1.1 新增)
+	    //BMAP_STATUS_SERVICE_UNAVAILABLE   服务不可用。对应数值“7”。(自 1.1 新增)
+	    //BMAP_STATUS_TIMEOUT   超时。对应数值“8”。(自 1.1 新增)
+	}
+
+})
+	
+</script>
+</body>
+</html>

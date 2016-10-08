@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <title>我的钱包</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="personal.html">返回</a>
+		<p class="title">我的钱包</p>
+	</div>
+	<div class="myItegral bg-color">
+		<div class="top bg-f">
+			<img src="images/wallet.png" alt="">
+			<p style="font-size:1.5em;">当前余额</p>
+			<span>￥0</span>
+		</div>
+		<div class="bottom bg-f">
+			<ul class="mui-flex">
+				<li class="cell"><a>充值</a></li>
+				<li class="cell"><a>提现</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+$(function(){
+	$(".cell").on("click",function(){
+		ZMAlert("此功能正在开发中！");
+	})
+})	
+</script>
+</body>
+</html>

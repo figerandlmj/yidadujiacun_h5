@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <title>修改密码</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="setUp.html">返回</a>
+		<p class="title">修改密码</p>
+	</div>
+	<div class="register bg-color">
+		<ul class="reg-style">
+			<li>
+				<em class="pwd"></em>
+				<input class="old_password" type="password" placeholder="请输入当前密码">
+			</li>
+			<li>
+				<em class="pwd"></em>
+				<input class="new_password" type="password" placeholder="请输入新密码">
+			</li>
+			<li>
+				<em class="pwd"></em>
+				<input class="confirm_password" type="password" placeholder="请重复密码">
+			</li>
+		</ul>
+		<button class="reg-btn btn-style">提交</button>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/formValidatorRegex.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+	/*修改密码*/
+	var token = getLocalStorage('token');
+	$(".reg-btn").on("click",function(){
+		if(token != false){
+			var url = kBaseUserUrl + "personal" + "/password" + "?token=" + token;
+			var data = {
+				old_password: $(".old_password").val(),			/*当前密码*/
+				new_password: $(".new_password").val(),			/*新密码*/
+				confirm_password: $(".confirm_password").val()	/*确认密码*/
+			}
+			if(!$(".old_password").val() || !$(".new_password").val() || !$(".confirm_password").val()){
+				ZMAlert("信息填写不完整!");
+				return;
+			}
+			if($(".new_password").val() != $(".confirm_password").val()){
+				ZMAlert("两次输入的密码不一致!");
+				return;
+			}
+
+			/*ajax修改密码*/
+			ajaxPOSTRequest(url,data,handleRequest);
+		}
+	});
+
+	function handleRequest(result){
+		ZMAlert(result.message,successFunc);
+		function successFunc(){
+			if(result.errorCode == 0){
+				location.href = "setUp.html";
+			}
+		}
+	}
+
+</script>
+</body>
+</html>

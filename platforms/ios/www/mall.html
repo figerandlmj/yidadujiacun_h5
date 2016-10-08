@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/idangerous.swiper.css">
+    <link rel="stylesheet" type="text/css" href="css/banner.css">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>特价商城</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="index.html">返回</a>
+		<p class="title">特产商城</p>
+	</div>
+	<div class="mall bg-color">
+		<div class="banner">
+			<div class="device">
+				<a class="arrow-left" href="#" style="display: none"></a> 
+				<a class="arrow-right" href="#" style="display: none"></a>
+				<div class="swiper-container">
+					<div class="swiper-wrapper" id="mallBanner">
+						<!-- <div class="swiper-slide" id="mall-banner"> <img src="images/mall.jpg"> </div>
+						<div class="swiper-slide" id="mall-banner"> <img src="images/mall.jpg"> </div>
+						<div class="swiper-slide" id="mall-banner"> <img src="images/mall.jpg"></div> -->
+					</div>
+				</div>
+				<div class="pagination"></div>
+			</div>
+		</div>
+		<div class="nav bg-f">
+			<ul class="son-nav cf">
+				<li><a href="javascript:;" class="hotSale-ranking">
+					<img src="images/1.png" alt="">
+					<span>热销排行</span>
+				</a></li>
+				<li><a href="javascript:;" class="phone_eclusive">
+					<img src="images/2.png" alt="">
+					<span>手机专享</span>
+				</a></li>
+				<li><a id="myCollection">
+					<img src="images/3.png" alt="">
+					<span>相关收藏</span>
+				</a></li>
+				<li><a id="myOrder">
+					<img src="images/4.png" alt="">
+					<span>最近订单</span>
+				</a></li>
+			</ul>
+		</div>
+		<div class="part1 bg-f">
+			<h3 class="htitle-style snapUp">
+				<em></em>
+				<span>限时抢购</span>
+				<a class="arrow"></a>
+			</h3>
+			<div class="goods-list">
+				<ul class="list cf" id="snapUpList">
+					<!-- <li>
+						<a href="javascript:;">
+							<img src="images/1.jpg" alt="">
+						</a>
+						<p class="p1">南京特产</p>
+						<p class="p2"><span>两日游</span><em>￥<i id="price">560</i></em></p>
+					</li>
+					<li>
+						<a href="javascript:;">
+							<img src="images/1.jpg" alt="">
+						</a>
+						<p class="p1">南京特产</p>
+						<p class="p2"><span>两日游</span><em>￥<i id="price">560</i></em></p>
+					</li>
+					<li style="border-right: none;">
+						<a href="javascript:;">
+							<img src="images/1.jpg" alt="">
+						</a>
+						<p class="p1">南京特产</p>
+						<p class="p2"><span>两日游</span><em>￥<i id="price">560</i></em></p>
+					</li> -->
+				</ul>
+			</div>
+		</div>
+		<div class="part2 bg-f">
+			<h3 class="htitle-style border-b">
+				<em></em>
+				<span>推荐</span>
+				<!-- <a class="arrow"></a> -->
+			</h3>
+			<div class="tuijian cf" id="recommend">
+				<!-- <div class="box mb-2 fl">
+					<img src="images/2.jpg" alt="">
+				</div>
+				<div class="box mb-2 fl">
+					<img src="images/3.jpg" alt="">
+				</div>
+				<div class="box mb-2 fl">
+					<img src="images/2.jpg" alt="">
+				</div>
+				<div class="box mb-2 fl">
+					<img src="images/3.jpg" alt="">
+				</div> -->
+			</div>
+		</div>
+	</div>
+	<!-- <div class="bottom-nav wrap-nav">
+		<ul class="mui-flex">
+			<li class="cell"><a href="#">
+				<img src="images/5.png" alt="">
+				<span>分类</span>
+			</a></li>
+			<li class="cell"><a href="#">
+				<img src="images/7.png" alt="">
+				<span>新品</span>
+			</a></li>
+			<li class="cell"><a href="#">
+				<img src="images/6.png" alt="">
+				<span>筛选</span>
+			</a></li>
+		</ul>
+	</div> -->
+</div>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/idangerous.swiper.min.js"></script>
+<script type="text/javascript" src="js/swiper.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+/*商城首页*/
+$(function(){
+	circleMask();
+	var token = getLocalStorage('token');
+	var islogin=0;
+	ajaxGetRequest(kBaseMallUrl+token, {}, handleMall);
+	function handleMall(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			islogin=1;
+			var mallJson = result.message.banner;
+			var BannerHtml = "";
+			for (i=0; i<mallJson.length; i++){
+				BannerHtml += '<div class="swiper-slide">';
+				BannerHtml += '<img src="'+kBaseImagePath+mallJson[i].image_path+'">';
+				BannerHtml += '</div>';
+			}
+			$("#mallBanner").html(BannerHtml);
+
+			ZMSlide();
+			// 限时抢购
+			var snapUpJson = result.message.snapUp;
+			var snapUpHtml = "";
+			for(i=0; i<snapUpJson.length; i++){
+				snapUpHtml += '<li class="product" data-id="'+snapUpJson[i].id+'">';
+				snapUpHtml += 	'<a href="javascript:;">';
+				snapUpHtml += 		'<img src="'+kBaseImagePath+snapUpJson[i].image_path+'" alt="">';
+				snapUpHtml += 	'</a>';
+				snapUpHtml += 	'<p class="p1">'+snapUpJson[i].name+'</p>';
+				snapUpHtml += 	'<p class="p2"><span>'+snapUpJson[i].category_name+'</span><em>￥<i id="price">'+snapUpJson[i].yida_price+'</i></em></p>';
+				snapUpHtml += '</li>';
+			}
+			$("#snapUpList").html(snapUpHtml);
+			// 推荐
+			var recommendJson = result.message.recommend;
+			var recommendHtml = "";
+			for(i=0; i<recommendJson.length; i++){
+				recommendHtml += '<div class="box mb-2 fl">';
+				recommendHtml += 	'<a href="javascript:;" class="product" data-id="'+recommendJson[i].id+'">';
+				recommendHtml += 		'<img src="'+kBaseImagePath+recommendJson[i].image_path+'" alt="" width="295px" height="202px">';
+				recommendHtml += 	'</a>';
+				recommendHtml += '</div>';
+			}
+			$("#recommend").html(recommendHtml);
+			$('.box:odd').each(function(){
+				$(this).addClass("fr");
+		    });
+		    $("#circle_mask").hide();
+		}
+		
+	}
+	// 点击进入商品详情页
+    $("body").on("click",".product",function(){
+        product_id=$(this).data("id");
+        setLocalStorage("product_id",product_id);
+        // 商品详情跳回标志
+		setLocalStorage('goods_detail_return',1);
+        location.href="goods_detail.html";
+    })
+
+     /*热销排行*/
+	$(".hotSale-ranking").on("click",function(){
+		ajaxGetRequest(kBaseProductListUrl+"order_num", {}, handleSnapUp);
+		function handleSnapUp(result){
+			if(result.errorCode == 0){
+				location.href = "hotSale-ranking.html";
+			}
+		}
+	});
+
+    /*手机专享*/
+	$(".phone_eclusive").on("click",function(){
+		ajaxGetRequest(kBaseProductPhoneUrl, {}, handleSnapUp);
+		function handleSnapUp(result){
+			if(result.errorCode == 0){
+				location.href = "phone_eclusive.html";
+			}
+		}
+	});
+
+	// 相关收藏
+	$("#myCollection").on("click",function(){
+		if(islogin == 0){
+			ZMAlert("请登录!");
+		}else{
+			setLocalStorage("myCollection_return",0);
+			location.href ="myCollection.html";
+		}
+	})
+
+	// 最近订单
+	$("#myOrder").on("click",function(){
+		if(islogin == 0){
+			ZMAlert("请登录!");
+		}else{
+			setLocalStorage("myOrder_return",0);
+			location.href ="myOrder.html";
+
+		}
+	})
+
+	/*限时抢购*/
+	$(".snapUp").on("click",function(){
+		ajaxGetRequest(kBaseSnapUpUrl, {}, handleSnapUp);
+		function handleSnapUp(result){
+			if(result.errorCode == 0){
+				location.href = "snap_up.html";
+			}
+		}
+	});
+})
+</script>
+</body>
+</html>

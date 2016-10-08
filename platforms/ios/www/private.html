@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>私人定制</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="index.html">返回</a>
+		<p class="title">私人定制</p>
+	</div>
+	<div class="private bg-f">
+		<div class="banner">
+			<img src="images/banner5.jpg" alt="">
+		</div>
+		<div class="part1">
+			<h3 class="htitle-style">
+				<em></em>
+				<span>出游基本信息</span>
+			</h3>
+			<ul>
+				<li class="common">
+					<span>出发城市</span>
+					<input type="text" placeholder="请输入出发城市" id="start_city">
+				</li>
+				<li class="common">
+					<span>目的地</span>
+					<input type="text" placeholder="请输入目的地城市" id="end_city">
+				</li>
+				<li class="common">
+					<span>出发时间</span>
+					<input type="text" placeholder="请选择出发时间" onclick="WdatePicker()" id="start_date">
+				</li>
+				<li class="cf">
+					<span>出游天数</span>
+					<div class="number cf">
+						<p class="number-style cf">
+							<span class="reduce">-</span>
+							<input type="text" value="1" id="date_number" disabled>
+							<span class="add">+</span>
+						</p>
+						<em>天</em>
+					</div>
+				</li>
+				<li class="cf">
+					<span>出游人数</span>
+					<div class="number cf">
+						<p class="number-style cf">
+							<span class="reduce">-</span>
+							<input type="text" value="1" id="people_number" disabled>
+							<span class="add">+</span>
+						</p>
+						<em>人</em>
+					</div>
+				</li>
+				<li class="cf">
+					<span>人均预算</span>
+					<div class="number cf">
+						<p class="number-style cf">
+							<span class="reduce">-</span>
+							<input type="text" value="1" id="avg_price">
+							<span class="add">+</span>
+						</p>
+						<em>元/人</em>
+					</div>
+				</li>
+				<li style="border-bottom: none;">其他需求</li>
+			</ul>
+			<textarea placeholder="请输入您的其他要求" id="remark"></textarea>
+		</div>
+		<div class="part2">
+			<h3 class="htitle-style">
+				<em></em>
+				<span>联系人信息</span>
+			</h3>
+			<ul>
+				<li class="common">
+					<span>姓名</span>
+					<input type="text" placeholder="请输入联系人姓名" id="contact_name">
+				</li>
+				<li class="common">
+					<span>手机</span>
+					<input type="text" placeholder="请输入联系人手机" id="contact_phone">
+				</li>
+				<li class="common">
+					<span>邮箱</span>
+					<input type="text" placeholder="请输入联系邮箱" id="contact_email">
+				</li>
+			</ul>
+		</div>
+		<div class="part3 cf">
+			<a class="tel">
+				<img src="images/tel1.png" alt="">
+			</a>
+			<a class="submit submit-btn">
+				<img src="images/submit2.png" alt="">
+			</a>
+		</div>
+		<div class="pop-up">
+			<div class="tel-pop">
+				<div class="top">
+					<img src="images/telphone.jpg" alt="">
+					<p class="close"></p>
+				</div>
+				<div class="bottom">
+					<p class="servie-tel">24小时客服电话</p>
+					<p class="tel-number">400-612-7715</p>
+					<a href="tel:4006127715"><button>电话咨询</button></a>
+				</div>
+			</div>
+		</div>
+		<!-- <div class="success-pop">
+			<img src="images/telphone.jpg" alt="">
+			<button class="success">确定</button>
+		</div> -->
+	</div>
+	<div class="wrap-mask"></div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+$(function(){
+
+	// 购买数量加减
+	$(".add").click(function(){
+		var num=$(this).prev("input").val();
+		num++;
+		$(this).prev("input").val(num);
+	});
+	$(".reduce").click(function(){
+		var num=$(this).next("input").val();
+		if(num == 1){
+			num = 1;
+		}else {
+			num--;
+		}
+		$(this).next("input").val(num);
+	});
+
+	$("#start_date").bind("blur",function(){
+		var currentNum = parseInt(getDate().replace(/-/g, ''), 10);
+		var start_date=$("#start_date").val();
+		if(start_date<currentNum){
+            ZMAlert("开始时间不能在当前时间之前！",function(){});
+        }
+	});
+	// 提交订单
+	$(".submit-btn").on("click",function(){
+		var start_city=$("#start_city").val();
+		var end_city=$("#end_city").val();
+		var start_date=$("#start_date").val();
+		var currentNum = parseInt(getDate().replace(/-/g, ''), 10);
+		var date_number=$("#date_number").val();
+		var people_number=$("#people_number").val();
+		var avg_price=$("#avg_price").val();
+		var remark=$("#remark").val();
+		var contact_name=$("#contact_name").val();
+		var contact_phone=$("#contact_phone").val();
+		var contact_email=$("#contact_email").val();
+		var regContact =/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/;//联系方式
+		var regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+
+		data={
+			start_city:start_city,
+            end_city:end_city,
+            start_date:start_date,
+            date_number:date_number,
+            people_number:people_number,
+            avg_price:avg_price,
+            remark:remark,
+            contact_name:contact_name,
+            contact_phone:contact_phone,
+            contact_email:contact_email
+        }
+        if(contact_name==''){
+        	ZMAlert("联系人不能为空！",function(){});
+        	return false;
+        }else if(contact_phone==''){
+        	ZMAlert("联系方式不能为空！",function(){});
+        	return false;
+        }else if(!regContact.test(contact_phone)){
+        	ZMAlert("联系方式不正确！",function(){});
+        	return false;
+        }else if(contact_email!='' && !regEmail.test(contact_email)){
+    		ZMAlert("邮箱不正确！",function(){});
+    		return false;
+        }else if(start_date!=''&&start_date<currentNum){
+            ZMAlert("开始时间不能在当前时间之前！",function(){});
+            return false;
+        }
+        ajaxPOSTRequest(kBaseCustomizedUrl, data, handleSubmitOrder);
+        function handleSubmitOrder(result){
+        	console.log(result);
+        	ZMAlert(result.message,successFunc);
+			function successFunc(){
+				if(result.errorCode == 0){
+					location.href="index.html";
+				}
+			}
+	    }
+	})
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/others.css">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>景点门票</title>
+</head>
+<body>
+<div id="main">
+    <div class="header cf">
+        <a class="back">返回</a>
+        <p class="title">景点门票</p>
+        <p class="header-right">
+            <!-- <a class="share fr">分享</a> -->
+            <a class="shoucan fr" id="collection"></a>
+        </p>
+    </div>
+    <div class="holiday-road ticket">
+        <div class="banner">
+            <img src="" alt="" style="height: 240px;">
+            <div class="bottom-bar"></div>
+            <p>
+                <span class="ticket-icon fl"><i class="fl"></i><label>景点门票</label></span>
+                <span class="right fr"><em class="fl"></em><label class="satisfaction">0%</label>满意度</span>
+            </p>
+        </div>
+    </div>
+    <div class="secery-ticket">
+        <div class="part1 bg-f">
+            <div class="date pad-20 border-b cf" style="padding-top:10px;">
+                <h2 id="description"></h2>
+                <div class="date-left fl">
+                    <em class="fl"></em>
+                    <span class="fl">开放时间：</span>
+                </div>
+                <div class="date-right fl">
+                    <p>平日:</p>
+                    <p>假日:</p>
+                </div>
+            </div>
+            <div class="address pl-20" id="skip_map">
+                <em class="fl"></em>
+                <span class="fl">景点地址：</span>
+                <p class="address-detail span1 fl" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;font-size: .15rem;width:50%;"></p>
+                <a class="icon2 fr"></a>
+            </div>
+        </div>
+        <div class="part2 bg-f">
+            <div class="nav-style">
+                <ul class="border-b cf">
+                    <li>门票类型</li>
+                    <li>景点介绍</li>
+                    <li style="border-right: none;">点评&nbsp;<span>(<i id="evaluateNum">0</i>)</span></li>
+                </ul>
+                <div class="hover"></div>
+            </div>
+            <div class="common-nav bg-f" style="display: block;">
+                <div class="ticket-type cf adult_ticket">
+                    <h3><em class="parent fl"></em>成人票</h3>
+                    <!-- <div class="ticket-con border-b cf">
+                        <div class="con-left fl">
+                            <p class="p1">东方明珠观光B票&nbsp;(成人票)</p>
+                            <p class="p2"><em class="fl"></em>请提前24小时预定门票</p>
+                            <span class="p3">返积分&nbsp;600</span>
+                            <p id="detail-info" class="p4 cf"><a class="fl">详细信息</a><em class="fl"></em></p>
+                            <div class="detail-info">
+                                <div class="son-detail-info">
+                                    <h2>详细信息<em class="info-close">X</em></h2>
+                                    <h3 class="border-b">东方明珠观光B票(成人票)</h3>
+                                    <ul class="info-intrduce">
+                                        <li class="border-b">
+                                            <h4>费用包含</h4>
+                                            <p>费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容</p>
+                                        </li>
+                                        <li class="border-b">
+                                            <h4>兑换方式</h4>
+                                            <p>兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字</p>
+                                        </li>
+                                        <li class="border-b">
+                                            <h4>预定时间</h4>
+                                            <p>预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间</p>
+                                        </li>
+                                    </ul>
+                                    <div class="ordering">
+                                        <span class="fl">￥140</span>
+                                        <p class="fr">
+                                            <span>在线支付</span>
+                                            <button><a href="reservation_order.html">预定</a></button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="con-right fr">
+                            <p class="price1">$160</p>
+                            <p class="price2">$148</p>
+                            <p class="pay">在线支付</p>
+                            <p class="pay2"><a href="reservation_order.html">预定</a></p>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="ticket-type cf child_ticket">
+                    <h3><em class="child fl"></em>儿童票</h3>
+                    <!-- <div class="ticket-con border-b cf">
+                        <div class="con-left fl">
+                            <p class="p1">东方明珠观光B票&nbsp;(儿童票)</p>
+                            <p class="p2"><em class="fl"></em>请提前24小时预定门票</p>
+                            <span class="p3">返积分&nbsp;600</span>
+                            <p id="detail-info" class="p4 cf"><a class="fl">详细信息</a><em class="fl"></em></p>
+                            <div class="detail-info">
+                                <div class="son-detail-info">
+                                    <h2>详细信息<em class="info-close">X</em></h2>
+                                    <h3 class="border-b">东方明珠观光B票(儿童票)</h3>
+                                    <ul class="info-intrduce">
+                                        <li class="border-b">
+                                            <h4>费用包含</h4>
+                                            <p>费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容费用文字内容</p>
+                                        </li>
+                                        <li class="border-b">
+                                            <h4>兑换方式</h4>
+                                            <p>兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字兑换文字</p>
+                                        </li>
+                                        <li class="border-b">
+                                            <h4>预定时间</h4>
+                                            <p>预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间预定时间</p>
+                                        </li>
+                                    </ul>
+                                    <div class="ordering">
+                                        <span class="fl">￥140</span>
+                                        <p class="fr">
+                                            <span>在线支付</span>
+                                            <button>预定</button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="con-right fr">
+                            <p class="price1">$160</p>
+                            <p class="price2">$148</p>
+                            <p class="pay">在线支付</p>
+                            <p class="pay2"><a href="reservation_order.html">预定</a></p>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <div class="common-nav bg-f">
+                <div class="spal">
+                    <h2 class="htitle-style border-b"><span>景点特色</span></h2>
+                    <p class="border-b" id="character" style="padding:2%">
+                        <!-- <li><em></em>国家首批5A景区</li>
+                        <li><em></em>穿越时空重现历史，回眸历史发展足迹</li>
+                        <li><em></em>亚洲最高旋转餐厅，白天夜晚风情各异</li> -->
+                    </p>
+                </div>
+                <div class="secery-intrduce">
+                    <h2 class="htitle-style border-b"><span>景点介绍</span></h2>
+                    <div class="intrduce-detail" id="introduction">
+                        <!-- <p>景点介绍景点介绍景点介绍景点介绍景点介绍景点介绍景点介绍景点介绍景点介绍景点介绍景点介绍景点介绍景点介绍景点介绍景点介绍景点介绍</p>
+                        <img src="images/img2.jpg" alt="">
+                        <p>景点介绍相关文字景点介绍相关文字景点介绍相关文字景点介绍相关文字景点介绍相关文字景点介绍相关文字景点介绍相关文字景点介绍相关文字景点介绍相关文字</p> -->
+                    </div>
+                </div>
+            </div>
+            <div class="common-nav bg-f" id="comment">
+                <div class="review cf">
+                    <span class="num fl satisfaction">0%</span>
+                    <p class="fl">
+                        <span>用户满意度为<em class="satisfaction">0%</em></span><br>
+                        <span>已有<em id="evaluateNum02">0</em>人点评</span>
+                    </p>
+                </div>
+                <!-- <div class="review-style border-b">
+                    <p class="user cf">
+                        <em class="fl"></em>
+                        <span class="num fl">3584850</span>
+                    </p>
+                    <p class="review-con">不错了，感觉还是挺好的一次游玩，门票又不贵，还是挺不错的。下次还在义达这儿购买。</p>
+                    <p class="date fr">2015-09-01</p>
+                </div>
+                <div class="review-style border-b">
+                    <p class="user cf">
+                        <em class="fl"></em>
+                        <span class="num fl">3584850</span>
+                    </p>
+                    <p class="review-con">不错了，感觉还是挺好的一次游玩，门票又不贵，还是挺不错的。下次还在义达这儿购买。</p>
+                    <p class="date fr">2015-09-01</p>
+                </div>
+                <div class="review-style border-b">
+                    <p class="user cf">
+                        <em class="fl"></em>
+                        <span class="num fl">3584850</span>
+                    </p>
+                    <p class="review-con">不错了，感觉还是挺好的一次游玩，门票又不贵，还是挺不错的。下次还在义达这儿购买。</p>
+                    <p class="date fr">2015-09-01</p>
+                </div>
+                <div class="review-style border-b">
+                    <p class="user cf">
+                        <em class="fl"></em>
+                        <span class="num fl">3584850</span>
+                    </p>
+                    <p class="review-con">不错了，感觉还是挺好的一次游玩，门票又不贵，还是挺不错的。下次还在义达这儿购买。</p>
+                    <p class="date fr">2015-09-01</p>
+                </div>
+                <div class="review-style border-b">
+                    <p class="user cf">
+                        <em class="fl"></em>
+                        <span class="num fl">3584850</span>
+                    </p>
+                    <p class="review-con">不错了，感觉还是挺好的一次游玩，门票又不贵，还是挺不错的。下次还在义达这儿购买。</p>
+                    <p class="date fr">2015-09-01</p>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <div style="margin-top:20px;"><img src="images/bottom.png" width="100%"></div>
+    <div class="share-box">
+        <h2 class="shareTo">分享到</h2>
+        <ul class="mui-flex">
+            <li class="cell -mob-share-weixin">
+                <a>
+                    <em></em>
+                    <p>微信</p>
+                </a>
+            </li>
+            <li class="cell -mob-share-qzone">
+                <a>
+                    <em></em>
+                    <p>空间</p>
+                </a>
+            </li>
+            <li class="cell -mob-share-weixin">
+                <a>
+                    <em></em>
+                    <p>微信朋友圈</p>
+                </a>
+            </li>
+            <li class="cell -mob-share-qq">
+                <a>
+                    <em></em>
+                    <p>QQ好友</p>
+                </a>
+            </li>
+        </ul>
+        <div class="share-reset">取消</div>
+    </div>
+    <div class="wrap-mask"></div>
+</div>
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=ecd551ee2f8c"></script>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+$(function(){
+
+    var token = getLocalStorage("token");
+    var sightspot_id = getLocalStorage("sightspot_id");
+    console.log(sightspot_id)
+    var data = {sightspot_id: sightspot_id};
+    ajaxGetRequest(kBaseTicketDetailUrl+token, data, handleTicketDetail);
+    function handleTicketDetail(result){
+        console.log(result);
+        if(result.errorCode == 0){
+            var message = result.message.sightspot;
+            // 经纬度和地址
+            var longitude=message.longitude;
+            var latitude=message.latitude;
+            var address=message.address;
+            setLocalStorage("longitude",longitude);
+            setLocalStorage("latitude",latitude);
+            setLocalStorage("address",message.province_name+message.city_name+address);
+
+            // 头部信息
+            $(".banner img").attr("src", kBaseImagePath + message.image[0]);
+            $("#description").text(message.name);
+            $(".part1 .date-right p").eq(0).text("平日: "+message.usually_time);
+            $(".part1 .date-right p").eq(1).text("假日: "+message.holiday_time);
+            $(".address-detail").text(message.province_name+message.city_name+message.address);
+            $("#evaluateNum").text(message.evaluate_num);
+            $("#evaluateNum02").text(message.evaluate_num);
+            // 收藏显示
+            if(result.message.is_collected==true){
+                $("#collection").text("已收藏");
+                $("#collection").addClass("removeCollection");
+            }else{
+                $("#collection").text("收藏");
+                $("#collection").addClass("collection");
+            }
+            // 门票类型
+            if(message.ticket.length>0){
+                for(var i=0;i<message.ticket.length;i++){
+                    if(message.ticket[i].type==1){
+                        var ticket_type="成人票";
+                    }else if(message.ticket[i].type==2){
+                        var ticket_type="儿童票";
+                    }
+                    var return_integral=message.ticket[i].return_integral;
+                    var return_integral_html='';
+                    if(return_integral!=0){
+                        var return_integral_html='<span class="p3" style="margin-top:8px;">返积分&nbsp;'+return_integral+'</span>';
+                    }
+                    var ticket_html='<div class="ticket-con border-b cf"><div class="con-left fl" id="detail-info"><p class="p1">'+message.ticket[i].name+'&nbsp;('+ticket_type+')</p><p class="p2" style="margin-top:4px;"><em class="fl hours"></em>请提前24小时预订门票</p>'+return_integral_html+'<p class="p4 cf" style="margin-top:8px;"><a class="fl">详细信息</a><em class="fl"></em></p></div><div class="detail-info"><div class="son-detail-info"><h2>详细信息<em class="info-close">X</em></h2><h3 class="border-b">'+message.ticket[i].name+'('+ticket_type+')</h3><ul class="info-intrduce"><li class="border-b"><h4>费用包含</h4><p>'+message.ticket[i].content+'</p></li><li class="border-b"><h4>兑换方式</h4><p>'+message.ticket[i].exchange+'</p></li><li class="border-b"><h4>预订时间</h4><p>'+message.ticket[i].reserve+'</p></li></ul><div class="ordering"><span class="fl">￥'+message.ticket[i].yida_price+'</span><p class="fr"><span style="padding-right:10px;">在线支付</span><button><a data-id="'+message.ticket[i].id+'" id="reserve">预订</a></button></p></div></div></div><div class="con-right fr"><p class="price1">￥'+message.ticket[i].price+'</p><p class="price2">￥'+message.ticket[i].yida_price+'</p><p class="pay">在线支付</p><p class="pay2"><a data-id="'+message.ticket[i].id+'" id="reserve">预订</a></p></div></div>'
+                    if(message.ticket[i].type==1){
+                        $(".adult_ticket").append(ticket_html);
+                    }else if(message.ticket[i].type==2){
+                        $(".child_ticket").append(ticket_html);
+                    }
+                }
+            }
+            // 景点介绍
+            $("#character").text(message.feature);
+            $("#introduction").html(message.description);
+            $("#introduction").find("img").each(function(){
+                var this_src=$(this).attr("src");
+                $(this).attr("src",kBaseImagePath02+this_src);
+            })
+            // 点评
+            $(".satisfaction").text(message.satisfaction+"%")
+            if(message.evaluate.length>0){
+                for(var i=0;i<message.evaluate.length;i++){
+                    var evaluate_html='<div class="review-style border-b"><p class="user cf"><em class="fl"></em><span class="num fl">'+message.evaluate[i].username+'</span></p><p class="review-con">'+message.evaluate[i].content+'</p><p class="date fr">'+message.evaluate[i].create_time+'</p></div>'
+                    $("#comment").append(evaluate_html);
+                }
+            }  
+        }
+    }
+    // 预定点击事件
+    $("body").on("click","#reserve",function(){
+        ticket_id=$(this).data("id");
+        setLocalStorage("ticket_id",ticket_id);
+        location.href="reservation_order.html"; 
+    })
+
+    // 跳转到地图
+    $("#skip_map").on("click",function(){
+        setLocalStorage("sightspot_detail_return",0);
+    })
+
+    /*收藏按钮*/
+    $("#collection").on("click",function(){
+        var item_id = sightspot_id;
+        if($(this).hasClass("collection")){
+            var url = kBaseCollectionUrl + token;
+            var data = {
+                item_id: item_id,
+                type:4
+            }
+            ajaxPOSTRequest(url, data, handleCollection);
+            function handleCollection(result){
+                console.log(result);
+                ZMAlert(result.message,callback);
+                function callback(){
+                    if(result.errorCode==0){
+                        $("#collection").text("已收藏");
+                        $("#collection").removeClass("collection");
+                        $("#collection").addClass("removeCollection");
+                    }
+                }
+            }
+        }else{
+            var url = kBaseRemoveCollectionUrl + token+"&item_id="+item_id+"&type="+4;
+            ajaxGetRequest(url, {}, handleCollection02);
+            function handleCollection02(result){
+                ZMAlert(result.message,callback02);
+                function callback02(){
+                   if(result.errorCode==0){
+                        $("#collection").text("收藏");
+                        $("#collection").addClass("collection");
+                        $("#collection").removeClass("removeCollection");
+                    }
+                }
+                
+            }
+        }
+        
+    });
+
+    
+    // 返回到产品主页或收藏列表页
+    $(".back").on("click",function(){
+        var secery_ticket_return=getLocalStorage("secery_ticket_return");
+        if(secery_ticket_return ==1 ){
+            location.href="holiday-list.html";
+        }else if(secery_ticket_return ==2 ){
+            location.href="browse_history.html";
+        }else{ 
+            location.href="myCollection.html";
+        }
+    })
+    // 地址跳转
+    $("#skip_map").on("click",function(){
+        location.href="map.html";
+    })
+})
+</script>
+</body>
+</html>

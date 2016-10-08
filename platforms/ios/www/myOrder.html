@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>我的订单</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back">返回</a>
+		<p class="title">我的订单</p>
+		<a style="font-size: .18rem;color: #ebf6e5;position: absolute;right: 2%;top: 0;padding: 0;margin-left: 1%;z-index: 10;" id="radius-filter">订单状态</a>
+		<ul style="display:none;width: .75rem;height: 1.2rem;line-height: .3rem;font-size: .18rem;color: #4f4f4f;text-align: center;background: #fff;border: .01rem solid #eee;border-top: none;position: absolute;z-index: 100;right: 1.9%;top:44px;padding: 0;margin-left: 1%;" id="all-order-radius"> 
+			<li data-status="1">未付款</li>
+			<li data-status="2">未消费</li>
+			<li data-status="4">已消费</li>
+			<li data-status="3">已取消</li>
+		</ul>
+	</div>
+	<div class="myOrder">
+		<div class="nav bg-f">
+			<ul class="mui-flex">
+				<li class="cell hover">
+					<a href="javascript:;" class="orderType" data-type="3">
+						<img src="images/10.png" alt="">
+						<span>产品</span>
+					</a>
+					<!-- <span style="display:inline-block;width:20px;height:20px;line-height:20px;border-radius:50%;background:#ff6000;color:#fff;position:relative;bottom: 30px;left: 40px;">1</span> -->
+				</li>
+				<li class="cell">
+					<a href="javascript:;" class="orderType" data-type="2">
+						<img src="images/8.png" alt="">
+						<span>路线</span>
+					</a>
+					<!-- <span style="display:inline-block;width:20px;height:20px;line-height:20px;border-radius:50%;background:#ff6000;color:#fff;position:relative;bottom: 30px;left: 40px;">1</span> -->
+				</li>
+				<li class="cell">
+					<a href="javascript:;" class="orderType" data-type="1">
+						<img src="images/9.png" alt="">
+						<span>景点</span>
+					</a>
+					<!-- <span style="display:inline-block;width:20px;height:20px;line-height:20px;border-radius:50%;background:#ff6000;color:#fff;position:relative;bottom: 30px;left: 40px;">1</span> -->
+				</li>
+				<li class="cell" style="border-right: none;">
+					<a href="javascript:;" class="orderType" data-type="4">
+						<img src="images/30.png" alt="">
+						<span>门票</span>
+					</a>
+					<!-- <span style="display:inline-block;width:20px;height:20px;line-height:20px;border-radius:50%;background:#ff6000;color:#fff;position:relative;bottom: 30px;left: 40px;">1</span> -->
+				</li>
+			</ul>
+		</div>
+		<div class="order-list bg-color" id="myOrderList">
+
+			<!-- <div class="waiting-order bg-f">
+				<div class="top border-b">
+					<img src="images/11.png" alt="" class="pos-ab">
+					<p><span>待处理</span></p>
+					<a href="javascript:;" class="reset-operation">操作<em></em></a>
+					<ul class="order-operation reset" style="display: none;">
+						<li>取消操作</li>
+					</ul>
+				</div>
+				<div class="middle border-b cf">
+					<div class="left">
+						<img src="images/7.jpg" alt="">
+					</div>
+					<div class="right">
+						<h3>芜湖方特欢乐世界</h3>
+						<span>游乐园</span>
+						<span>新品上线</span>
+						<p>简介描述简介描述简简介描述简介描述简简介描述简介描述简介描述简...</p>
+						<em>x2</em>
+					</div>
+				</div>
+				<div class="middle1 border-b">
+					<p>订单号：<span>#6445687</span></p>
+					<p>手机号：<span>18130300012</span></p>
+					<p>出发时间：<span>2015-09-01</span></p>
+				</div>
+				<div class="bottom cf">
+					<p class="fl">
+						<span class="price">￥158</span>
+						<span class="num">共2张</span>
+					</p>
+					<p class="count fr">月销量789</p>
+				</div>
+			</div>
+
+			<div class="waiting-order bg-f">
+				<div class="top border-b">
+					<img src="images/11.png" alt="" class="pos-ab">
+					<p><span>待处理</span></p>
+					<a href="#">操作<em></em></a>
+				</div>
+				<div class="middle border-b cf">
+					<div class="left">
+						<img src="images/7.jpg" alt="">
+					</div>
+					<div class="right">
+						<h3>芜湖方特欢乐世界</h3>
+						<span>游乐园</span>
+						<span>新品上线</span>
+						<p>简介描述简介描述简简介描述简介描述简简介描述简介描述简介描述简...</p>
+						<em>x2</em>
+					</div>
+				</div>
+				<div class="middle1 border-b">
+					<p>订单号：<span>#6445687</span></p>
+					<p>手机号：<span>18130300012</span></p>
+					<p>出发时间：<span>2015-09-01</span></p>
+				</div>
+				<div class="bottom cf">
+					<p class="fl">
+						<span class="price">￥158</span>
+						<span class="num">共2张</span>
+					</p>
+					<p class="count fr">月销量789</p>
+				</div>
+			</div> -->
+
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/index.js"></script>
+<script>
+	/*ajax获取订单数据*/
+	var token = getLocalStorage('token');
+	if(token){
+		var url = kBaseMyOrderListUrl + token;
+		setLocalStorage("order_type",3);
+		ajaxGetRequest(url, {order_type:3}, handleOrderList); 
+		function handleOrderList(result){
+			console.log(result);
+			if(result.errorCode == 0){
+				var orderListJson = result.message.data;
+				OrderList($("#myOrderList"),orderListJson);
+			}
+		}
+	}
+
+	/*根据类型筛选订单*/
+	$(".orderType").on("click",function(){
+		$(this).parent().addClass("hover");
+		$(this).parent().siblings().removeClass("hover");
+		if(token){
+			var url = kBaseMyOrderListUrl + token;
+			var data = {order_type: $(this).data("type")};
+			setLocalStorage("order_type",$(this).data("type"));
+			ajaxGetRequest(url, data, handleOrderList);
+			function handleOrderList(result){
+				console.log(result);
+				if(result.errorCode == 0){
+					var orderListJson = result.message.data;
+					OrderList($("#myOrderList"),orderListJson);
+				}
+			}
+		}
+	});
+
+	/*根据订单状态筛选订单*/
+	$("#all-order-radius li").on("click",function(){	
+		if(token){
+			var url = kBaseMyOrderListUrl + token;
+			var order_type=getLocalStorage("order_type");
+			var data = {order_type: order_type,order_status:$(this).data("status")};
+			ajaxGetRequest(url, data, handleOrderList);
+			function handleOrderList(result){
+				console.log(result);
+				if(result.errorCode == 0){
+					var orderListJson = result.message.data;
+					OrderList($("#myOrderList"),orderListJson);
+				}
+			}
+		}
+		$("#all-order-radius").hide();
+	});
+
+	function OrderList(obj,Json){
+		var html = "";
+		var order_status;
+		var description;
+		var image_path;
+		for(var i=0; i<Json.length; i++){
+			// 订单状态
+			if(Json[i].order_status==1){
+				order_status="未付款";
+			}else if(Json[i].order_status==2){
+				order_status="未消费";
+			}else if(Json[i].order_status==4){
+				order_status="已消费";
+			}else if(Json[i].order_status==3){
+				order_status="已取消";
+			}
+			// 订单描叙，图片路径
+			if(Json[i].order_type==1 || Json[i].order_type==2 ||Json[i].order_type==4){
+				description=Json[i].description;
+				image_path=Json[i].image;
+			}else if(Json[i].order_type==3){
+				description=Json[i].detail;
+				image_path=Json[i].image_path;
+			}
+			description=$("<p>"+description+"</p>").text();
+			html += '<div class="waiting-order bg-f onClick" data-id="'+Json[i].id+'">';
+			// html += 	'<div class="top border-b">';
+			// html += 		'<img src="images/11.png" alt="" class="pos-ab">';
+			// html += 		'<p><span>'+order_status+'</span></p>';
+			// if(Json[i].order_status==1){
+			// 	html += 		'<a href="javascript:;" class="reset-operation">操作<em></em></a>';
+			// 	html += 		'<ul class="order-operation reset" style="display: none;">';
+			// 	html += 			'<li class="cancel_order" data-id="'+Json[i].id+'">取消订单</li>';
+			// 	html += 		'</ul>';
+			// }
+			// html += 	'</div>';
+			html += 	'<div class="middle1 border-b">';
+			html += 		'<p>订单号：<span>'+Json[i].order_no+'</span><span class="order_status" style="float:right;margin-top:4px;">'+order_status+'</span></p>';
+			html += 	'</div>';
+
+			html += 	'<div class="middle border-b cf">';
+			html += 		'<div class="left">';
+			html += 			'<img src="'+kBaseImagePath + image_path+'" alt="" width="100%" height="80">';
+			html += 		'</div>';
+			html += 		'<div class="right">';
+			html += 			'<h3>'+Json[i].product_name+'</h3>';
+			if(Json[i].type_name!=null){
+				html += 		'<span class="sight_type">'+Json[i].type_name+'</span>';
+			}
+			html += 			'<p>'+description+'</p>';
+			// html += 			'<em>x'+Json[i].number+'</em>';
+			html += 		'</div>';
+			html += 	'</div>';
+			html += 	'<div class="middle1 border-b">';
+			// html += 		'<p>订单号：<span>'+Json[i].order_no+'</span></p>';
+			// html += 		'<p>价格：<span style="color:#ff6000;">￥'+Json[i].price+'</span><span class="order_status">'+order_status+'</span></p>';
+			// html += 		'<p>手机号：<span>'+Json[i].contact_phone+'</span></p>';
+			html += 		'<p>创建时间：<span>'+Json[i].created_at+'</span><span style="color:#ff6000;float:right;">￥'+Json[i].price+'</span></p>';
+			html += 	'</div>';
+			// html += 	'<div class="bottom cf">';
+			// html += 		'<p class="fl">';
+			// html += 			'<span class="price">￥'+Json[i].price+'</span>';
+			// if(Json[i].order_type==3){
+			// 	html += 			'<span class="num">共'+Json[i].number+'件</span>';
+			// }else{
+			// 	html += 			'<span class="num">共'+Json[i].number+'张</span>';
+			// }	
+			// html += 		'</p>';
+			// html += 		'<p class="count fr">月销量'+Json[i].order_num+'</p>';
+			// html += 	'</div>';
+			html += '</div>';
+		}
+		$(obj).html(html);
+		
+		$(".reset-operation").on("click",function(){
+			$(this).next(".reset").toggle();
+		});
+
+		/*点击跳转订单详情页*/
+		$(".onClick").on("click",function(){
+			if(token){
+				var url = kBaseOrderDetailUrl + token;
+				var order_id = $(this).data("id");
+				var data = {order_id: order_id};
+				ajaxGetRequest(url, {}, handleOrderDetail);
+				function handleOrderDetail(result){
+					if(result.errorCode == 0){
+						setLocalStorage("order_id",order_id);
+						location.href = "myOrder_detail.html";
+					}
+				}
+			}
+		});
+	}
+	// 返回到个人中心或产品主页
+	$(".back").on("click",function(){ href="personal.html"
+		var myOrder_return=getLocalStorage("myOrder_return");
+		if(myOrder_return ==1 ){
+			location.href="personal.html";
+		}else{ 
+			location.href="mall.html";
+		}
+	})
+	// 取消订单
+	$(".cancel_order").live("click",function(){
+		var order_id = $(this).data("id");
+		ajaxPOSTRequest(kBaseUserUrl+"order/cancel?token="+token, {order_id:order_id}, callback);
+		function callback(result){
+			ZMAlert(result.message,successFunc);
+			function successFunc(){
+				if(result.errorCode == 0){
+					location.href="myOrder.html";
+				}
+			}
+		}
+	})
+	// 订单状态筛选
+	$("#radius-filter").on("click",function(){
+		$("#all-order-radius").toggle();
+	})
+
+</script>
+</html>

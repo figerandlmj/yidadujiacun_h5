@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <title>个人中心</title>
+</head>
+<body>
+<div id="main">
+	<div class="personal bg-color">
+		<div class="header">
+			<img src="images/14.jpg" alt="">
+			<div class="login" id="notLogin">
+				<h3>欢迎到义达旅游</h3>
+				<a class="login-btn" href="login.html" style="border: 1px solid #fff;">登录/注册</a>
+			</div>
+			<div id="logining">
+				<div class="left fl">
+					<img src="" width="70" height="70" alt="" class="avatar" >
+				</div>
+				<!-- <img src="images/login-status.png" alt=""> -->
+				<div class="right fl">
+					<p class="username"></p>
+					<p class="userphone"></p>
+				</div>
+				
+			</div>
+		</div>
+		<div class="first-nav bg-f mb-10">
+			<ul class="mui-flex">
+				<li class="cell personal-click" data-href="myOrder.html" data-return="myOrder_return">
+					<a href="javascript:;">
+						<em class="em1"></em>
+						<p>我的订单<span id="badge">0</span></p>
+					</a>
+				</li>
+				<li class="cell personal-click" data-href="myTravel.html" data-return="myTravel_return">
+					<a href="javascript:;">
+						<em class="em2"></em>
+						<p>我的游记</p>
+					</a>
+				</li>
+				<li class="cell personal-click" data-href="myCollection.html" data-return="myCollection_return">
+					<a href="javascript:;">
+						<em class="em3"></em>
+						<p>我的收藏</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+		<!-- 我的钱包 -->
+		<div class="myWallet bg-f mb-10">
+			<h2 class="cf">
+				<em class="fl"></em>
+				<span class="fl">我的钱包</span>
+			</h2>
+			<ul class="wallet mui-flex">
+				<li class="cell" style="border-right: .01rem dashed #eee;">
+					<a class="personal-click" data-href="myWallet.html">
+						<em class="em1 fl"></em>
+						<p class="fl">
+							<span style="margin-bottom: 12px;display: inline-block;">现金</span><br>
+							<span class="num">￥0可用</span>
+						</p>
+					</a>
+				</li>
+				<li class="cell">
+					<a class="myItegral personal-click" data-href="myItegral.html">
+						<em class="em2 fl"></em>
+						<p class="fl">
+							<span>积分</span><br>
+							<span class="num">0可兑换</span>
+						</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+		<!--  -->
+		<div class="second-nav bg-f">
+			<ul class="cf">
+				<li>
+					<a class="data-click personal-click" data-href="base-data.html">
+						<em></em>
+						<p>基础资料</p>
+					</a>
+				</li>
+				<li>
+					<a class="info-click personal-click" data-href="common-info.html">
+						<em></em>
+						<p>常用信息</p>
+					</a>
+				</li>
+				<li>
+					<a class="personal-click" data-href="browse_history.html">
+						<em></em>
+						<p>历史浏览</p>
+					</a>
+				</li>
+				<li>
+					<a href="about_us.html">
+						<em></em>
+						<p>关于我们</p>
+					</a>
+				</li>
+				<li>
+					<a class="setUp personal-click" data-href="setUp.html">
+						<em></em>
+						<p>设置</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="wrap-nav">
+			<ul class="son-nav cf mui-flex">
+				<li class="cell">
+					<a href="index.html">
+						<span class="home"></span>
+						<p>首页</p>
+					</a>
+				</li>
+				<li class="cell">
+					<a href="found.html">
+						<span class="found"></span>
+						<p>发现</p>
+					</a>
+				</li>
+				<li class="cell">
+					<a href="service.html">
+						<span class="service"></span>
+						<p>客服</p>
+					</a>
+				</li>
+				<li class="cell hover">
+					<a href="personal.html">
+						<span class="personal"></span>
+						<p>个人</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+$(function(){
+
+	var token = getLocalStorage('token');
+	console.log(token);
+	var islogin=0;
+	/*personal*/
+	var url = kBaseUserUrl + "personal/index?token=" + token;
+	ajaxGetRequest(url,{},callback);
+	function callback(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			islogin=1;
+			// 显示个人信息
+			$(".personal #notLogin").hide();
+			$(".personal #logining").show();
+			$("#logining .username").text(result.message.user.username);
+			$("#logining .userphone").text(result.message.user.phone);
+			$("#badge").text(result.message.orders_read);
+			if(result.message.user['avatar'] !=null){
+				$(".avatar").attr("src",kBaseImagePath+result.message.user['avatar']);
+			}else{
+				$(".avatar").attr("src","images/avatar.png");
+			}
+		} else if (result.errorCode == -1) {
+			// 显示登录注册
+			$(".personal #notLogin").show();
+			$(".personal #logining").hide();
+		}
+	}
+	// 根据是否登录点击能否进入
+	$(".personal-click").on("click",function(){
+		var this_return=$(this).data("return");
+		if(islogin == 0){
+			ZMAlert("请登录!",successFunc);
+			function successFunc(){
+				location.href = "login.html";
+			}
+		}else{
+			setLocalStorage(this_return,1);
+			location.href = $(this).data("href");
+		}
+	});
+
+});
+	
+</script>
+</body>
+</html>

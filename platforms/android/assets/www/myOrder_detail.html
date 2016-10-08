@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>订单详情</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="myOrder.html">返回</a>
+		<p class="title">订单详情</p>
+	</div>
+	<div class="myOrder order-detail">
+		<div class="order-list bg-color">
+			<div class="waiting-order bg-f">
+				<div class="top border-b border-b-append" style="border-bottom: 1px solid #eee;">
+					<!-- <img src="images/11.png" alt="" class="pos-ab"> -->
+					<p><span></span></p>
+					<!-- <a href="javascript:;" class="reset-operation">操作<em></em></a>
+					<ul class="order-operation reset" style="display: none;">
+						<li class="cancel_order">取消订单</li>
+					</ul> -->
+				</div>
+				<div class="middle border-b cf">
+					<div class="left">
+						<img src="" alt="" width="100%" height="80px">
+					</div>
+					<div class="right" style="width:70%;">
+						<h3 id="type_name" style="width:100%;"></h3>
+						<!-- <span id="type_name"></span> -->
+						<!-- <span>新品上线</span> -->
+						<p></p>
+						<!-- <em>x2</em> -->
+					</div>
+				</div>
+				<div class="middle1 border-b">
+					<p id="orderNumber">订单号：<span></span></p>
+					<p id="Phone">手机号：<span></span></p>
+					<!-- <p id="startTime">出发时间：<span></span></p> -->
+					<p id="createTime">创建时间：<span></span></p>
+				</div>
+				<div class="bottom border-b cf" style="border-top: 1px solid #eee;">
+					<p class="fl">
+						<span class="price">￥<em>0</em></span>
+						<span class="num">共0张</span>
+					</p>
+					<p class="count fr">月销量0</p>
+				</div>
+				<!-- <div class="status cf">
+					<span class="fl">消费状态</span>
+					<em class="fr">已过期</em>
+				</div> -->
+			</div>
+			<div class="successOrder bg-f pay_status">
+				<!-- <div class="status border-b cf">
+					<span class="fl">消费状态</span>
+					<em class="fr" id="pay_status"></em>
+				</div>
+				<div class="effectiveDate cf">
+					<span class="fl">有效期至 <em>2015-12-03</em></span>
+					<button class="apply fr">申请退款</button>
+				</div> -->
+			</div>
+			<div class="reviewBtn">我要评价</div>
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/index.js"></script>
+<script>
+	var token = getLocalStorage('token');
+	var url = kBaseOrderDetailUrl + token;
+	var order_id = getLocalStorage("order_id");
+	var data = {order_id: order_id};
+	var order_status_id;
+	var order_no;
+	if(token){
+		ajaxGetRequest(url, data, handleOrderDetail);
+		function handleOrderDetail(result){
+			console.log(result);
+			if(result.errorCode == 0){
+				var dataDetailJson = result.message.data;
+				order_no=dataDetailJson.order_no;
+				// 消费状态
+				var is_consume;
+				// 订单状态
+				var order_status;
+				order_status_id=dataDetailJson.order_status;
+				if(order_status_id==1){
+					order_status="未付款";
+					$(".reviewBtn").text("我要付款");
+					$(".reviewBtn").addClass("pay_money");
+					$(".header").append('<a href="javascript:;" style="font-size: .18rem;color: #ebf6e5;position: absolute;right: 2%;top: 0;padding: 0;margin-left: 1%;z-index: 10;" class="cancel_order" data-id="'+dataDetailJson.id+'">取消订单</a>');
+				}else if(order_status_id==2 ||order_status_id==4){
+					var is_apply_refund=dataDetailJson.is_apply_refund;
+					var is_apply_refund_html="";
+					if(order_status_id==2 && is_apply_refund==0){
+						is_apply_refund_html="申请退款";
+						$(".effectiveDate").show();
+					}else if(order_status_id==2 && is_apply_refund==1){
+						is_apply_refund_html="已申请退款";
+						$(".effectiveDate").show();
+					}else if(order_status_id==2 && is_apply_refund==2){
+						is_apply_refund_html="已退款";
+						$(".effectiveDate").show();
+					}
+					if(order_status_id==2){
+						order_status="未消费";
+						is_consume="未消费";
+					}else if(order_status_id==4){
+						order_status="已消费";
+						is_consume="已消费";
+					}
+					var pay_status_html='<div class="status border-b cf"><span class="fl">消费状态</span><em class="fr" id="pay_status">'+is_consume+'</em></div><div class="effectiveDate cf" style="display:none;"><span class="fl">有效期至 <em>'+dataDetailJson.refund_valid_date+'</em></span><button class="apply fr" id="request_money">'+is_apply_refund_html+'</button></div>';
+					$(".pay_status").append(pay_status_html);
+					if(is_apply_refund==1 || is_apply_refund==2){
+						$(".effectiveDate button.apply").css({
+							"background":"#BDBCBC"
+						})
+					}
+				}else if(order_status_id==3){
+					order_status="已取消";
+				}
+										
+				// 订单描叙，图片路径
+				var description;
+				var image_path;
+				if(dataDetailJson.order_type==1 || dataDetailJson.order_type==2 ||dataDetailJson.order_type==4){
+					description=dataDetailJson.description;
+					image_path=dataDetailJson.image;
+				}else if(dataDetailJson.order_type==3){
+					description=dataDetailJson.detail;
+					image_path=dataDetailJson.image_path;
+				}
+				description=$("<p>"+description+"</p>").text();
+				if(dataDetailJson.type_name!=null){
+					$("#type_name").after("<span class='sight_type'>"+dataDetailJson.type_name+"</span>");
+				}
+				$(".myOrder .order-list .top p span").text(order_status);
+				$(".myOrder .middle .left img").attr("src",kBaseImagePath + image_path);
+				$(".myOrder .middle .right h3").text(dataDetailJson.product_name);
+				$(".myOrder .middle .right p").html(description);
+				$("#orderNumber span").text(dataDetailJson.order_no);
+				$("#Phone span").text(dataDetailJson.contact_phone);
+				$("#startTime span").text(dataDetailJson.start_time);
+				$("#createTime span").text(dataDetailJson.created_at);
+				$(".myOrder .bottom span.price em").text(dataDetailJson.price);
+				if(dataDetailJson.order_type==3){
+					$(".myOrder .bottom span.num").text("共"+dataDetailJson.number+"件");
+				}else{
+					$(".myOrder .bottom span.num").text("共"+dataDetailJson.number+"张");
+				}
+				$(".myOrder .bottom p.count").text("月销量"+dataDetailJson.order_num);
+			}
+		}
+	}
+	// 申请退款
+	$("body").on("click","#request_money",function(){
+		ajaxPOSTRequest(kBaseUserUrl+"order/applyRefund?token="+token, {order_id:order_id}, callback);
+		function callback(result){
+			console.log(result);
+			ZMAlert(result.message,function(){
+				if(result.errorCode==0){
+					$("#request_money").text("已申请退款");
+					$("#request_money").css({
+						"background":"#BDBCBC"
+					})
+				}
+			});
+		}
+	})
+	// 订单评价按钮
+	$(".reviewBtn").on("click",function(){
+		if(order_status_id==2 || order_status_id==4){
+			location.href="evaluate.html";
+		}else if(order_status_id==3){
+			ZMAlert("订单已取消，不能评价！");
+		}
+	})
+	// 订单付款
+	$("body").on("click",".pay_money",function(){
+		if(order_status_id==1){
+			var out_trade_no=order_no;
+            location.href="iframe.html?token="+token+"&out_trade_no="+out_trade_no;
+		}
+	})
+	$(".reset-operation").live("click",function(){
+		$(this).next(".reset").toggle();
+	});
+	// 取消订单
+	$(".cancel_order").live("click",function(){
+		var order_id = $(this).data("id");
+		ajaxPOSTRequest(kBaseUserUrl+"order/cancel?token="+token, {order_id:order_id}, callback);
+		function callback(result){
+			ZMAlert(result.message,successFunc);
+			function successFunc(){
+				if(result.errorCode == 0){
+					location.href="myOrder_detail.html";
+				}
+			}
+		}
+	})
+</script>
+</html>

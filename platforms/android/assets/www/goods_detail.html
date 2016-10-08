@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <link rel="stylesheet" type="text/css" href="css/banner.css">
+    <link rel="stylesheet" type="text/css" href="css/idangerous.swiper.css">
+    <title>商品详情</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back">返回</a>
+		<p class="title">商品详情</p>
+		<p class="header-right">
+            <!-- <a class="share fr">分享</a> -->
+            <a class="shoucan fr" id="collection">收藏</a>
+        </p>
+	</div>
+	<div class="device">
+		<a class="arrow-left" href="#" style="display: none"></a> 
+		<a class="arrow-right" href="#" style="display: none"></a>
+		<div class="swiper-container">
+			<div class="swiper-wrapper" id="goodsDetailBanner">
+				<!-- <div class="swiper-slide"> <img src="images/goods.jpg" height="215" width="100%"> </div>
+				<div class="swiper-slide"> <img src="images/goods.jpg" height="215" width="100%"> </div>
+				<div class="swiper-slide"> <img src="images/goods.jpg" height="215" width="100%"></div> -->
+			</div>
+		</div>
+		<div class="pagination"></div>
+	</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/idangerous.swiper.min.js"></script>
+<script type="text/javascript" src="js/swiper.js"></script>
+
+	<div class="goods bg-color">
+		<div class="part1 bg-f">
+			<div class="top cf">
+				<div class="top-left fl" style="border-right:0;">
+					<p class="goods-info"></p>
+				</div>
+				<!-- <div class="top-right fr" id="collection">
+					<em></em>
+					<p></p>
+				</div> -->
+			</div>
+			<div class="middle pl-20 border-b">
+				<p class="p1">
+					<span class="yida">义达价：<em id="yidaPrice">￥0</em></span>
+				</p>
+				<p class="p2 cf">
+					<span class="yuan fl">原价：&nbsp;&nbsp;&nbsp;<em id="oldPrice">0</em></span>
+					<span class="xiao fr">总销量：<em id="allOrderNum">0</em></span>
+				</p>
+				<p class="p1" style="margin-bottom: .15rem;">
+					<span class="yida">积分价：<em id="integral_price">0积分</em></span>
+				</p>
+			</div>
+			<!-- <div class="style1">
+				<div class="son-part2 cf">
+	                <em class="fl"></em>
+	                <p>优惠活动</p>
+	                <a></a>
+	            </div>
+	            <div class="youhui-intro goods-youhui-intro"> -->
+	                <!-- <p>满100元减10元</p>
+	                <p>第一次购买优惠10元</p> -->
+	           <!--  </div>
+			</div> -->
+		</div>
+		<div class="part2 bg-f">
+			<h2 class="htitle-style border-b cf" id="evaluate_btn">
+                <em class="fl"></em>
+                <span class="fl">点评 (<label id="evaluate_num">0</label>)</span>
+                <a class="arrow fr"></a>
+            </h2>
+			<div class="review-style" id="evaluate">
+               <!--  <p class="user cf">
+                    <em class="fl"></em>
+                    <span class="num fl">3584850</span>
+                    <a href="#" class="family fr">家庭出游</a>
+                </p>
+                <p class="review-con">不错了，感觉还是挺好的一次游玩，门票又不贵，还是挺不错的。下次还在义达这儿购买。</p>
+                <p class="date fr">2015-09-01</p> -->
+            </div>
+		</div>
+		<div class="part3 bg-f" style="padding-bottom:30px;">
+			<p class="htitle-style" style="font-size:.18rem;">商品详情</p>
+			<!-- <img src="images/show.jpg" alt=""> -->
+			<div class="goodsDetail"></div>
+		</div>
+	</div>
+	<div class="buy-num pl-20">
+		<p class="fl">数量</p>
+		<div class="number1 fl">
+			<span class="jian fl reduce">-</span>
+			<span class="count fl" id="product_num">1</span>
+			<span class="add fl">+</span>
+		</div>
+		<p class="buy fr"><a href="product_order.html">立即购买</a></p>
+	</div>
+
+	<div class="share-box">
+        <h2 class="shareTo">分享到</h2>
+        <ul class="mui-flex">
+            <li class="cell -mob-share-weixin">
+                <a>
+                    <em></em>
+                    <p>微信</p>
+                </a>
+            </li>
+            <li class="cell -mob-share-qzone">
+                <a>
+                    <em></em>
+                    <p>空间</p>
+                </a>
+            </li>
+            <li class="cell -mob-share-weixin">
+                <a>
+                    <em></em>
+                    <p>微信朋友圈</p>
+                </a>
+            </li>
+            <li class="cell -mob-share-qq">
+                <a>
+                    <em></em>
+                    <p>QQ好友</p>
+                </a>
+            </li>
+        </ul>
+        <div class="share-reset">取消</div>
+    </div>
+
+</div>
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=ecd551ee2f8c"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+	var token = getLocalStorage("token");
+	padBottom($("#main"),$("#main .buy-num"));
+	var product_id = getLocalStorage('product_id');
+	var data = {product_id: product_id};
+	ajaxGetRequest(kBaseGoodsUrl + product_id+"&token="+token, {}, handleGoods);
+	function handleGoods(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			
+            // 收藏显示
+            if(result.message.is_collected==true){
+                $("#collection").text("已收藏");
+                $("#collection").addClass("removeCollection");
+            }else{
+                $("#collection").text("收藏");
+                $("#collection").addClass("collection");
+            }
+			// 优惠
+            // var favorable_html='';
+            // if(result.message.first_order_favorable!=false){
+            //     favorable_html+='<p>首单立减'+result.message.first_order_favorable+'元</p>';
+            //     if(result.message.favorable.length>0){
+            //         for(var i=0;i<result.message.favorable.length;i++){
+            //             favorable_html+="<p>满"+result.message.favorable[i].satisfy+"元立减"+result.message.favorable[i].reduce+"元</p>";
+            //         }
+            //     }
+            // }else if(result.message.favorable.length>0){
+            //     for(var i=0;i<result.message.favorable.length;i++){
+            //         favorable_html+="<p>满"+result.message.favorable[i].satisfy+"元立减"+result.message.favorable[i].reduce+"元</p>";
+            //     }
+            // }else{
+            //     favorable_html+="<p>暂无！</p>";
+            // }
+            // $(".youhui-intro").append(favorable_html);
+            
+			var goodsDetailJson = result.message.product;
+			var bannerImg = goodsDetailJson.image_path;
+			var length = bannerImg.length;
+			var banenrHtml = "";
+			/*商品详情页轮播图*/
+			for(var i=0; i<length; i++){
+				banenrHtml += '<div class="swiper-slide">';
+				banenrHtml +=  '<img src="'+kBaseImagePath + bannerImg[i]+'" height="210" width="100%">';
+				banenrHtml += '</div>';
+			}
+			$("#goodsDetailBanner").html(banenrHtml);
+			ZMSlide();
+			if(result.message.evaluate_num!=false){
+				$("#evaluate_num").text(result.message.evaluate_num);
+			}
+			 // 点评列表
+			 var evaluate=result.message.evaluate;
+            if(result.message.evaluate_num!=false){
+            	var evaluate_html='<p class="user cf"><em class="fl"></em><span class="num fl">'+evaluate.username+'</span></p><p class="review-con">'+evaluate.content+'</p><p class="date fr">'+evaluate.create_time+'</p>';
+                $("#evaluate").append(evaluate_html);
+            }
+			$(".goods-info").text(goodsDetailJson.name);
+            $("#yidaPrice").text("￥"+goodsDetailJson.yida_price);
+			$("#integral_price").text(goodsDetailJson.integral_price+"积分");
+			$("#oldPrice").text("￥"+goodsDetailJson.price);
+			$("#allOrderNum").text(goodsDetailJson.order_num);
+			$(".goodsDetail").html(goodsDetailJson.detail);
+            $(".goodsDetail").find("img").each(function(){
+                var this_src=$(this).attr("src");
+                $(this).attr("src",kBaseImagePath02+this_src);
+            })
+		}
+	}
+	// 购买数量加减
+    var product_num = 1;
+    setLocalStorage("product_num",product_num);
+    $(".add").click(function(){
+        product_num++;
+        $("#product_num").text(product_num);
+        setLocalStorage("product_num",product_num);
+    });
+    $(".reduce").click(function(){
+        if(product_num == 1){
+            product_num = 1;
+        }else {
+            product_num--;
+        }
+        $("#product_num").text(product_num);
+        setLocalStorage("product_num",product_num);
+    });
+
+    /*跳转评价列表*/
+    $("#evaluate_btn").on("click",function(){
+    	location.href = "review02.html";
+    });
+
+    /*收藏按钮*/
+    $("#collection").on("click",function(){
+        var item_id = product_id;
+        if($(this).hasClass("collection")){
+            var url = kBaseCollectionUrl + token;
+            var data = {
+                item_id: item_id,
+                type:3
+            }
+            ajaxPOSTRequest(url, data, handleCollection);
+            function handleCollection(result){
+                console.log(result);
+                ZMAlert(result.message,callback);
+                function callback(){
+                    if(result.errorCode==0){
+                        $("#collection").text("已收藏");
+                        $("#collection").removeClass("collection");
+                        $("#collection").addClass("removeCollection");
+                    }
+                }
+            }
+        }else{
+            var url = kBaseRemoveCollectionUrl + token+"&item_id="+item_id+"&type="+3;
+            ajaxGetRequest(url, {}, handleCollection02);
+            function handleCollection02(result){
+                ZMAlert(result.message,callback02);
+                function callback02(){
+                   if(result.errorCode==0){
+                        $("#collection").text("收藏");
+                        $("#collection").addClass("collection");
+                        $("#collection").removeClass("removeCollection");
+                    }
+                }
+                
+            }
+        }
+        
+    });
+
+    // 返回到产品主页或收藏列表页或历史浏览或热销排行列表
+	$(".back").on("click",function(){
+		var goods_detail_return=getLocalStorage("goods_detail_return");
+		if(goods_detail_return ==1 ){
+			location.href="mall.html";
+		}else if(goods_detail_return ==2 ){
+			location.href="browse_history.html";
+		}else if(goods_detail_return ==3 ){
+			location.href="hotSale-ranking.html";
+		}else if(goods_detail_return ==4 ){
+			location.href="phone_eclusive.html";
+		}else if(goods_detail_return ==5 ){
+            location.href="snap_up.html";
+        }else{ 
+			location.href="myCollection.html";
+		}
+	})
+		
+</script>
+</body>
+</html>

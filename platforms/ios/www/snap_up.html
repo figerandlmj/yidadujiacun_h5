@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>抢购</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="mall.html">返回</a>
+		<p class="title">抢购</p>
+	</div>
+	<div class="snap-up">
+		<ul class="bg-color" id="snapUp">
+			<!-- <li class="bg-f" style="margin-top: 0;" id="snapUp-list">
+				<div class="time">
+					<em></em>
+					<p>距离结束：<span class="days">00</span>天<span class="hours">03</span>小时<span class="muiate">30</span>分<span class="second">45</span>秒</p>
+				</div>
+				<div class="goods-info cf">
+					<div class="img">
+						<img src="images/5.jpg" alt="">
+					</div>
+					<div class="info-right">
+						<div class="left fl">
+							<h2>义达旅行礼包</h2>
+							<p class="p1">旅行必备，义达旅行伴我行</p>
+							<p class="p2">
+								<em></em>
+							</p>
+							<p class="p3">已抢购50%</p>
+						</div>
+						<div class="right fr">
+							<p class="original-price">￥<em id="price">800</em></p>
+							<p class="present-price"><span id="yida_price">￥500</span></p>
+							<button>立即购买</button>
+						</div>
+					</div>
+				</div>
+			</li>
+
+			<li class="bg-f" id="snapUp-list">
+				<div class="time">
+					<em></em>
+					<p>距离结束：<span class="days">00</span>天<span class="hours">03</span>小时<span class="muiate">30</span>分<span class="second">45</span>秒</p>
+				</div>
+				<div class="goods-info cf">
+					<div class="img">
+						<img src="images/5.jpg" alt="">
+					</div>
+					<div class="info-right">
+						<div class="left fl">
+							<h2>义达旅行礼包</h2>
+							<p class="p1">旅行必备，义达旅行伴我行</p>
+							<p class="p2">
+								<em></em>
+							</p>
+							<p class="p3">已抢购50%</p>
+						</div>
+						<div class="right fr">
+							<p class="original-price"><em  id="price">￥800</em></p>
+							<p class="present-price"><span id="yida_price">￥500</span></p>
+							<button>立即购买</button>
+						</div>
+					</div>
+				</div>
+			</li> -->
+		</ul>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script>
+	$(".img img").css({
+		width: "100%",
+		height: "88px"
+	});
+	/*限时抢购*/
+	ajaxGetRequest(kBaseSnapUpUrl, {}, handleSnapUp);
+	// function handleSnapUp(result){
+	// 	if(result.errorCode == 0){
+	// 		var SnapUpJson = result.message.product;
+	// 		for(i=0; i<SnapUpJson.length; i++){
+	// 			$("#snapUp li").eq(i).find(".img img").attr("src",kBaseImagePath + SnapUpJson[i].image_path);
+	// 			$("#snapUp li").eq(i).find(".info-right h2").text(SnapUpJson[i].name);
+	// 			$("#snapUp li").eq(i).find("#price").text(SnapUpJson[i].price);
+	// 			$("#snapUp li").eq(i).find("#yida_price").text(SnapUpJson[i].yida_price);
+	// 		}
+	// 	}
+	// }
+
+
+	function handleSnapUp(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			var SnapUpJson = result.message.product;
+			var html = '';
+			for(i=0; i<SnapUpJson.length; i++){
+				html += '<li class="bg-f to_detail" style="margin-top: 0;" data-index="'+SnapUpJson[i].id+'">';
+				// html +=		'<div class="time">';
+				// html +=			'<em></em>';
+				// html +=			'<p>距离结束：<span class="days">00</span>天<span class="hours">03</span>小时<span class="muiate">30</span>分<span class="second">45</span>秒</p>';
+				// html +=		'</div>';
+				html +=		'<div class="goods-info cf">';
+				html +=			'<div class="img">';
+				html +=				'<img src="'+kBaseImagePath + SnapUpJson[i].image_path+'" alt="">';
+				html +=			'</div>';
+				html +=			'<div class="info-right">';
+				html +=				'<div class="left fl">';
+				html +=					'<h2>'+SnapUpJson[i].name+'</h2>';
+				html +=					'<p style="font-size: .12rem;color: #696969;margin: .05rem 0;">'+SnapUpJson[i].subtitle+'</p>';
+				// html +=					'<p class="p2">';
+				// html +=						'<em></em>';
+				// html +=					'</p>';
+				// html +=					'<p class="p3">已抢购50%</p>';
+				html +=				'</div>';
+				html +=				'<div class="right fr">';
+				html +=					'<p class="original-price">￥<em id="price">'+ SnapUpJson[i].price +'</em></p>';
+				html +=					'<p class="present-price"><span id="yida_price">￥'+ SnapUpJson[i].yida_price +'</span></p>';
+				html +=					'<button  data-index="'+i+'">立即购买</button>';
+				html +=				'</div>';
+				html +=			'</div>';
+				html +=		'</div>';
+				html +=	'</li>';
+			}
+			$("#snapUp").html(html);
+		}
+		$("body").on("click",".to_detail",function(){
+			var index = $(this).data("index");
+			setLocalStorage('product_id',index);
+			setLocalStorage('goods_detail_return',5);
+			location.href = "goods_detail.html" ;
+		
+		});
+	}
+</script>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>付款 - 义达度假村</title>
+    <style media="screen">
+        body {
+          margin: 0;
+        }
+        body, html {
+          height: 100%;
+          width: 100%;
+        }
+        iframe {
+          /*margin-top: 20px;*/
+          border: 0;
+          box-sizing: border-box;
+        }
+        .header {
+            height: 2.5rem;
+            line-height: 2.0rem;
+            padding: 0 2%;
+            background: #59a42c;
+            position: relative;
+            box-sizing: border-box;
+            zoom: 1;
+            padding-left:5%;
+
+        }
+        .header img{
+            width:11px;
+            height:20px;
+            position:relative;
+            /*left:5%;*/
+            top:6px;
+            /*position: absolute;
+            left: 2%;
+            top: 0;
+            display: block;
+            background: url(images/arrow1.png) no-repeat left 16px;
+            background-size: .11rem .18rem;
+            padding-left: .2rem;*/
+        }
+        .header label.back {
+           /* position: absolute;
+            left: 2%;
+            top: 0;
+            display: block;*/
+            /*font-size: .18rem;*/
+            color: #b4d3a2;
+            position:relative;
+            left:2%;
+            top:3px;
+            /*background: url(images/arrow1.png) no-repeat left 16px;
+            background-size: .11rem .18rem;
+            padding-left: .2rem;*/
+        }
+    </style>
+
+
+  </head>
+  <body>
+    <div class="header">
+      <a style="text-decoration:none;" class="return-to-myorder">
+        <img src="images/arrow1.png">
+        <label class="back" >返回我的订单</label>
+      </a>
+    </div>
+    <!-- <a href="javascript:history.go(-1);">返回</a>&nbsp;<a href="./myOrder.html">返回我的订单</a><br /> -->
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/common.js"></script>
+    <script type="text/javascript">
+    $(".return-to-myorder").on("click",function(){
+        setLocalStorage("myOrder_return",1);
+        location.href="myOrder.html";
+    })
+    var str = location.href; //取得整个地址栏
+    var num = str.indexOf("?");
+    var queryString = str.substr(num);
+    var url = kBasePaymentUrl + queryString;
+    function func()
+    {
+      location.href = 'myOrder.html';
+    }
+
+    // alert(location.href);
+
+    // alert(url);
+    // return;
+    // document.write('<iframe src="'+url+'" width="100%" height="100%"　frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"></iframe>');
+    document.write('<iframe src="'+url+'" width="100%" height="100%"　frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"></iframe>');
+    </script>
+  </body>
+</html>

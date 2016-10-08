@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <title>问题</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back">返回</a>
+		<p class="title">问题</p>
+	</div>
+	<div class="question bg-color" id="answerContent">
+		<!-- <h2 class="bg-f border-b">如何使用优惠券？</h2>
+		<p class="subTitle">【回答】</p>
+		<ul class="bg-f pl-10">
+			<li class="answer">优惠劵使用方法优惠劵使用方法优惠劵使用方法优惠劵使用方法优惠劵使用方法优惠劵使用方法优惠劵使用方法优惠劵使用方法优惠劵使用方法优惠劵使用方法优惠劵使用方法优惠劵使用方法优惠劵使用方法优惠劵使用方法优惠劵使用方法优惠劵使用方法</li>
+		</ul> -->
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+	var article_id = getLocalStorage("article_id");
+	console.log(article_id)
+	var data = {article_id: article_id};
+	ajaxGetRequest(kBaseArticleDetailUrl, data, handleArticleDetail);
+	function handleArticleDetail(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			var answerJson = result.message.article;
+			var html = "";
+			for(var i=0; i<answerJson.length; i++){
+				html += '<h2 class="bg-f border-b">'+answerJson[i].title+'</h2>';
+				html +=	'<p class="subTitle">【回答】</p>';
+				html +=	'<ul class="bg-f pl-10">';
+				html +=	'<li class="answer">'+answerJson[i].content+'</li>';
+				html +=	'</ul>';
+			}
+			$("#answerContent").html(html);
+		}
+	}
+	// 返回到客服主页或栏目列表页
+	$(".back").on("click",function(){
+		var question_return=getLocalStorage("question_return");
+		if(question_return ==1 ){
+			location.href="service.html";
+		}else{
+			location.href="online_service02.html";
+		}
+	})
+</script>
+</body>
+</html>

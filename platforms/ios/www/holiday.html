@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/idangerous.swiper.css">
+    <link rel="stylesheet" type="text/css" href="css/banner.css">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>度假</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="index.html">返回</a>
+		<p class="title">度假</p>
+		<a class="city-name current_city select-city"></a>
+	</div>
+	<div class="holiday">
+		<div class="search">
+			<input class="son-search sight_name" type="text" placeholder="搜索旅行地">
+			<!-- <em></em> -->
+			<button class="button" id="search">搜索</span>
+		</div>
+		<div class="banner">
+			<div class="device">
+				<a class="arrow-left" href="#" style="display: none"></a> 
+				<a class="arrow-right" href="#" style="display: none"></a>
+				<div class="swiper-container">
+					<div class="swiper-wrapper" id="sight-banner">
+						<!-- <div class="swiper-slide"> <img src="images/banner9.jpg"> </div>
+						<div class="swiper-slide"> <img src="images/banner9.jpg"> </div>
+						<div class="swiper-slide"> <img src="images/banner9.jpg"></div>
+						<div class="swiper-slide"> <img src="images/banner9.jpg"></div>
+						<div class="swiper-slide"> <img src="images/banner9.jpg"></div> -->
+					</div>
+				</div>
+				<div class="pagination"></div>
+			</div>
+		</div>
+		<div class="part1">
+			<div class="part1-top mui-flex">
+				<div class="ticket cell to_ticket" data-id="false">景点门票</div>
+				<div class="ser cell">
+					<p class="p1 to_ticket sight_type_list1"></p>
+					<p class="p2 to_ticket sight_type_list2"></p>
+				</div>
+				<div class="old cell">
+					<p class="p3 to_ticket sight_type_list3"></p>
+					<p class="p4 to_ticket sight_type_list4"></p>
+				</div>
+			</div>
+			<div class="part1-top part-bottom mui-flex">
+				<div class="ticket cell to_sightspot" data-id="false">度假山庄</div>
+				<div class="ser cell">
+					<p class="p1 to_sightspot sight_type_list5"></p>
+					<p class="p2 to_sightspot sight_type_list6"></p>
+				</div>
+				<div class="old cell">
+					<p class="p3 to_sightspot sight_type_list7"></p>
+					<p class="p4 to_sightspot sight_type_list8"></p>
+				</div>
+			</div>
+		</div>
+		<div class="part2 cf">
+			<div class="part2-left">
+				<a href="http://yida.c.zmit.cn/" target="_black">
+					<img src="images/ho-img.png" alt="">
+				</a>
+				<a href="http://yida.c.zmit.cn/" target="_black">
+					<img src="images/ho-img1.png" alt="">
+				</a>
+				
+			</div>
+			<div class="part2-right">
+				<a href="http://yida.c.zmit.cn/" target="_black">
+					<img src="images/ho-img2.png" alt="">
+				</a>
+				
+			</div>
+		</div>
+		<div class="part3 bg-f">
+			<h3 class="htitle-style">
+				<em></em>
+				<span>精选推荐</span>
+			</h3>
+			<div class="tuijian-list cf" id="sightSpot">
+				<!-- <div class="list">
+					<a href="holiday-list.html">
+						<img src="images/img21.jpg" alt="">
+						<div class="info">
+							<h3>芜湖方特欢乐世界</h3>
+							<p>
+								<em class="em1"></em>
+								<span>926人点评</span>
+								<em class="em2"></em>
+								<span>94%满意</span>
+							</p>
+						</div>
+					</a>
+				</div>
+				<div class="list">
+					<a href="holiday-list.html">
+						<img src="images/img21.jpg" alt="">
+						<div class="info">
+							<h3>芜湖方特欢乐世界</h3>
+							<p>
+								<em class="em1"></em>
+								<span>926人点评</span>
+								<em class="em2"></em>
+								<span>94%满意</span>
+							</p>
+						</div>
+					</a>
+				</div> -->
+			</div>
+		</div>
+		<div style="margin-top:10px;"><img src="images/bottom.png" width="100%" height="130px"></div>
+	</div>
+</div>
+<div id="allmap" style="display:none;"></div>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/idangerous.swiper.min.js"></script>
+<script type="text/javascript" src="js/swiper.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=YYCvzjyZsL4CqX4qU3Do4yWG"></script>
+<script>
+$(function(){
+	circleMask();
+	ajaxGetRequest(kBaseSightSpotUrl, {}, handleSightSpot);
+	function handleSightSpot(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			/*景点轮播图*/
+			var sightBannerJson = result.message.banner;
+			var bannerHtml = "";
+			for(var i=0; i<sightBannerJson.length; i++){
+				bannerHtml += '<div class="swiper-slide">';
+				bannerHtml += '<a data-url="'+sightBannerJson[i].app_url+'" target="_black" class="app_url">';
+				bannerHtml += 	'<img src="'+kBaseImagePath+sightBannerJson[i].image_path+'" width="640" height="150px">';
+				bannerHtml +=  '</a>';
+				bannerHtml += '</div>';
+			}
+			$("#sight-banner").html(bannerHtml);
+			ZMSlide();
+
+			/*景点精选推荐*/
+			var sightSpotJson = result.message.sightspot;
+			var html = "";
+			for(var i=0; i<sightSpotJson.length; i++){
+				if(sightSpotJson[i].evaluate_num != false){
+					var evaluate_num=sightSpotJson[i].evaluate_num;
+				}else{
+					var evaluate_num=0;
+				}
+				html += '<div class="list" data-id="'+sightSpotJson[i].id+'">';
+				html += 		'<img src="'+kBaseImagePath+sightSpotJson[i].image+'" alt="" width="100%" height="100%">';
+				html += 		'<div class="info">';
+				html += 			'<h3>'+sightSpotJson[i].name+'</h3>';
+				html += 			'<p style="margin-top:4px;">';
+				html += 				'<em class="em1"></em>';
+				html += 				'<span style="padding:0px 10px;">'+evaluate_num+'人点评</span>';
+				html += 				'<em class="em2"></em>';
+				html += 				'<span style="padding:0px 10px;">'+sightSpotJson[i].satisfaction+'%满意</span>';
+				html += 			'</p>';
+				html += 		'</div>';
+				html += 		'<p style="position: absolute;width:auto;padding: 2px 4px;font-size: .14rem;height:20px;text-align:center;line-height:20px;color:#fff;opacity:0.8;background:#f00;right: 10px;top: 10px;">￥'+sightSpotJson[i].price+'</p>';
+				html += '</div>';
+			}
+			$("#sightSpot").html(html);
+			// 类型列表
+			var sight_type_list=result.message.sight_type_list;
+			$(".sight_type_list1").html("<em></em><a>"+sight_type_list[0].name+"</a>");
+			$(".sight_type_list1").attr("data-id",sight_type_list[0].id);
+			$(".sight_type_list2").html("<em></em><a>"+sight_type_list[1].name+"</a>");
+			$(".sight_type_list2").attr("data-id",sight_type_list[1].id);
+			$(".sight_type_list3").html("<em></em><a>"+sight_type_list[2].name+"</a>");
+			$(".sight_type_list3").attr("data-id",sight_type_list[2].id);
+			$(".sight_type_list4").html("<em></em><a>"+sight_type_list[3].name+"</a>");
+			$(".sight_type_list4").attr("data-id",sight_type_list[3].id);
+			$(".sight_type_list5").html("<em></em><a>"+sight_type_list[4].name+"</a>");
+			$(".sight_type_list5").attr("data-id",sight_type_list[4].id);
+			$(".sight_type_list6").html("<em></em><a>"+sight_type_list[5].name+"</a>");
+			$(".sight_type_list6").attr("data-id",sight_type_list[5].id);
+			$(".sight_type_list7").html("<em></em><a>"+sight_type_list[6].name+"</a>");
+			$(".sight_type_list7").attr("data-id",sight_type_list[6].id);
+			$(".sight_type_list8").html("<em></em><a>"+sight_type_list[7].name+"</a>");
+			$(".sight_type_list8").attr("data-id",sight_type_list[7].id);
+			
+			$("#circle_mask").hide();
+		}
+	}
+	// 点击进入景点详情页
+	$("body").on("click",".list",function(){
+		var sightspot_id = $(this).data("id");
+		setLocalStorage("sightspot_id",sightspot_id);
+		// 详情页返回标志
+		setLocalStorage("sightspot_return",1);
+		location.href = "holiday_village.html";
+	});
+	// 点击类型进入景点门票列表页
+	$(".to_ticket").on("click",function(){
+		var sight_type_id = $(this).data("id");
+		setLocalStorage("sight_type_id",sight_type_id);
+		setLocalStorage("return_holiday_list",0);
+		setLocalStorage("sight_name","");
+		location.href = "holiday-list.html";
+	});
+	// 点击类型进入景点度假山庄列表页
+	$(".to_sightspot").on("click",function(){
+		var sight_type_id = $(this).data("id");
+		setLocalStorage("sight_type_id",sight_type_id);
+		setLocalStorage("sight_name","");
+		location.href = "holiday-list02.html";
+	});
+	// 搜索
+	$("#search").on("click",function(){
+		setLocalStorage("sight_type_id","");
+		var sight_name=$(".son-search").val();
+		setLocalStorage("sight_name",sight_name);
+		setLocalStorage("return_holiday_list",0);
+		location.href = "holiday-list.html";
+	})
+	// 定位功能
+	var current_city=getLocalStorage("current_city");
+	var is_location=getLocalStorage("is_location");
+	if(current_city!=""){
+		$(".current_city").text(current_city);
+	}else if(is_location !=1 ){
+		$(".current_city").text("定位中");
+		getLocation();
+	}
+
+	function getLocation() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(showPosition, showError);	
+		} else {
+			ZMAlert("浏览器不支持地理定位！");
+		}
+	}
+		
+	function showPosition(position) {
+		var latlon = position.coords.latitude+','+position.coords.longitude;
+		var latitude = position.coords.latitude;
+		var longitude= position.coords.longitude;
+		//google
+		var location_url = 'http://maps.google.cn/maps/api/geocode/json?latlng=' + latlon + '&language=CN';
+		$.ajax({
+			type: "GET",
+			url: location_url,
+			success: function (json) {
+				if (json.status == 'OK') {
+					var result = json.results;
+					// console.log(result);
+					var back_url=kBaseFrontendUrl+"default/setLocation";
+					var back_data={
+						latitude: latitude,
+						longitude: longitude,
+						location_json:result
+					}
+					ajaxPOSTRequest(back_url, back_data, callback);
+					function callback(result){
+						if(result.errorCode == 0){
+							ZMAlert("定位成功！");
+							$(".current_city").text(result.message.app_city_name);
+							setLocalStorage("current_city",result.message.app_city_name);
+						}
+						setLocalStorage("is_location",1);
+					}
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				ZMAlert("地址位置获取失败");
+			}
+		});
+	}
+	function showError(error) {
+		switch (error.code) {
+			case error.PERMISSION_DENIED:
+				ZMAlert("定位失败,用户拒绝请求地理定位");
+				break;
+			case error.POSITION_UNAVAILABLE:
+				ZMAlert("定位失败,位置信息是不可用");
+				break;
+			case error.TIMEOUT:
+				ZMAlert("定位失败,请求获取用户位置超时");
+				break;
+			case error.UNKNOWN_ERROR:
+				ZMAlert("定位失败,定位系统失效");
+				break;
+		}
+	}
+	$(".select-city").on("click",function(){
+		var current_select_city=$(".current_city").text();
+		setLocalStorage("current_select_city",current_select_city);
+		setLocalStorage("select_city",2);
+		location.href="city_select.html";
+	})
+
+	// if(current_city!=""){
+	// 	$(".current_city").text(current_city);
+	// }else{
+	// 	$(".current_city").text("定位中");
+	// 	baiduMap();
+	// }
+	// 百度地图API功能
+	function baiduMap(){
+		var map = new BMap.Map("allmap");
+	    var point = new BMap.Point(116.331398,39.897445);
+	    map.centerAndZoom(point,12);
+
+	    var geoc = new BMap.Geocoder();   
+
+	    var geolocation = new BMap.Geolocation();
+	    geolocation.getCurrentPosition(function(r){
+	        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+	            var mk = new BMap.Marker(r.point);
+	            map.addOverlay(mk);
+	            map.panTo(r.point);
+	            // alert('您的位置：'+r.point.lng+','+r.point.lat);
+
+	            var pt = r.point;
+	            geoc.getLocation(pt, function(rs){
+	                var addComp = rs.addressComponents;
+	                $(".current_city").text(addComp.city);
+	                // alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+	            });  
+	        }
+	        else {
+	            ZMAlert('failed'+this.getStatus());
+	        }        
+	    },{enableHighAccuracy: true})
+	    //关于状态码
+	    //BMAP_STATUS_SUCCESS   检索成功。对应数值“0”。
+	    //BMAP_STATUS_CITY_LIST 城市列表。对应数值“1”。
+	    //BMAP_STATUS_UNKNOWN_LOCATION  位置结果未知。对应数值“2”。
+	    //BMAP_STATUS_UNKNOWN_ROUTE 导航结果未知。对应数值“3”。
+	    //BMAP_STATUS_INVALID_KEY   非法密钥。对应数值“4”。
+	    //BMAP_STATUS_INVALID_REQUEST   非法请求。对应数值“5”。
+	    //BMAP_STATUS_PERMISSION_DENIED 没有权限。对应数值“6”。(自 1.1 新增)
+	    //BMAP_STATUS_SERVICE_UNAVAILABLE   服务不可用。对应数值“7”。(自 1.1 新增)
+	    //BMAP_STATUS_TIMEOUT   超时。对应数值“8”。(自 1.1 新增)
+	}
+})
+</script>
+</body>
+</html>

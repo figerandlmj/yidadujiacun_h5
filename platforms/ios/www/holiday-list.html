@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>度假</title>
+</head>
+<body onload="loaded()">
+<div id="main">
+	<div class="header cf">
+		<a class="back">返回</a>
+		<p class="title">度假</p>
+	</div>
+	<div class="holiday-list">
+		<div class="search">
+			<input class="son-search" type="text" placeholder="搜索旅行地">
+			<!-- <em></em> -->
+			<button class="button" id="search">搜索</button>
+		</div>
+		<div class="nav bg-f">
+			<ul class="slide-nav cf">
+				<li class="">
+					<a>景点门票<em id="ticketNum">0</em></a>
+				</li>
+				<li id="holidayBtn" class="colorCurrent">
+					<a>度假山庄<em id="villageNum">0</em></a>
+				</li>
+			</ul>
+		</div>
+		<div class="list-wrapper cf">
+			<div class="list bg-color common-list" id="ticketList" style="display: block;">
+				<!-- <a href="#">
+					<div class="son-list bg-f cf">
+						<div class="left fl">
+							<img src="images/9.jpg" alt="">
+							<em>好评</em>
+						</div>
+						<div class="center fl">
+							<h3>芜湖方特欢乐世界</h3>
+							<p class="p1">
+								<span>游乐园</span>
+								<span>新品上线</span>
+							</p>
+							<p>简介描述简介描述简简介描述简介描述简简介描述简介描述简介描述简...</p>
+							<p class="p-style">
+								<em class="em1"></em>
+								<span>926人点评</span>
+								<em class="em2"></em>
+								<span>94%满意</span>
+							</p>
+						</div>
+						<div class="right fr">
+							<p class="price">￥<span>1568</span></p>
+							<p class="p1">起</p>
+						</div>
+					</div>
+				</a>
+				<a href="#">
+					<div class="son-list bg-f cf">
+						<div class="left fl">
+							<img src="images/10.jpg" alt="">
+							<em>好评</em>
+						</div>
+						<div class="center fl">
+							<h3>芜湖方特欢乐世界</h3>
+							<p class="p1">
+								<span>游乐园</span>
+								<span>新品上线</span>
+							</p>
+							<p>简介描述简介描述简简介描述简介描述简简介描述简介描述简介描述简...</p>
+							<p class="p-style">
+								<em class="em1"></em>
+								<span>926人点评</span>
+								<em class="em2"></em>
+								<span>94%满意</span>
+							</p>
+						</div>
+						<div class="right fr">
+							<p class="price">￥<span>1568</span></p>
+							<p class="p1">起</p>
+						</div>
+					</div>
+				</a> -->
+			</div>
+			<div class="list bg-color common-list" id="seceryList">
+				<!-- <a href="#">
+					<div class="son-list bg-f cf">
+						<div class="left fl">
+							<img src="images/9.jpg" alt="">
+							<em>好评</em>
+						</div>
+						<div class="center fl">
+							<h3>芜湖方特欢乐世界2</h3>
+							<p class="p1">
+								<span>游乐园</span>
+								<span>新品上线</span>
+							</p>
+							<p>简介描述简介描述简简介描述简介描述简简介描述简介描述简介描述简...</p>
+							<p class="p-style">
+								<em class="em1"></em>
+								<span>926人点评</span>
+								<em class="em2"></em>
+								<span>94%满意</span>
+							</p>
+						</div>
+						<div class="right fr">
+							<p class="price">￥<span>1568</span></p>
+							<p class="p1">起</p>
+						</div>
+					</div>
+				</a>
+				<a href="#">
+					<div class="son-list bg-f cf">
+						<div class="left fl">
+							<img src="images/10.jpg" alt="">
+							<em>好评</em>
+						</div>
+						<div class="center fl">
+							<h3>芜湖方特欢乐世界2</h3>
+							<p class="p1">
+								<span>游乐园</span>
+								<span>新品上线</span>
+							</p>
+							<p>简介描述简介描述简简介描述简介描述简简介描述简介描述简介描述简...</p>
+							<p class="p-style">
+								<em class="em1"></em>
+								<span>926人点评</span>
+								<em class="em2"></em>
+								<span>94%满意</span>
+							</p>
+						</div>
+						<div class="right fr">
+							<p class="price">￥<span>1568</span></p>
+							<p class="p1">起</p>
+						</div>
+					</div>
+				</a> -->
+			</div>
+		</div>
+	</div>
+	<div>
+		<div class="road-pop">
+			<div class="price-inter road-pop-style" id="priceSelect">
+				<p class="road-pop-title border-b">价格区间</p>
+				<p class="this_p">不限</p>
+				<p class="this_p"><span id="startPrice">0</span>-<span id="endPrice">100</span></p>
+				<p class="this_p"><span id="startPrice">100</span>-<span id="endPrice">500</span></p>
+				<p class="this_p"><span id="startPrice">500</span>-<span id="endPrice">1000</span></p>
+				<p class="this_p"><span id="startPrice">1000</span>以上<!-- <span id="endPrice">10000</span> --></p>
+			</div>
+
+			<div class="price-inter road-pop-style" style="display: none;" id="sight_type_list">
+				<p class="road-pop-title border-b">主题</p>
+				<p data-id="" class="to_ticket this_p">不限</p>
+				<!-- <p>度假游</p>
+				<p>自驾游</p>
+				<p>户外游</p>
+				<p>周边游</p>
+				<p>景点</p> -->
+			</div>
+
+			<div class="price-inter road-pop-style" style="display: none;" id="sort">
+				<p class="road-pop-title border-b">智能排序</p>
+				<p class="order this_p" data-order="">不限</p>
+				<p class="order this_p" data-order="order_num">销量</p>
+				<p class="order this_p" data-order="order_num">时间</p>
+			</div>
+		</div>
+	</div>
+	<div class="bottom-nav">
+		<ul class="mui-flex">
+			<li class="cell">
+			<a href="javascript:" class="price">
+				<img src="images/26.png" alt="">
+				<label>价格区间</label>
+			</a>
+			</li>
+			<li class="cell"><a href="javascript:" class="item">
+				<img src="images/27.png" alt="">
+				<label>主题</label>
+			</a></li>
+			<li class="cell"><a href="javascript:" class="sort">
+				<img src="images/6.png" alt="" style="top:.03rem">
+				<label>智能排序</label>
+			</a></li>
+		</ul>
+	</div>
+	<div class="wrap-mask"></div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+	$(".slide-nav li").on("click",function(){
+		$(this).removeClass("colorCurrent").siblings().addClass("colorCurrent");
+		$(".common-list").eq($(this).index()).show().siblings().hide();
+	});
+	var sight_type_id=getLocalStorage("sight_type_id");
+	var sight_name=getLocalStorage("sight_name");
+	var data = {name:sight_name,sight_type_id: sight_type_id};
+	/*获取景点门票数据*/
+	ajaxGetRequest(kBaseTicketListUrl, data, handleTicketList);
+	function handleTicketList(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			$("#ticketNum").text(result.message.count.ticket);       	/*景点门票数量*/
+			$("#villageNum").text(result.message.count.sightspot);		/*度假山庄数量*/
+			// 主题列表
+			var sight_type_list=result.message.sight_type_list;
+			var sight_type_list_html="";
+			if(sight_type_list.length>0){
+				for(var i=0;i<sight_type_list.length;i++){
+					sight_type_list_html+='<p data-id="'+sight_type_list[i].id+'" class="to_ticket this_p">'+sight_type_list[i].name+'</p>';
+				}
+				$("#sight_type_list").append(sight_type_list_html);
+			}
+			var ticketListJson = result.message.ticket;
+			getRequest($("#ticketList"),ticketListJson);
+			/*点击景点门票列表页跳转详情页*/
+			$("#ticketList .son-list").live("click",function(){
+				var sightspot_id = $(this).data("id");
+				var data = {sightspot_id: sightspot_id};
+				ajaxGetRequest(kBaseTicketDetailUrl, data, handleTicketDetail);
+				function handleTicketDetail(result){
+					if(result.errorCode == 0){
+						setLocalStorage("sightspot_id",sightspot_id);
+						// 门票详情跳回标志
+						setLocalStorage('secery_ticket_return',1);
+						location.href = "secery_ticket.html";
+					}
+				}
+			});
+		}
+	}
+
+	/*获取度假山庄列表数据*/
+	ajaxGetRequest(kBaseSeceryListUrl, data, handleSeceryList);
+	function handleSeceryList(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			var seceryListJson = result.message.sightspot;
+			getRequest($("#seceryList"),seceryListJson);
+
+			/*点击度假景点列表跳转详情页*/
+			$("#seceryList .son-list").live("click",function(){
+				var sightspot_id = $(this).data("id");
+				var data = {sightspot_id: sightspot_id};
+				console.log(sightspot_id);
+				ajaxGetRequest(kBaseSeceryDetailUrl, data, handleSeceryList);
+				function handleSeceryList(result){
+					if(result.errorCode == 0){
+						setLocalStorage("sightspot_id",sightspot_id);
+						// 详情页返回标志
+						setLocalStorage("sightspot_return",0);
+						location.href = "holiday_village.html";
+					}
+				}
+			});
+		}
+	}
+
+	/*筛选*/
+	/*景点门票筛选*/
+	// 价格区间
+	$("#priceSelect .this_p").on("click",function(){
+		var startPrice = $(this).find("#startPrice").text();
+		var endPrice =$(this).find("#endPrice").text();
+		var data = {start_price: startPrice,end_price: endPrice};
+		ajaxGetRequest(kBaseTicketListUrl, data, handleTicketSelect);
+		function handleTicketSelect(result){
+			if(result.errorCode == 0){
+				var ticketListJson = result.message.ticket;
+				console.log(ticketListJson);
+				getRequest($("#ticketList"),ticketListJson);
+				$("#ticketNum").text(ticketListJson.length);       	/*景点门票数量*/
+			}
+		}
+	});
+	// 智能排序
+	$(".order").on("click",function(){
+		var this_order = $(this).data("order");
+		var data = {order: this_order};
+		ajaxGetRequest(kBaseTicketListUrl, data, handleTicketSelect);
+		function handleTicketSelect(result){
+			if(result.errorCode == 0){
+				var ticketListJson = result.message.ticket;
+				console.log(ticketListJson);
+				getRequest($("#ticketList"),ticketListJson);
+				$("#ticketNum").text(ticketListJson.length);       	/*景点门票数量*/
+			}
+		}
+	});
+	// 主题
+	$(".to_ticket").live("click",function(){
+		var sight_type_id = $(this).data("id");
+		var data = {sight_type_id: sight_type_id};
+		ajaxGetRequest(kBaseTicketListUrl, data, handleTicketSelect);
+		function handleTicketSelect(result){
+			if(result.errorCode == 0){
+				var ticketListJson = result.message.ticket;
+				console.log(ticketListJson);
+				getRequest($("#ticketList"),ticketListJson);
+				$("#ticketNum").text(ticketListJson.length);       	/*景点门票数量*/
+			}
+		}
+	});
+	
+
+	/*度假山庄筛选*/
+	// 价格区间
+	$("#priceSelect .this_p").on("click",function(){
+		var startPrice = $(this).find("#startPrice").text();
+		var endPrice =$(this).find("#endPrice").text();
+		var data = {start_price: startPrice,end_price: endPrice};
+		ajaxGetRequest(kBaseSeceryListUrl, data, handleSecerySelect);
+		function handleSecerySelect(result){
+			if(result.errorCode == 0){
+				var seceryListJson = result.message.sightspot;
+				console.log(seceryListJson);
+				getRequest($("#seceryList"),seceryListJson);
+				$("#villageNum").text(seceryListJson.length);		/*度假山庄数量*/
+			}
+		}
+	});
+	// 智能排序
+	$(".order").on("click",function(){
+		var this_order = $(this).data("order");
+		var data = {order: this_order};
+		ajaxGetRequest(kBaseSeceryListUrl, data, handleSecerySelect);
+		function handleSecerySelect(result){
+			if(result.errorCode == 0){
+				var seceryListJson = result.message.sightspot;
+				console.log(seceryListJson);
+				getRequest($("#seceryList"),seceryListJson);
+				$("#villageNum").text(seceryListJson.length);		/*度假山庄数量*/
+			}
+		}
+	});
+	// 主题
+	$(".to_ticket").live("click",function(){
+		var sight_type_id = $(this).data("id");
+		var data = {sight_type_id: sight_type_id};
+		ajaxGetRequest(kBaseSeceryListUrl, data, handleSecerySelect);
+		function handleSecerySelect(result){
+			if(result.errorCode == 0){
+				var seceryListJson = result.message.sightspot;
+				console.log(seceryListJson);
+				getRequest($("#seceryList"),seceryListJson);
+				$("#villageNum").text(seceryListJson.length);		/*度假山庄数量*/
+			}
+		}
+	});
+	
+	
+	function getRequest(obj,Json){
+		var html = "";
+		for(var i=0; i<Json.length; i++){
+			if(Json[i].evaluate_num != false){
+				var evaluate_num=Json[i].evaluate_num;
+			}else{
+				var evaluate_num=0;
+			}
+			var description = Json[i].description;
+			description = $('<p>'+description+'</p>').text();
+			console.log(description);
+
+			html += '<div class="son-list bg-f cf" data-id="'+Json[i].id+'">';
+			html += 	'<div class="left fl">';
+			html += 		'<img src="'+kBaseImagePath + Json[i].image+'" alt="" height="80">';
+			html += 		'<em>好评</em>';
+			html += 	'</div>';
+			html += 	'<div class="center fl" style="width:48%;">';;
+			html += 		'<h3>'+Json[i].name+'</h3>';
+			html += 		'<p class="p1" style="height: 30px;">';
+			if(Json[i].type_name != null){
+				html += 			'<span>'+Json[i].type_name+'</span>';
+			}
+			// html += 			'<span>游乐园</span>';
+			// html += 			'<span>新品上线</span>';
+			html += 		'</p>';
+			html += 		'<p>'+description+'</p>';
+			html += 		'<p class="p-style">';
+			html += 			'<em class="em1"></em>';
+			html += 			'<span>'+evaluate_num+'人点评</span>';
+			html += 			'<em class="em2"></em>';
+			html += 			'<span>'+Json[i].satisfaction+'%满意</span>';
+			html += 		'</p>';
+			html += 	'</div>';
+			html += 	'<div class="right fr">';
+			html += 		'<p class="price">￥<span>'+Json[i].price+'</span></p>';
+			html += 		'<p class="p1">起</p>';
+			html += 	'</div>';
+			html += '</div>';
+		}
+		$(obj).html(html);
+	}
+	// 搜索
+	$("#search").on("click",function(){
+		setLocalStorage("sight_type_id","");
+		var sight_name=$(".son-search").val();
+		setLocalStorage("sight_name",sight_name);
+		location.href = "holiday-list.html";
+	})
+	// 点击返回事件
+    $(".back").on("click",function(){
+    	var return_holiday_list = getLocalStorage("return_holiday_list");
+    	if(return_holiday_list==1){
+    		location.href="index.html";
+    	}else if(return_holiday_list==2){
+    		location.href="service.html";
+    	}else{
+    		location.href="holiday.html";
+    	}
+    })
+</script>
+</body>
+</html>

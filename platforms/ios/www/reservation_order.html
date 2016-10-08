@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <link rel="stylesheet" type="text/css" href="css/others.css">
+    <title>填写订单</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="secery_ticket.html">返回</a>
+		<p class="title">填写订单</p>
+	</div>
+	<div class="res-order bg-color">
+		<div class="part1 bg-f">
+			<ul class="order-style">
+				<li class="first border-b cf" style="padding-bottom: .05rem;">
+					<span class="mr-15 fcolor-9a fl">门票名称</span>
+					<div class="fl">
+						<span class="ticket_name"></span><br>
+						<p id="detail-info" class="p4 cf"><a class="fl">详细信息</a><em class="fl"></em></p>
+					</div>
+					<div class="detail-info">
+                        <div class="son-detail-info">
+                            <h2>详细信息<em class="info-close">X</em></h2>
+                            <h3 class="border-b ticket_name"></h3>
+                            <ul class="info-intrduce">
+                                <li class="border-b">
+                                    <h4>费用包含</h4>
+                                    <p id="content"></p>
+                                </li>
+                                <li class="border-b">
+                                    <h4>兑换方式</h4>
+                                    <p id="exchange"></p>
+                                </li>
+                                <li class="border-b">
+                                    <h4>预订时间</h4>
+                                    <p id="reserve"></p>
+                                </li>
+                            </ul>
+                            <div class="ordering">
+                                <span class="fl" id="yida_price">￥0</span>
+                                <p class="fr">
+                                    <span>在线支付</span>
+                                    <button><a href="javascript:;" class="submit-btn">预订</a></button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+				</li>
+				<li class="cf">
+					<span class="mr-15 fcolor-9a fl">出游日期</span>
+					<input type="text" class="fl" value="" id="ticket_date" onclick="WdatePicker()">
+					<!-- <a><span class="update fcolor-9a fr">修改</span></a> -->
+				</li>
+				<li class="cf">
+					<span class="mr-15 fcolor-9a fl">购买数量</span>
+					<p class="number-style mr-15 cf">
+						<span class="reduce">-</span>
+						<input class="number-ticket" type="text" value="1" disabled>
+						<span class="add">+</span>
+					</p>
+					<div style="clear:both"></div>
+					<p class="prefer fl" id="favorable" style="line-height:30px;margin-top:10px;"></p>
+				</li>
+				<li class="cf" style="border-bottom:none;">
+					<span class="mr-15 fcolor-9a fl">票价</span>
+					<span class="price mr-15">￥<i id="price">0</i></span>
+					<span class="jifen">返积分0</span>
+				</li>
+			</ul>
+		</div>
+		<div class="part2 bg-f">
+			<h2>出游人信息</h2>
+			<ul class="ul-style">
+				<li class="cf">
+					<span class="mr-40">姓名</span>
+					<input type="text" placeholder="请输入姓名" id="contact">
+				</li>
+				<li class="cf" style="border-bottom:none;">
+					<span class="mr-40">手机</span>
+					<input type="text" placeholder="请输入手机号码" id="contact_phone">
+					<!-- <span class="icon fr"><em></em></span> -->
+				</li>
+			</ul>
+		</div>
+		<div class="part3 bg-f  mb-9">
+			<ul class="ul-style">
+				<li class="cf">
+					<span class="mr-15 fcolor-9a">取票方式</span>
+					<span id="ticket_way"></span>
+				</li>
+				<li class="cf" style="border-bottom:none;">
+					<span class="mr-15 fcolor-9a">取票地址</span>
+					<span id="ticket_address"></span>
+				</li>
+			</ul>
+		</div>
+		<div class="part4 bg-f">
+			<div class="pay-type pl-10 cf">
+				<span class="pay1 mr-15 fl">支付方式</span>
+				<div class="pay fl">
+					<em class="emhover"></em>
+					<span>支付宝</span>
+				</div>
+				<!-- <div class="pay fl">
+					<em></em>
+					<span>支付宝</span>
+				</div> -->
+			</div>
+			<div class="deal pl-10 bg-color">
+				<em><img src="images/right4.png" alt="" class="sel"></em>
+				<p>我已阅读并接受<a class="to_message">《门票预订须知》</a></p>
+			</div>
+			<div class="sumbit pl-10">
+				<span>应付金额&nbsp;<em id="total">￥0</em></span>
+				<button class="submit-btn">提交订单</button>
+			</div>
+		</div>
+	</div>
+	<div class="wrap-mask"></div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/My97DatePicker/WdatePicker.js"></script>
+<script>
+	$(function(){
+		var token = getLocalStorage("token");
+	    var ticket_id = getLocalStorage("ticket_id");
+	    console.log(ticket_id);
+	    var url=kBaseTicketOrderUrl+"?token="+token+"&ticket_id="+ticket_id;
+	    ajaxGetRequest(url, {}, handleTicketDetail);
+	    var yida_price=0;
+	    var reduce_money=0;
+	    var reduce_money1=0;
+	    var reduce_money2=0;
+	    var satisfy1=0;
+	    var satisfy2=0;
+	    var favorable_length=0;
+	    var total;
+		$("#ticket_date").val(nextDay(1)+"(明天)");
+	    function handleTicketDetail(result){
+	    	console.log(result);
+	        if(result.errorCode == 0){
+	            var message = result.message.ticket;
+	            console.log(message);
+	            if(message.type==1){
+	            	$(".ticket_name").text(message.name+"（成人票）");
+	            }else if(message.type==2){
+	            	$(".ticket_name").text(message.name+"（儿童票）");
+	            }
+	            $("#content").text(message.content);
+	            $("#exchange").text(message.exchange);
+	            $("#reserve").text(message.reserve);
+	            yida_price=message.yida_price;
+	            $("#yida_price").text("￥"+yida_price);
+	            $("#price").text(yida_price);
+	            $(".jifen").text("返积分"+message.return_integral);
+	            $("#ticket_address").text(message.ticket_address);
+	            if(message.ticket_way==""){
+	            	$("#ticket_way").text("门票自取");
+	            }else{
+	            	$("#ticket_way").text(message.ticket_way);
+	            }
+	            // 优惠
+	            favorable_length=result.message.favorable.length;
+	            if(result.message.is_first_order==true&&result.message.first_order_favorable!=false){
+	            	reduce_money=result.message.first_order_favorable;
+	            }
+	            total=yida_price;
+	            if(favorable_length>1){
+	            	reduce_money1=parseInt(result.message.favorable[0].reduce);
+				    reduce_money2=parseInt(result.message.favorable[1].reduce);
+				    satisfy1=parseInt(result.message.favorable[0].satisfy);
+				    satisfy2=parseInt(result.message.favorable[1].satisfy);
+				    if(total>=satisfy2){
+				    	total-=reduce_money2;
+				    }else if(total>=satisfy1){
+				    	total-=reduce_money1;
+				    }
+	            }else if(favorable_length>0){
+	            	reduce_money1=result.message.favorable[0].reduce;
+				    satisfy1=result.message.favorable[0].satisfy;
+				    if(total>=satisfy1){
+				    	total-=reduce_money1;
+				    }
+	            }
+	            var favorable_html='惠：';
+	            if(result.message.first_order_favorable!=false){
+	            	favorable_html+='<label>首单立减'+result.message.first_order_favorable+'元</label><a class="more add-more"></a>';
+	            	if(result.message.favorable.length>0){
+		                favorable_html+="<br><label style='display:none;' class='more_favorable'>";
+		            	for(var i=0;i<result.message.favorable.length;i++){
+		            		favorable_html+="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;满"+result.message.favorable[i].satisfy+"元立减"+result.message.favorable[i].reduce+"元<br>";
+		            	}
+		                favorable_html+="</label>";
+		            }
+	            }else if(result.message.favorable.length>0){
+	            	favorable_html+='<label>满'+result.message.favorable[0].satisfy+'元立减'+result.message.favorable[0].reduce+'元</label><a class="more add-more"></a>';
+	                favorable_html+="<br><label style='display:none;' class='more_favorable'>";
+	            	for(var i=1;i<result.message.favorable.length;i++){
+	            		favorable_html+="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;满"+result.message.favorable[i].satisfy+"元立减"+result.message.favorable[i].reduce+"元<br>";
+	            	}
+	                favorable_html+="</label>";
+	            }else{
+	            	favorable_html+="暂无！";
+	            }
+	            $("#favorable").html(favorable_html);
+	            $("#total").text("￥"+(total-reduce_money));
+	            
+	        }else if (result.errorCode == -1) {
+	            // 提示登陆注册
+	            ZMAlert("请登录!",successFunc);
+				function successFunc(){
+					location.href = "login.html";
+				}
+	        }
+	        // 点击更多显示更多优惠
+            $(".more").live("click",function(){
+                $(this).toggleClass("reduce-more");
+                $(this).siblings(".more_favorable").toggle();
+            })
+	    }
+	    // 常用信息
+	    var com_info_url = kBaseUserUrl + "contact/index?token=" + token;
+		ajaxGetRequest(com_info_url,{},comInfoCallback);
+		function comInfoCallback(result){
+			console.log(result);
+			if(result.errorCode == 0){
+				// 显示常用信息
+				var message=result.message.contact;
+				var name=message[0].name;
+				var id_card=message[0].id_card;
+				var contact_phone=message[0].contact_phone;
+				$("#contact").val(name);
+				$("#contact_phone").val(contact_phone);
+			}
+		}
+	    // 详细信息弹框
+		$("#detail-info").on("click",function(){
+			var detailInfo =$(".detail-info");
+			var infoClose = detailInfo.find("em.info-close");
+			detailInfo.show();
+			Login(detailInfo);
+			mask.show();
+			detailInfo.on("click",infoClose,function(){
+				detailInfo.hide();
+				mask.hide();
+			});
+		})
+
+		// 购买数量加减
+		var num = 1;
+		$(".add").click(function(){
+			num++;
+			$(".number-ticket").val(num);
+			total=num*yida_price;
+            if(favorable_length>1){
+			    if(total>=satisfy2){
+			    	total-=reduce_money2;
+			    }else if(total>=satisfy1){
+			    	total-=reduce_money1;
+			    }
+            }else if(favorable_length>0){
+			    if(total>=satisfy1){
+			    	total-=reduce_money1;
+			    }
+            }
+			$("#total").text("￥"+(total-reduce_money));
+			// $("#yida_price").text("￥"+num*yida_price);
+		});
+		$(".reduce").click(function(){
+			if(num == 1){
+				num = 1;
+			}else {
+				num--;
+			}
+			$(".number-ticket").val(num);
+			total=num*yida_price;
+            if(favorable_length>1){
+			    if(total>=satisfy2){
+			    	total-=reduce_money2;
+			    }else if(total>=satisfy1){
+			    	total-=reduce_money1;
+			    }
+            }else if(favorable_length>0){
+			    if(total>=satisfy1){
+			    	total-=reduce_money1;
+			    }
+            }
+			$("#total").text("￥"+(total-reduce_money));
+			// $("#yida_price").text("￥"+num*yida_price);
+		});
+		// 提交订单
+		$(".submit-btn").on("click",function(){
+			var number=$(".number-ticket").val();
+			var ticket_date=$("#ticket_date").val();
+			var contact=$("#contact").val();
+			var contact_phone=$("#contact_phone").val();
+			var regContact =/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/;//联系方式
+			data={
+				number:number,
+                ticket_date:ticket_date,
+                contact:contact,
+                contact_phone:contact_phone
+            }
+            if(ticket_date==''){
+            	ZMAlert("出游日期不能为空！");
+            	return false;
+            }else if(contact==''){
+            	ZMAlert("联系人不能为空！");
+            	return false;
+            }else if(contact_phone==''){
+            	ZMAlert("联系方式不能为空！");
+            	return false;
+            }else if(!regContact.test(contact_phone)){
+            	ZMAlert("联系方式不正确！");
+            	return false;
+            }
+            ajaxPOSTRequest(url, data, handleSubmitOrder);
+            var out_trade_no;
+            function handleSubmitOrder(result){
+                console.log(result);
+                var message = result.message;
+                ZMAlert(message,successFunc);
+
+                function successFunc(){
+                    if(result.errorCode == 0){
+                        out_trade_no = result.out_trade_no;
+                        // if(confirm("是否支付？")){
+                        //     $.ajax({
+                        //         type: 'POST',
+                        //         url: kBaseFrontendUrl+"payment/analog",
+                        //         dataType: 'json',
+                        //         data:{out_trade_no: out_trade_no, status:1},
+                        //         success: function(msg){
+                        //             ZMAlert(msg.message);
+                        //         }
+                        //     });
+                        // }
+                        location.href="iframe.html?token="+token+"&out_trade_no="+out_trade_no;
+                    }
+                }
+            }
+		})
+		// 门票预定需知
+	    $(".to_message").on("click",function(){
+	        setLocalStorage("to_message",4);
+	        location.href="message.html";
+	    })
+	});
+
+</script>
+</body>
+</html>

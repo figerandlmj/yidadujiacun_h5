@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>我的收藏</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back">返回</a>
+		<p class="title">我的收藏</p>
+	</div>
+	<div class="myCollection holiday-list myOrder">
+		<div class="nav bg-f">
+			<ul class="mui-flex">
+				<li class="cell hover"><a href="javascript:;" class="collectionType" data-type="3">
+					<img src="images/10.png" alt="">
+					<span>产品</span>
+				</a></li>
+				<li class="cell"><a href="javascript:;" class="collectionType" data-type="1,4">
+					<img src="images/9.png" alt="">
+					<span>景点</span>
+				</a></li>
+				<li class="cell" style="border-right: none;"><a href="javascript:;" class="collectionType" data-type="2">
+					<img src="images/8.png" alt="">
+					<span>路线</span>
+				</a></li>
+				<!-- <li class="cell" style="border-right: none;"><a href="javascript:;" class="collectionType" data-type="5">
+					<img src="images/30.png" alt="">
+					<span>攻略</span>
+				</a></li> -->
+			</ul>
+		</div>
+		<div class="list bg-color" id="collectionList">
+			<!-- <a href="#">
+				<div class="son-list bg-f cf">
+					<div class="left fl">
+						<img src="images/9.jpg" alt="">
+						<em>好评</em>
+					</div>
+					<div class="center fl">
+						<h3>芜湖方特欢乐世界</h3>
+						<p class="p1">
+							<span>游乐园</span>
+							<span>新品上线</span>
+						</p>
+						<p>简介描述简介描述简简介描述简介描述简简介描述简介描述简介描述简...</p>
+						<p class="p-style">
+							<em class="em1"></em>
+							<span>926人点评</span>
+							<em class="em2"></em>
+							<span>94%满意</span>
+						</p>
+					</div>
+					<div class="right fr">
+						<p class="price">$<span>1568</span></p>
+						<p class="p1">起</p>
+					</div>
+				</div>
+			</a>
+			<a href="#">
+				<div class="son-list bg-f mb-20 cf">
+					<div class="left fl">
+						<img src="images/10.jpg" alt="">
+						<em class="hot-sale">热销</em>
+					</div>
+					<div class="center fl">
+						<h3>芜湖方特欢乐世界</h3>
+						<p class="p1">
+							<span>游乐园</span>
+							<span>新品上线</span>
+						</p>
+						<p>简介描述简介描述简简介描述简介描述简简介描述简介描述简介描述简...</p>
+						<p class="p-style">
+							<em class="em1"></em>
+							<span>926人点评</span>
+							<em class="em2"></em>
+							<span>94%满意</span>
+						</p>
+					</div>
+					<div class="right fr">
+						<p class="price">$<span>1568</span></p>
+						<p class="p1">起</p>
+					</div>
+				</div>
+			</a> -->
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+ <script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+	var token = getLocalStorage('token');
+	var url = kBaseCollectionListUrl + token;
+	/*ajax获取收藏列表数据*/
+	if(token){
+		ajaxGetRequest(url, {}, handleCollection);
+			function handleCollection(result){
+				console.log(result);
+				if(result.errorCode == 0){
+					var collectJson = result.message.collect;
+					// console.log(collectJson);
+					myCollection($("#collectionList"),collectJson,"3");
+				}
+			}
+	}
+	/*根据类型筛选收藏列表*/
+	$(".collectionType").on("click",function(){
+		$(this).parent().addClass("hover");
+		$(this).parent().siblings().removeClass("hover");
+		if(token){
+			var type = $(this).data("type");
+			var data = {type: type};
+			ajaxGetRequest(url, data, handleCollection);
+			function handleCollection(result){
+				console.log(result);
+				if(result.errorCode == 0){
+					var collectJson = result.message.collect;
+					myCollection($("#collectionList"),collectJson,type);
+				}
+			}
+		}
+	});
+
+function myCollection(obj,Json,type){
+	var html = "";
+	var description;
+	var image_path;
+	var name;
+	var this_type;
+	for(var i=0; i<Json.length; i++){
+		// 订单描叙，图片路径
+		if(type=='1,4' || type=='2'){
+			description=Json[i].description;
+			image_path=Json[i].image;
+			name=Json[i].name;
+		}else if(type=='3'){
+			description=Json[i].detail;
+			image_path=Json[i].image_path;
+			name=Json[i].name;
+		}
+		description=$("<p>"+description+"</p>").text();
+		if(type=='5'){
+			image_path=Json[i].image_path;
+			name=Json[i].title;
+		}
+		if(Json[i].evaluate_num==false){
+			Json[i].evaluate_num=0;
+		}
+		this_type=Json[i].type;
+		if(Json[i].type=='3'){
+			html += '<a data-id="'+Json[i].id+'" id="product_id">';
+		}else if(Json[i].type=='2'){
+			html += '<a data-id="'+Json[i].id+'" id="spot_id">';
+		}else if(Json[i].type=='1'){
+			html += '<a data-id="'+Json[i].id+'" id="secery_id">';
+		}else if(Json[i].type=='4'){
+			html += '<a data-id="'+Json[i].id+'" id="ticket_id">';
+		}else if(Json[i].type=='5'){
+			html += '<a data-id="'+Json[i].id+'" id="strategy_id">';
+		}
+		html += '<div class="son-list bg-f cf">';
+		html += '<div class="left fl">';
+		html += 	'<img src="'+kBaseImagePath + image_path+'" alt="" width="100%" height="80">';
+		html += 	'<em>好评</em>';
+		html += '</div>';
+		html += '<div class="center fl">';
+		html += 	'<h3>'+name+'</h3>';
+		html += 	'<p class="p1">';
+		if(type!='5'&&Json[i].type_name!=null){
+			html += 		'<span>'+Json[i].type_name+'</span>';
+		}
+		html += 	'</p>';
+		if(type=='5'){
+			html += 	'<p>作者：'+Json[i].username+'&nbsp;&nbsp;&nbsp;目的地：'+Json[i].destination+'</p>';
+			html += 	'<p class="p-style">';
+			html += 		'<em class="em1"></em>';
+			html += 		'<span>'+Json[i].reads_num+'次阅读</span>';
+			html += 	'</p>';
+			html += '</div>';
+			html += '<div class="right fr">';
+			html += 	'<p class="price"><span>'+Json[i].create_time+'</span></p>';
+			html += '</div>';
+		}else{
+			html += 	'<p>'+description+'</p>';
+			html += 	'<p class="p-style">';
+			html += 		'<em class="em1"></em>';
+			html += 		'<span>'+Json[i].evaluate_num+'人点评</span>';
+			html += 		'<em class="em2"></em>';
+			html += 		'<span>'+Json[i].satisfaction+'%满意</span>';
+			html += 	'</p>';
+			html += '</div>';
+			html += '<div class="right fr">';
+			html += 	'<p class="price"><span>￥'+Json[i].price+'</span></p>';
+			html += 	'<p class="p1">起</p>';
+			html += '</div>';
+		}
+		
+		html += '</div>';
+		html += '</a>';
+	}
+	$(obj).html(html);
+}
+// 产品
+$("body").on("click","#product_id",function(){
+	var product_id=$(this).data("id");
+	setLocalStorage('product_id',product_id);
+	// 产品详情跳回标志
+	setLocalStorage('goods_detail_return',0);
+	location.href="goods_detail.html";
+})
+// 路线
+$("body").on("click","#spot_id",function(){
+	var route_id=$(this).data("id");
+	setLocalStorage('route_id',route_id);
+	// 路线详情跳回标志
+	setLocalStorage('holiday_road_return',0);
+	location.href="holiday_road.html";
+})
+// 景点
+$("body").on("click","#secery_id",function(){
+	var sightspot_id=$(this).data("id");
+	setLocalStorage('sightspot_id',sightspot_id);
+	// 景点详情跳回标志
+	setLocalStorage('sightspot_return',2);
+	location.href="holiday_village.html";
+})
+// 门票
+$("body").on("click","#ticket_id",function(){
+	var sightspot_id=$(this).data("id");
+	setLocalStorage('sightspot_id',sightspot_id);
+	// 门票详情跳回标志
+	setLocalStorage('secery_ticket_return',0);
+	location.href="secery_ticket.html";
+})
+// 攻略
+$("body").on("click","#strategy_id",function(){
+	var strategy_id=$(this).data("id");
+	setLocalStorage('strategy_id',strategy_id);
+	// 攻略详情跳回标志
+	setLocalStorage('found_detail_return',0);
+	location.href="found-detail.html";
+})
+// 返回到个人中心或产品主页
+$(".back").on("click",function(){ href="personal.html"
+	var myCollection_return=getLocalStorage("myCollection_return");
+	if(myCollection_return ==1 ){
+		location.href="personal.html";
+	}else{ 
+		location.href="mall.html";
+	}
+})
+</script>
+</body>
+</html>

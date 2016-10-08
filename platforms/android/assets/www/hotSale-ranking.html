@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>热销排行</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="mall.html">返回</a>
+		<p class="title">热销排行</p>
+	</div>
+	<div class="hot_goods bg-color" id="hotGoods">
+		<!-- <div class="list cf bg-f border-b">
+			<div class="img fl">
+				<img src="images/5.jpg" alt="">
+			</div>
+			<div class="img-info fr">
+				<h2>义达旅行礼包</h2>
+				<p class="p1">旅行必备，义达旅行伴我行</p>
+				<p class="cf">
+					<span>$500</span>
+					<em>$800</em>
+					<button>立即购买</button>
+				</p>
+			</div>
+		</div>
+		
+		<div class="list cf bg-f border-b">
+			<div class="img fl">
+				<img src="images/5.jpg" alt="">
+			</div>
+			<div class="img-info fr">
+				<h2>义达旅行礼包</h2>
+				<p class="p1">旅行必备，义达旅行伴我行</p>
+				<p class="cf">
+					<span>$500</span>
+					<em>$800</em>
+					<button>立即购买</button>
+				</p>
+			</div>
+		</div> -->
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+ajaxGetRequest(kBaseProductListUrl, {}, handleData);
+
+function handleData(result) {
+	console.log(result);
+	var json = result.message.product;
+	var html = '';
+	for(var i=0; i<json.length;i++) {
+		html += '<div class="list cf bg-f border-b to_detail" id="goodsDetailList" data-index="'+json[i].id+'" >';
+		html += '<div class="img fl">';
+		html +=	'	<img src="'+kBaseImagePath + json[i].image_path+'" alt="">';
+		html += '</div>';
+		html +=	'<div class="img-info fr">';
+		html +=		'<h2>'+json[i].name+'</h2>';
+		html +=			'<p class="p1">旅行必备，义达旅行伴我行</p>';
+		html +=			'<p class="cf">';
+		html +=			'<span>￥'+json[i].yida_price+'</span>';
+		html +=				'<em>销量'+json[i].order_num+'</em>';
+		html +=				'<button class="buy-btn">立即购买</button>';
+		html +=			'</p>';
+		html +=	'</div>';
+		html +=	'</div>';
+	}
+	$("#hotGoods").html(html);
+	$("body").on("click",".to_detail",function(){
+		var index = $(this).data("index");
+		setLocalStorage('product_id',index);
+		setLocalStorage('goods_detail_return',3);
+		location.href = "goods_detail.html" ;
+	
+	});
+
+}
+</script>
+</body>
+</html>

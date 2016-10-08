@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/others.css">
+    <title>攻略</title>
+</head>
+<body>
+<div id="main" class="bg-color">
+    <div class="header cf">
+        <a  class="back"href="index.html">返回</a>
+        <p class="title">攻略</p>
+    </div>
+    <div class="search">
+        <input class="son-search" type="text" placeholder="搜索攻略">
+        <!-- <em></em> -->
+        <button class="button">搜索</span>
+    </div>
+    <div class="city-list">
+        <div class="list-top cf">
+            <div class="box fl" id="hotDestination">
+                <div class="box-son">
+                        <img src="images/city1.jpg" alt="">
+                        <div class="mark"><span>热门目的地</span></div>
+                </div>
+            </div>
+            <div class="box1 fl" id="firstBox1" style="display:none;">
+                <div class="box-son">
+                    <img src="" alt="" style="max-width: 194px;max-height:120px;">
+                    <span class="firstCityName"></span>
+                    <div class="mark"></div>
+                </div>
+            </div>
+        </div>
+        <div class="list-bottom cf" id="cityStrartey">
+            <!-- <div class="box1 fl">
+                <div class="box-son mr-9">
+                    <a href="city_strartey.html">
+                    <img src="images/city2.jpg" alt="">
+                    <span>苏州</span>
+                    <div class="mark"></div>
+                    </a>
+                </div>
+            </div>
+            <div class="box1 fl">
+                <div class="box-son mr-9">
+                    <a href="city_strartey.html">
+                    <img src="images/city2.jpg" alt="">
+                    <span>苏州</span>
+                    <div class="mark"></div>
+                    </a>
+                </div>
+            </div>
+            <div class="box1 fl">
+                <div class="box-son">
+                    <a href="city_strartey.html">
+                    <img src="images/city2.jpg" alt="">
+                    <span>苏州</span>
+                    <div class="mark"></div>
+                    </a>
+                </div>
+            </div>
+            <div class="box1 fl">
+                <div class="box-son mr-9">
+                    <a href="city_strartey.html">
+                    <img src="images/city2.jpg" alt="">
+                    <span>苏州</span>
+                    <div class="mark"></div>
+                    </a>
+                </div>
+            </div>
+            <div class="box1 fl">
+                <div class="box-son mr-9">
+                    <a href="city_strartey.html">
+                    <img src="images/city2.jpg" alt="">
+                    <span>苏州</span>
+                    <div class="mark"></div>
+                    </a>
+                </div>
+            </div>
+            <div class="box1 fl">
+                <div class="box-son">
+                    <a href="city_strartey.html">
+                    <img src="images/city2.jpg" alt="">
+                    <span>苏州</span>
+                    <div class="mark"></div>
+                    </a>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <h2 class="htitle-style" style="padding-left: 3%;">
+        <em class="fl" style="margin-top: 5px;"></em>
+        <span>全国景点</span>
+    </h2>
+    <div class="type-list" style="padding: 0 3%;">
+        <a href="hot-address.html">
+            <div class="type-list-son">
+                <img src="images/type.jpg" alt="">
+                <span>城市分类</span>
+                <div class="mark"></div>
+            </div>
+        </a>
+        <div id="cityType" style="padding-bottom: 10px;">
+            <!-- <div class="type-detail">
+                <img src="images/img6.jpg" alt="">
+                <span></span>
+                <div class="mark"></div>
+            </div>
+            <div class="type-detail">
+                <img src="images/img7.jpg" alt="">
+                <span class="lijiang"></span>
+                <div class="mark"></div>
+            </div> -->
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script>
+$(function(){
+    circleMask();
+    ajaxGetRequest(kBaseStrategUrl, {}, handleStrateg);
+    function handleStrateg(result){
+        console.log(result);
+        if(result.errorCode == 0){
+            /*搜索*/
+            $(".button").on("click",function(){
+                var cityName = $(".search .son-search").val();
+                // var data = {city: cityName}
+                if(!cityName){
+                    location.href = "javascript:;"
+                }else{
+                    setLocalStorage("cityName",cityName);
+                    location.href = "city_strartey.html";
+                }
+                
+            });
+
+            /*热门城市*/
+            var strategJson = result.message.city;
+            var html = "";
+            if(strategJson.length>0){
+                $("#firstBox1").show();
+                $("#firstBox1 .firstCityName").text(strategJson[0].name);
+                $("#firstBox1").attr("data-id",strategJson[0].name);
+                $("#firstBox1 img").attr("src",kBaseImagePath+strategJson[0].thumb);
+                for(var i=1; i<strategJson.length; i++){
+                    html += '<div class="box1 fl" data-id="'+strategJson[i].name+'">';
+                    html += '<div class="box-son">';
+                    // html +=     '<a href="city_strartey.html">';
+                    html +=     '<img src="'+kBaseImagePath+strategJson[i].thumb+'" alt="" style="max-width: 194px;max-height:120px;">';
+                    html +=     '<span>'+strategJson[i].name+'</span>';
+                    html +=     '<div class="mark"></div>';
+                    // html +=     '</a>';
+                    html += '</div>';
+                    html += '</div>';
+                }
+                $("#cityStrartey").html(html);
+                $(".box1").on("click",function(){
+                    var id = $(this).data("id");
+                    setLocalStorage("cityName",id);
+                    // 城市攻略返回标志
+                    setLocalStorage("return_city_strartey",0);
+                    location.href = "city_strartey.html";
+                });
+            }
+            
+
+            /*城市分类*/
+            var cityTypeJson = result.message.strategy;
+            var cityTypeHtml = "";
+            for(var i=0; i<cityTypeJson.length; i++){
+                cityTypeHtml += '<div class="type-detail" data-id="'+cityTypeJson[i].id+'">';
+                if(cityTypeJson[i].image_path==""){
+                    html +=     '<img src="images/default.png" alt="">';
+                }else{
+                    cityTypeHtml +=     '<img src="'+kBaseImagePath + cityTypeJson[i].image_path+'" alt="">';
+                }
+                cityTypeHtml +=     '<span>'+cityTypeJson[i].title+'</span>';
+                cityTypeHtml +=     '<div class="mark"></div>';
+                cityTypeHtml += '</div>';
+            }
+            $("#cityType").html(cityTypeHtml);
+            $("#circle_mask").hide();
+            $("#cityType .type-detail").on("click",function(){
+                var strategy_id = $(this).data("id");
+                setLocalStorage('strategy_id',strategy_id);
+                // 从攻略详情返回标志
+                setLocalStorage('from_strategy_detail_return',2);
+                location.href = "secery.html";
+            });
+        }
+    }
+    $(".type-list-son").on("click",function(){
+        location.href="hot-address.html";
+    })
+    // 从攻略列表返回标志
+    // $("#from_back").on("click",function(){
+    //     setLocalStorage('from_strategy_list_return',1);
+    //     location.href="hot-bourn.html";
+    // })
+})
+</script>
+</html>

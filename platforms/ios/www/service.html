@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <title>客服</title>
+</head>
+<body>
+<div id="main">
+	
+	<div class="header" style="width:100%;background:rgb(0,147,187);position:fixed;top:0;max-width:640px;;z-index: 100;">
+		<input type="text" placeholder="搜索旅行地" style="width:100%;color: #818182;background: #8fd9ed;" class="sight_name">
+		<span style="background:url(images/search.png) no-repeat .1rem center;background-size: .17rem .16rem;width:30px;height:30px;display:inline-block;position:absolute;right:6%;bottom:12px;float:right;" id="search"></span>
+	</div>
+
+	<div style="clear:both"></div>
+	<div class="consult" style="margin-top:54px;">
+		<img src="images/img9.jpg" alt="" class="auto-height">
+		<div class="mark"></div>
+		<div class="consult-online wid-119">
+			<a href="online_service.html">
+				<img src="images/online.png" alt="">
+				<p>在线咨询</p>
+			</a>
+		</div>
+		<a href="tel:4006127715">
+			<div class="consult-tel wid-119">
+				<img src="images/tel.png" alt="">
+				<p>电话咨询</p>
+			</div>
+		</a>
+	</div>
+	<div class="service-nav bg-f" style="padding-top:10px;">
+		<ul class="mui-flex cf" id="serviceColunm">
+			<!-- <li class="cell">
+				<a href="javascript:;">
+					<img src="images/service1.png" alt="">
+					<p class="">账户服务</p>
+				</a>
+			</li>
+			<li class="cell">
+				<a href="javascript:;">
+					<img src="images/service2.png" alt="">
+					<p>度假村相关</p>
+				</a>
+			</li>
+			<li class="cell">
+				<a href="javascript:;">
+					<img src="images/service3.png" alt="">
+					<p>线路相关</p>
+				</a>
+			</li>
+			<li class="cell">
+				<a href="javascript:;">
+					<img src="images/service.png" alt="">
+					<p>其他问题</p>
+				</a>
+			</li> -->
+		</ul>
+	</div>
+	<div class="play-list bg-f" id="articleList">
+		<!-- <div class="play cf">
+			<p class="fl"><a href="myCoupons.html">优惠券</a>如何使用？</p>
+			<em class="arrow fr"></em>
+		</div> -->
+		<!-- <div class="play cf">
+			<p class="fl"><a href="myCoupons.html">优惠券</a>如何使用？</p>
+			<em class="arrow fr"></em>
+		</div>
+		<div class="play cf">
+			<p class="fl"><a href="myCoupons.html">优惠券</a>如何使用？</p>
+			<em class="arrow fr"></em>
+		</div>
+		<div class="play cf">
+			<p class="fl"><a href="myCoupons.html">优惠券</a>如何使用？</p>
+			<em class="arrow fr"></em>
+		</div>
+		<div class="play cf">
+			<p class="fl"><a href="myCoupons.html">优惠券</a>如何使用？</p>
+			<em class="arrow fr"></em>
+		</div>
+		<div class="play cf" style="border-bottom: none;">
+			<p class="fl"><a href="myCoupons.html">优惠券</a>如何使用？</p>
+			<em class="arrow fr"></em>
+		</div> -->
+	</div>
+	<div class="wrap-nav">
+		<ul class="son-nav cf mui-flex">
+				<li class="cell">
+					<a href="index.html">
+						<span class="home"></span>
+						<p>首页</p>
+					</a>
+				</li>
+				<li class="cell">
+					<a href="found.html">
+						<span class="found"></span>
+						<p>发现</p>
+					</a>
+				</li>
+				<li class="cell hover">
+					<a href="service.html">
+						<span class="service"></span>
+						<p>客服</p>
+					</a>
+				</li>
+				<li class="cell">
+					<a href="personal.html">
+						<span class="personal"></span>
+						<p>个人</p>
+					</a>
+				</li>
+			</ul>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+$(function(){
+	ajaxGetRequest(kBaseServiceUrl, {}, handleService);
+	function handleService(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			var serviceJson = result.message.column;
+			var html = "";
+			for(var i=0; i<serviceJson.length; i++){
+				html += '<li class="cell" data-id="'+serviceJson[i].id+'">';
+				html += '<a style="color:#505050;">';
+				html += 	'<img src="images/service1.png" alt="">';
+				html += 	'<p class="">'+serviceJson[i].name+'</p>';
+				html += '</a>';
+				html += '</li>';
+			}
+			$("#serviceColunm").html(html);
+			// 问题列表
+			var articleListJson = result.message.article;
+			var articleHtml = "";
+			for(var i=0; i<articleListJson.length; i++){
+				articleHtml += '<a href="question.html" style="color:#000;">';
+				articleHtml += '<div class="play cf" data-id="'+articleListJson[i].id+'">';
+				articleHtml += 	'<p class="fl">'+articleListJson[i].title+'</p>';
+				articleHtml += 	'<em class="arrow fr"></em>';
+				articleHtml += '</div>';
+				articleHtml += '</a>';
+			}
+			$("#articleList").html(articleHtml);
+			// 存储问题id
+			$("#articleList .play").on("click",function(){
+				var article_id = $(this).data("id");
+				setLocalStorage("article_id",article_id);
+				// 文章详情页返回标志
+				setLocalStorage("question_return",1);
+			});
+			// 存储栏目id
+			$("#serviceColunm .cell").on("click",function(){
+				var column_id=$(this).data("id");
+				setLocalStorage("column_id",column_id);
+				// 文章列表页返回标志
+				setLocalStorage("column_return",1);
+				location.href="online_service02.html";
+			});
+		}
+	}
+	// 搜索
+	$("#search").on("click",function(){
+		var sight_name=$(".sight_name").val();
+		setLocalStorage("sight_type_id","");
+		setLocalStorage("sight_name",sight_name);
+		setLocalStorage("return_holiday_list",2);
+		location.href = "holiday-list.html";
+	})
+})	
+</script>
+</body>
+</html>

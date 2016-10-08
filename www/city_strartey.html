@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/others.css">
+    <title>城市攻略</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back">返回</a>
+		<p class="title" id="title">城市攻略</p>
+		<!-- <a class="city-name">南京</a> -->
+	</div>
+	<div class="banner">
+		<img src="" alt="" id="first_image" style="width:100%;height:240px;">
+	</div>
+	<div class="abstract">
+		<h2 class="htitle-style border-b">
+			<span>简介</span>
+			<!-- <a class="arrow first_todetail todetail"></a>
+			<span class="all first_todetail todetail" ><a>查看全部</a></span> -->
+		</h2>
+		<div class="content">
+			<p id="first_content"></p>
+		</div>
+	</div>
+	<div class="rect"></div>
+
+	<div class="hot-travel">
+		<h2 class="htitle-style border-b">
+			<em></em>
+			<span>热门游记</span>
+			<!-- <a class="arrow from_back"></a>
+			<span class="all fr from_back"><a>查看全部</a></span> -->
+		</h2>
+		<div class="list-travel" id="cityStrategy">
+			<!-- <div class="list">
+				<img src="images/img1.jpg" alt="">
+				<span class="title top-22 left-13">南京，偷得浮生半日闲</span>
+				<span class="scenery-name top-22 right-13">中山陵</span>
+				<span class="number bottom-12 left-13">8699877</span>
+				<span class="date bottom-12 right-13"><em>(189)</em>2015-09-01</span>
+				<div class="mark"></div>
+			</div>
+			<div class="list">
+				<img src="images/img1.jpg" alt="">
+				<span class="title top-22 left-13">南京，偷得浮生半日闲</span>
+				<span class="scenery-name top-22 right-13">中山陵</span>
+				<span class="number bottom-12 left-13">8699877</span>
+				<span class="date bottom-12 right-13"><em>(189)</em>2015-09-01</span>
+				<div class="mark"></div>
+			</div> -->
+		</div>
+	</div>
+</div>	
+</body>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script>
+	var cityName = getLocalStorage("cityName");
+	var cityId = getLocalStorage("city_id");
+	var return_city_strartey = getLocalStorage("return_city_strartey");
+	if(return_city_strartey==1){
+		var data = {city_id:cityId}
+	}else{
+		var data = {city_name: cityName}
+	}
+	
+	ajaxGetRequest(kBaseCityStrategUrl, data, handleCityStrateg);
+	function handleCityStrateg(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			var firstMessage=result.message.city_destination;
+			$("#first_image").attr("src",kBaseImagePath + firstMessage.image);
+			$("#first_content").text(firstMessage.introduction);
+			if(firstMessage){
+				$("#title").text(firstMessage.name+"城市攻略");
+			}
+			// $(".first_todetail").attr("data-id",firstMessage.id);
+			var cityStrategJson = result.message.strategy;
+			var html = "";
+			for(var i=0; i<cityStrategJson.length; i++){
+				html += '<div class="list todetail" data-id="'+cityStrategJson[i].id+'">';
+				if(cityStrategJson[i].image_path==""){
+					html += 	'<img src="images/default.png" alt="" width="100%" height="140">';
+				}else{
+					html +=   '<img src="'+kBaseImagePath + cityStrategJson[i].image_path+'" alt="" width="100%" height="140">';
+				}
+				html +=   '<span class="title top-22 left-13">'+cityStrategJson[i].title+'</span>';
+				html +=   '<span class="scenery-name top-22 right-13">'+cityStrategJson[i].to_city+'</span>';
+				html +=   '<span class="number bottom-12 left-13">'+cityStrategJson[i].username+'</span>';
+				html +=   '<span class="date bottom-12 right-13"><em>('+cityStrategJson[i].reads_num+')</em>2015-09-01</span>';
+				html +=   '<div class="mark"></div>';
+				html += '</div>';
+			}
+			$("#cityStrategy").html(html);
+			$("body").on("click",".todetail",function(){
+				var strategy_id = $(this).data("id");
+				setLocalStorage('strategy_id',strategy_id);
+				// 从攻略详情返回标志
+				setLocalStorage('from_strategy_detail_return',0);
+				location.href = "secery.html";
+			});
+		}
+	}
+
+	// 返回到城市分类页和攻略主页
+	$(".back").on("click",function(){
+		if(return_city_strartey ==1 ){
+			location.href="hot-address.html";
+		}else{ 
+			location.href="strategy.html";
+		}
+	})
+	// 从攻略列表返回标志
+    $(".from_back").on("click",function(){
+        setLocalStorage('from_strategy_list_return',0);
+        location.href="hot-bourn.html";
+    })
+</script>
+</html>

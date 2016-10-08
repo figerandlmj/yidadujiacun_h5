@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>填写订单</title>
+</head>
+<body>
+<div id="main">
+    <div class="header cf">
+        <a class="back" href="holiday_village.html">返回</a>
+        <p class="title">填写订单</p>
+    </div>
+    <div class="order-info bg-color">
+        <div class="order-info-top mb-16">
+            <div class="part1">
+                <p class="name" id="sight_name"></p>
+                <p id="bed_name"></p>
+            </div>
+            <div class="part part2 cf">
+                <div class="inner-date fl">
+                    <span class="col-a6">入住</span>
+                    <input type="text" value="" name="housed_at" onclick="WdatePicker()">
+                </div>
+                <div class="outer-date fl">
+                    <span class="col-a6">离店</span>
+                    <input type="text" value="" name="departure_time" onclick="WdatePicker()">
+                </div>
+                <div class="days col-a6 fl" id="day_num">3晚</div>
+            </div>
+            <div class="part">
+                <span class="col-a6 mr-25">早餐</span>
+                <span id="breakfast"></span>
+            </div>
+            <div class="part part3 cf">
+                <span class="fl">房间数量</span>
+                <p class="number-style mr-15 cf">
+                    <span class="reduce">-</span>
+                    <input type="text" value="1" id="house_num" disabled>
+                    <span class="add">+</span>
+                </p>
+                <!-- <p class="prefer fl">惠：满5人立减10元</p> -->
+            </div>
+            <div class="part part4">
+                <span class="col-a6 mr-25">房价</span>
+                <span class="price mr-25" id="yida_price">￥0.00</span>
+                <span class="jifen">返积分0</span>
+            </div>
+        </div>
+        <div class="order-info-middle bg-f">
+            <h2>入住信息</h2>
+            <ul class="ul-style">
+                <li class="cf">
+                    <span>入住人姓名　</span>
+                    <input type="text" placeholder="请填写入住人姓名" id="contact1">
+                    <!-- <span class="icon fr"><em></em></span> -->
+                </li>
+                <li class="cf">
+                    <span>预订人手机　</span>
+                    <input type="text" placeholder="请填写入住人手机号" id="contact_phone">
+                </li>
+                <li class="cf" style="border-bottom:none;">
+                    <span>最早抵达时间</span>
+                    <input type="text" placeholder="请选择最早抵达时间" onFocus="WdatePicker({lang:'zh-cn',dateFmt:'HH:mm:ss'})" id="early_time">
+                   <!--  <a id="latest-time"></a> -->
+                </li>
+                <li class="cf" style="border-bottom:none;">
+                    <span>最晚抵达时间</span>
+                    <input type="text" placeholder="请选择最晚抵达时间" onFocus="WdatePicker({lang:'zh-cn',dateFmt:'HH:mm:ss'})" id="last_time">
+                    <!-- <a id="latest-time"></a> -->
+                </li>
+            </ul>
+        </div>
+        <div class="order-info-bottom mb-16">
+            <div class="part1">
+                <em class="fl"></em>
+                <h3>如需开具发票,请到酒店前台领取</h3>
+                <p>加床:请提前咨询酒店前台</p>
+            </div>
+            <div class="pay-type pl-10 cf">
+                <span class="pay1 mr-15 fl">支付方式</span>
+                <div class="pay fl">
+                    <em class="emhover"></em>
+                    <span>支付宝</span>
+                </div>
+                <!-- <div class="pay fl">
+                    <em></em>
+                    <span>支付宝</span>
+                </div> -->
+            </div>
+            <div class="deal pl-10 bg-color">
+                <em><img src="images/right4.png" alt="" class="sel"></em>
+                <p>我已阅读并接受<a class="to_message">《房间预订须知》</a></p>
+            </div>
+            <div class="sumbit pl-10">
+                <span>应付金额&nbsp;<em id="total">$0</em></span>
+                <button class="submit-btn">提交订单</button>
+            </div>
+        </div>
+    </div>
+    <ul class="latest-time">
+        <li>选择最晚到店时间</li>
+        <li>2015-09-21 15:00</li>
+        <li class="bor-col">2015-09-21 15:00</li>
+        <li class="bor-col">2015-09-21 15:00</li>
+        <li>2015-09-21 15:00</li>
+    </ul>
+    <div class="wrap-mask"></div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+$(function(){
+    var token = getLocalStorage("token");
+    console.log(token);
+    var house_id = getLocalStorage("house_id");
+    console.log(house_id);
+    var url=kBaseSeceryOrderUrl+"?token="+token+"&house_id="+house_id;
+    ajaxGetRequest(url, {}, handleTicketDetail);
+    var yida_price=0;
+    var reduce_money=0;
+    var reduce_money1=0;
+    var reduce_money2=0;
+    var satisfy1=0;
+    var satisfy2=0;
+    var favorable_length=0;
+    var total;
+    $("input[name='housed_at']").val(getDate());
+    $("input[name='departure_time']").val(nextDay(3));
+    function handleTicketDetail(result){
+        console.log(result);
+        if(result.errorCode == 0){
+            var message = result.message.house;
+            $("#sight_name").text(message.sight_name);
+            $("#bed_name").text(message.name);
+            $("#breakfast").text(message.breakfast);
+            $("#yida_price").text("￥"+message.yida_price);
+            $(".jifen").text("返积分"+message.return_integral);
+            yida_price=message.yida_price.toPrecision();
+            // 优惠
+            favorable_length=result.message.favorable.length;
+            if(result.message.is_first_order==true&&result.message.first_order_favorable!=false){
+                reduce_money=result.message.first_order_favorable;
+            }
+            total=yida_price*3*1;
+            if(favorable_length>1){
+                reduce_money1=parseInt(result.message.favorable[0].reduce);
+                reduce_money2=parseInt(result.message.favorable[1].reduce);
+                satisfy1=parseInt(result.message.favorable[0].satisfy);
+                satisfy2=parseInt(result.message.favorable[1].satisfy);
+                if(total>=satisfy2){
+                    total-=reduce_money2;
+                }else if(total>=satisfy1){
+                    total-=reduce_money1;
+                }
+            }else if(favorable_length>0){
+                reduce_money1=result.message.favorable[0].reduce;
+                satisfy1=result.message.favorable[0].satisfy;
+                if(total>=satisfy1){
+                    total-=reduce_money1;
+                }
+            }
+            $("#total").text("￥"+(total-reduce_money));
+        }else if (result.errorCode == -1) {
+            // 提示登陆注册
+            ZMAlert("请登录!",successFunc);
+            function successFunc(){
+                location.href = "login.html";
+            }
+        }
+    }
+
+    // 常用信息
+    var com_info_url = kBaseUserUrl + "contact/index?token=" + token;
+    ajaxGetRequest(com_info_url,{},comInfoCallback);
+    function comInfoCallback(result){
+        console.log(result);
+        if(result.errorCode == 0){
+            // 显示常用信息
+            var message=result.message.contact;
+            var name=message[0].name;
+            var id_card=message[0].id_card;
+            var contact_phone=message[0].contact_phone;
+            $("#contact1").val(name);
+            $("#contact_phone").val(contact_phone);
+        }
+    }
+
+    // 入住天数
+    $("input[name='housed_at']").bind("blur",showDay);
+    $("input[name='departure_time']").bind("blur",showDay);
+    function showDay(){
+        var currentNum = parseInt(getDate().replace(/-/g, ''), 10);
+        var housed_at=$("input[name='housed_at']").val();
+        var departure_time=$("input[name='departure_time']").val();
+        var day_num=parseInt(daysBetween(housed_at, departure_time));
+        if(housed_at != '' && departure_time != '' ){
+            var startNum = parseInt(housed_at.replace(/-/g, ''), 10);
+            var endNum = parseInt(departure_time.replace(/-/g, ''), 10);
+            if (startNum >=endNum) {
+                ZMAlert("结束时间不能在开始时间之前！");
+            }else if(startNum<currentNum){
+                ZMAlert("开始时间不能在当前时间之前！");
+            }else {
+                $("#day_num").text(day_num+"晚");
+                var num=$("#house_num").val();
+                total=num*yida_price*day_num;
+                if(favorable_length>1){
+                    if(total>=satisfy2){
+                        total-=reduce_money2;
+                    }else if(total>=satisfy1){
+                        total-=reduce_money1;
+                    }
+                }else if(favorable_length>0){
+                    if(total>=satisfy1){
+                        total-=reduce_money1;
+                    }
+                }
+                $("#total").text("￥"+(total-reduce_money));
+            }
+        }
+    }
+    // 购买数量加减
+    var num = 1;
+    $(".add").click(function(){
+        num++;
+        $("#house_num").val(num);
+        var housed_at=$("input[name='housed_at']").val();
+        var departure_time=$("input[name='departure_time']").val();
+        var day_num=parseInt(daysBetween(housed_at, departure_time));
+        total=num*yida_price*day_num;
+        if(favorable_length>1){
+            if(total>=satisfy2){
+                total-=reduce_money2;
+            }else if(total>=satisfy1){
+                total-=reduce_money1;
+            }
+        }else if(favorable_length>0){
+            if(total>=satisfy1){
+                total-=reduce_money1;
+            }
+        }
+        $("#total").text("￥"+(total-reduce_money));
+    });
+    $(".reduce").click(function(){
+        if(num == 1){
+            num = 1;
+        }else {
+            num--;
+        }
+        $("#house_num").val(num);
+        var housed_at=$("input[name='housed_at']").val();
+        var departure_time=$("input[name='departure_time']").val();
+        var day_num=parseInt(daysBetween(housed_at, departure_time));
+        total=num*yida_price*day_num;
+        if(favorable_length>1){
+            if(total>=satisfy2){
+                total-=reduce_money2;
+            }else if(total>=satisfy1){
+                total-=reduce_money1;
+            }
+        }else if(favorable_length>0){
+            if(total>=satisfy1){
+                total-=reduce_money1;
+            }
+        }
+        $("#total").text("￥"+(total-reduce_money));
+    });
+    // 提交订单
+    $(".submit-btn").on("click",function(){
+        var number=$("#house_num").val();
+        var housed_at=$("input[name='housed_at']").val();
+        var departure_time=$("input[name='departure_time']").val();
+        var early_time=$("#early_time").val();
+        var last_time=$("#last_time").val();
+        var requirements="";
+        var contact1=$("#contact1").val();
+        var contact2="";
+        var contact_phone=$("#contact_phone").val();
+        var occupancy_person=1;
+        var regContact =/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/;//联系方式
+        data={
+            number:number,
+            housed_at:housed_at,
+            departure_time:departure_time,
+            early_time:early_time,
+            last_time:last_time,
+            requirements:requirements,
+            contact1:contact1,
+            contact2:contact2,
+            contact_phone:contact_phone,
+            occupancy_person:occupancy_person
+        }
+        if(housed_at==''||departure_time==''){
+            ZMAlert("日期不能为空！");
+            return false;
+        }else if(contact1==''){
+            ZMAlert("联系人不能为空！");
+            return false;
+        }else if(contact_phone==''){
+            ZMAlert("联系方式不能为空！");
+            return false;
+        }else if(!regContact.test(contact_phone)){
+            ZMAlert("联系方式不正确！");
+            return false;
+        }
+        ajaxPOSTRequest(url, data, handleSubmitOrder);
+
+    });
+
+    
+    var out_trade_no;
+    function handleSubmitOrder(result) {
+        console.log(result);
+        var message = result.message;
+        ZMAlert(message,successFunc);
+
+        function successFunc(){
+            if(result.errorCode == 0){
+                out_trade_no = result.out_trade_no;
+                // if(confirm("是否支付？")){
+                //     $.ajax({
+                //         type: 'POST',
+                //         url: kBaseFrontendUrl+"payment/analog",
+                //         dataType: 'json',
+                //         data:{out_trade_no: out_trade_no, status:1},
+                //         success: function(msg){
+                //             ZMAlert(msg.message);
+                //         }
+                //     });
+                // }
+                location.href="iframe.html?token="+token+"&out_trade_no="+out_trade_no;
+            }
+        }
+    }
+    // 房间预定需知
+    $(".to_message").on("click",function(){
+        setLocalStorage("to_message",4);
+        location.href="message.html";
+    })
+});
+</script>
+</body>
+</html>

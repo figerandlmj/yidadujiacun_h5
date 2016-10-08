@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <link rel="stylesheet" type="text/css" href="css/dropload.css">
+    <title>发现</title>
+</head>
+<body>
+<div id="main">
+	<div class="header">
+		<p class="title">发现</p>
+	</div>
+	<div class="pic-list bg-color" id="foundList">
+		<!-- <div class="list">
+			<a href="found-detail.html">
+				<img src="images/pic1.jpg" alt="">
+				<p>三亚&nbsp;游轮自驾游</p>
+			</a>
+		</div>
+		<div class="list">
+			<a href="found-detail.html">
+				<img src="images/pic2.jpg" alt="">
+				<p>三亚&nbsp;游轮自驾游</p>
+			</a>
+		</div>
+		<div class="list">
+			<a href="found-detail.html">
+				<img src="images/pic3.jpg" alt="">
+				<p>三亚&nbsp;游轮自驾游</p>
+			</a>
+		</div>
+		<div class="list">
+			<a href="found-detail.html">
+				<img src="images/pic4.jpg" alt="">
+				<p>三亚&nbsp;游轮自驾游</p>
+			</a>
+		</div>
+		<div class="list">
+			<a href="found-detail.html">
+				<img src="images/pic3.jpg" alt="">
+				<p>三亚&nbsp;游轮自驾游</p>
+			</a>
+		</div> -->
+	</div>
+
+	<div class="wrap-nav">
+		<ul class="son-nav cf mui-flex">
+			<li class="cell">
+				<a href="index.html">
+					<span class="home"></span>
+					<p>首页</p>
+				</a>
+			</li>
+			<li class="cell hover">
+				<a href="found.html">
+					<span class="found"></span>
+					<p>发现</p>
+				</a>
+			</li>
+			<li class="cell">
+				<a href="service.html">
+					<span class="service"></span>
+					<p>客服</p>
+				</a>
+			</li>
+			<li class="cell">
+				<a href="personal.html">
+					<span class="personal"></span>
+					<p>个人</p>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/dropload.min.js"></script>
+<script>
+$(function(){
+
+	var dropload = $('#foundList').dropload({
+	    domUp : {
+	        domClass   : 'dropload-up',
+	        domRefresh : '<div class="dropload-refresh">下拉刷新</div>',
+	        domUpdate  : '<div class="dropload-update"><img src="images/circle.gif" width="32" height="32" style="position:relative;display:block;left:50%;margin:20px 0px;"></div>',
+	        // domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>'
+	    },
+	    domDown : {
+	        // domClass   : 'dropload-down',
+	        domRefresh : '<div class="dropload-refresh" style="display:none;">↑上拉加载更多</div>',
+	        domLoad    : '<div class="dropload-load"><span class="loading" style="display:none;"></span>加载中...</div>',
+	        domNoData  : '<div class="dropload-noData">暂无数据</div>'
+	    },
+	    loadUpFn : function(me){
+	        $.ajax({
+	            type: 'GET',
+	            url: 'json/update.json',
+	            dataType: 'json',
+	            success: function(data){
+	                // var result = '';
+	                // for(var i = 0; i < data.lists.length; i++){
+	                //     result +=   '<a class="item opacity" href="'+data.lists[i].link+'">'
+	                //                     +'<img src="'+data.lists[i].pic+'" alt="">'
+	                //                     +'<h3>'+data.lists[i].title+'</h3>'
+	                //                     +'<span class="date">'+data.lists[i].date+'</span>'
+	                //                 +'</a>';
+	                // }
+	                // 为了测试，延迟1秒加载
+	                setTimeout(function(){
+	                    // $('.lists').html(result);
+	                    // 每次数据加载完，必须重置
+	                    dropload.resetload();
+	                },1000);
+	            },
+	            error: function(xhr, type){
+	                // alert('Ajax error!');
+	                // 即使加载出错，也得重置
+	                dropload.resetload();
+	            }
+	        });
+	    },
+	    loadDownFn : function(me){
+	        $.ajax({
+	            type: 'GET',
+	            url: 'json/more.json',
+	            dataType: 'json',
+	            success: function(data){
+	                // var result = '';
+	                // for(var i = 0; i < data.lists.length; i++){
+	                //     result +=   '<a class="item opacity" href="'+data.lists[i].link+'">'
+	                //                     +'<img src="'+data.lists[i].pic+'" alt="">'
+	                //                     +'<h3>'+data.lists[i].title+'</h3>'
+	                //                     +'<span class="date">'+data.lists[i].date+'</span>'
+	                //                 +'</a>';
+	                // }
+	                // 为了测试，延迟1秒加载
+	                setTimeout(function(){
+	                    // $('.lists').append(result);
+	                    // 每次数据加载完，必须重置
+	                    dropload.resetload();
+	                },1000);
+	            },
+	            error: function(xhr, type){
+	                // alert('Ajax error!');
+	                // 即使加载出错，也得重置
+	                dropload.resetload();
+	            }
+	        });
+	    }
+	});
+	circleMask();
+	ajaxGetRequest(kBaseFoundUrl, {}, handleFound);
+	function handleFound(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			var foundJson = result.message.find;
+			var html = "";
+			for(var i=0; i<foundJson.length; i++){
+				html += '<a data-url="'+foundJson[i].app_url+'" target="_blank" class="app_url">';
+				html += '<div class="list" data-id="'+foundJson[i].src+'">';
+				// html += 	'<a href="found-detail.html">';
+				html += 	'<img src="'+kBaseImagePath + foundJson[i].image_path+'" alt="" height="110">';
+				// html += 	'<p>'+foundJson[i].title+'</p>';
+				// html += 	'</a>';
+				html += '</div>';
+				html += '</a>';
+			}
+			$("#foundList").html(html);
+			$("#circle_mask").hide();
+			$("#circle_img").hide();
+		}
+	}
+})
+</script>
+</body>
+</html>

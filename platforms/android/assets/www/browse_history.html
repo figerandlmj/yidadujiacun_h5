@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/holiday.css">
+    <title>浏览历史</title>
+</head>
+<body>
+<div id="main">
+	<div class="header cf">
+		<a class="back" href="personal.html">返回</a>
+		<p class="title">浏览历史</p>
+		<a class="empty-history">清空历史</a>
+	</div>
+	<div class="borowse-history holiday-list">
+		<div class="list bg-color" id="history">
+			<!-- <a href="#">
+				<div class="son-list bg-f cf">
+					<div class="left fl">
+						<img src="images/9.jpg" alt="">
+					</div>
+					<div class="center fl">
+						<h3>芜湖方特欢乐世界</h3>
+						<p class="p1">
+							<span>游乐园</span>
+							<span>新品上线</span>
+						</p>
+						<p>简介描述简介描述简简介描述简介描述简简介描述简介描述简介描述简...</p>
+						<p class="p-style">
+							<em class="em1"></em>
+							<span>926人点评</span>
+							<em class="em2"></em>
+							<span>94%满意</span>
+						</p>
+					</div>
+					<div class="right fr">
+						<p class="price">￥<span>1568</span></p>
+						<p class="p1">起</p>
+					</div>
+				</div>
+			</a>
+
+			<a href="#">
+				<div class="son-list bg-f cf">
+					<div class="left fl">
+						<img src="images/10.jpg" alt="">
+					</div>
+					<div class="center fl">
+						<h3>芜湖方特欢乐世界</h3>
+						<p class="p1">
+							<span>游乐园</span>
+							<span>新品上线</span>
+						</p>
+						<p>简介描述简介描述简简介描述简介描述简简介描述简介描述简介描述简...</p>
+						<p class="p-style">
+							<em class="em1"></em>
+							<span>926人点评</span>
+							<em class="em2"></em>
+							<span>94%满意</span>
+						</p>
+					</div>
+					<div class="right fr">
+						<p class="price">￥<span>1568</span></p>
+						<p class="p1">起</p>
+					</div>
+				</div>
+			</a> -->
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+$(function(){
+
+	var token = getLocalStorage('token');
+	console.log(token);
+	/*personal*/
+	var url = kBaseUserUrl + "personal/history?token=" + token;
+	ajaxGetRequest(url,{},callback);
+	function callback(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			// 显示历史列表
+			var message=result.message.history;
+			if(message.length>0){
+				var html="";
+				var description='';
+				for(var i=0;i<message.length;i++){
+					description=$("<p>"+message[i].description+"</p>").text();
+					html+='<div class="son-list bg-f cf" data-id="'+message[i].id+'" data-type="'+message[i].type+'">';
+					html+=	'<div class="left fl">';
+					html+=		'<img src="'+kBaseImagePath+message[i].image+'" alt="" width="136px" height="70px">';
+					html+=	'</div>';
+					html+=	'<div class="center fl">';
+					html+=		'<h3>'+message[i].name+'</h3>';
+					html+=		'<p class="p1">';
+					if(message[i].type_name!=null){
+						html+=			'<span>'+message[i].type_name+'</span>';
+					}
+					html+=		'</p>';
+					html+=		'<p>'+description+'</p>';
+					html+=		'<p class="p-style">';
+					html+=			'<em class="em1"></em>';
+					html+=			'<span>0人点评</span>';
+					html+=			'<em class="em2"></em>';
+					html+=			'<span>'+message[i].satisfaction+'%满意</span>';
+					html+=		'</p>';
+					html+=	'</div>';
+					html+=	'<div class="right fr">';
+					html+=		'<p class="price">￥<span>'+message[i].yida_price+'</span></p>';
+					html+=		'<p class="p1">起</p>';
+					html+=	'</div>';
+					html+='</div>';
+				}
+				$("#history").append(html);
+			}
+		}
+	}
+	// 跳转详情页
+	$("body").on("click",".son-list",function(){
+		var this_id=$(this).data("id");
+		var this_type=$(this).data("type");
+		if(this_type==1){
+			setLocalStorage("sightspot_id",this_id);
+			setLocalStorage("sightspot_return",3);
+			location.href="holiday_village.html";
+		}else if(this_type==2){
+			setLocalStorage("route_id",this_id);
+			setLocalStorage("holiday_road_return",2);
+			location.href="holiday_road.html";
+		}else if(this_type==3){
+			setLocalStorage("product_id",this_id);
+			setLocalStorage("goods_detail_return",2);
+			location.href="goods_detail.html";
+		}else if(this_type==4){
+			setLocalStorage("sightspot_id",this_id);
+			setLocalStorage("secery_ticket_return",2);
+			location.href="secery_ticket.html";
+		}
+	})
+	// 清空历史
+	$(".empty-history").on("click",function(){
+		var history_url=kBaseUserUrl + "personal/history_clear?token=" + token;
+		ajaxGetRequest(history_url,{},callback);
+		function callback(result){
+			ZMAlert(result.message,successFunc);
+			function successFunc(){
+				if(result.errorCode == 0){
+					location.href="browse_history.html";
+				}
+			}
+		}
+	})
+	
+});
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="format-detection" content="telephone=no">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name ="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+<link rel="stylesheet" type="text/css" href="css/public.css?v=001">
+<link href='css/fullcalendar.css' rel='stylesheet' />
+<link href='css/jquery-ui.min.css' rel='stylesheet' />
+<style>
+	#calendar {
+		max-width: 640px;
+		margin: 0 auto;
+	}
+	#calendar table {
+		text-align: center;
+	}
+	.fc-toolbar {
+		margin-bottom: 0;
+		height: 40px;
+		line-height: 40px;
+	}
+	.fc button {
+		height: 30px;
+	}
+	.fc-toolbar .fc-prev-button{
+		position: absolute;
+		left: 25%;
+		top: 5px;
+	}
+	.fc-toolbar .fc-next-button{
+		position: absolute;
+		right: 25%;
+		top: 5px;
+	}
+	.fc-head tr{
+		height: 40px;
+		background:#cbddc8;
+		border: 1px solid #eee;
+		line-height: 40px;
+		color: #767676;
+	}
+	.fc-head th{
+		border: 0;
+	}
+	.fc-tbody {}
+	.fc-toolbar{
+		position: relative;
+	}
+	/*.fc-content-skeleton table{
+		height: 70px;
+	}*/
+	.fc-content-skeleton table a{
+		height: 40px;
+	}
+	.fc-event-container {
+		background: #92c675!important;
+	}
+	.fc-event-container a {
+		background: none;
+		border: none;
+		font-size: 16px;
+	}
+	.hide {
+		display: none;
+	}
+	.fc-content-skeleton thead {
+		font-size: 20px;
+	}
+	.fc-nonbusiness {
+		background: #fff;
+	}
+</style>
+</head>
+<body>
+	<div id="main">
+		<div class="header cf">
+			<a  class="back">返回</a>
+			<p class="title">选择班期</p>
+		</div>
+		<div id='calendar'></div>
+	</div>
+<!-- <script src='js/jquery-ui.custom.min.js'></script> -->
+<script src='js/moment.min.js'></script>
+<script src='js/jquery-2.1.4.min.js'></script>
+<script src='js/jquery-1.7.2.min.js'></script>
+<script src="js/common.js"></script>
+<script src='js/fullcalendar.min.js'></script>
+<script type="text/javascript">
+var current_date=nextDay(0);
+$(function(){
+	setTimeout(function(){
+		data();
+	},50)
+});
+function data(){
+	$(".fc-content-skeleton tbody td.fc-event-container").each(function(){
+		var num = $(this).index();
+		var this_date=$(this).parent().parent().prev().find("td").eq(num).data("date");
+		$(this).attr("data-date",this_date);
+		$(this).parent().parent().prev().find("td").eq(num).css({
+			"background":"#92c675"
+		})
+	});
+}
+
+function getPrice() {
+	$('#calendar').fullCalendar({
+		header: {
+			left: 'prev',
+			center: 'title',
+			right: 'next'
+		},
+		weekMode: 'liquid',
+		// contentHeight: '300px',
+		// aspectRatio: 1.5,
+		dayNamesShort:["日","一","二","三","四","五","六"],
+		lang:"zh-cn",
+		views:{month:{titleFormat:"YYYY MM"}},
+		defaultDate: current_date,
+		businessHours: true, // display business hours
+		editable: true,
+		eventDragStop:function(event, jsEvent, ui, view){
+			$(".fc-content-skeleton td").css({
+				"background":"none"
+			})
+			setTimeout(function(){
+				data();
+			},50);		
+		},
+		events: json_array
+		// [
+		// 	{
+		// 		title: '出游',
+		// 		start: '2015-12-03T13:00:00',
+		// 		constraint: 'businessHours'
+		// 	},
+		// 	{
+		// 		title: '出游',
+		// 		start: '2015-12-06',
+		// 	},
+		// 	{
+		// 		title: '出游',
+		// 		start: '2015-12-29T20:00:00'
+		// 	}
+		// ]
+	});
+
+	// $(".fc-content-skeleton thead tr td").each(function(i, value){
+	// 	var this_date=$(this).data("date");
+	// 	$(".fc-content-skeleton tbody tr td").eq(i).attr("data-date",this_date);
+	// })
+}
+// 返回
+$(".back").on("click",function(){
+	var updata_date_return=getLocalStorage("updata_date_return");
+	if(updata_date_return==1){
+		location.href="holiday_road.html"
+	}else{
+		location.href="holiday-order.html"
+	}
+})
+// 日期价格列表
+var token = getLocalStorage("token");
+var route_id = getLocalStorage("route_id");   /*获取路线列表页ID*/
+var url=kBaSescheduleUrl;
+ajaxGetRequest(url, {route_id:route_id}, handleSpotDetail);
+var route_list;
+var json_array= [];
+function handleSpotDetail(result){
+    console.log(result);
+
+    if(result.errorCode == 0){
+        route_list = result.message.route_schedule_list;
+        // 路线列表
+        if(route_list.length>0){
+            for(var i=0;i<route_list.length;i++){
+            	var json_dict = {};
+                json_dict.title="￥"+route_list[i].price;
+                json_dict.start=route_list[i].day;
+                json_array.push(json_dict);
+            }
+            console.log(json_array);
+            getPrice();
+        } 
+    }else if (result.errorCode == -1) {
+        // 提示登陆注册
+        ZMAlert("您还未登录，请登录后重试！",successFunc);
+		function successFunc(){
+			location.href = "login.html";
+		}
+    }
+}
+// 跳转订单页
+$("body").on("click",".fc-future",function(){
+	var this_date=$(this).data("date");
+	for(var i=0;i<route_list.length;i++){
+		if(route_list[i].day==this_date){
+			if(route_list[i].remark==""){
+                var arr_day=route_list[i].day.split("-"); 
+                arr_day=arr_day.join("");
+                arr_day=arr_day.substring(4,6)+"/"+arr_day.substring(6,8);
+                setLocalStorage("route_schedule_date",arr_day);
+            }else{
+            	setLocalStorage("route_schedule_date",route_list[i].remark);
+            }
+			setLocalStorage("route_schedule_id",route_list[i].id);
+            setLocalStorage("route_schedule_price",route_list[i].price);
+            location.href="holiday-order.html";
+		}
+    }
+});
+$(".fc-event-container").live("click",function(){
+	var this_date=$(this).data("date");
+	for(var i=0;i<route_list.length;i++){
+		if(route_list[i].day==this_date){
+			if(route_list[i].remark==""){
+                var arr_day=route_list[i].day.split("-"); 
+                arr_day=arr_day.join("");
+                arr_day=arr_day.substring(4,6)+"/"+arr_day.substring(6,8);
+                setLocalStorage("route_schedule_date",arr_day);
+            }else{
+            	setLocalStorage("route_schedule_date",route_list[i].remark);
+            }
+			setLocalStorage("route_schedule_id",route_list[i].id);
+            setLocalStorage("route_schedule_price",route_list[i].price);
+            location.href="holiday-order.html";
+		}
+    }
+});		
+$("body").find("#calendar .fc-day-grid-container").css({
+	"height":"auto!important"
+})
+</script>
+</body>
+</html>

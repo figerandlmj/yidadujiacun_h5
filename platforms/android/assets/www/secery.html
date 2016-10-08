@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/others.css">
+    <title>攻略</title>
+</head>
+<body>
+<div id="main">
+    <div class="header cf">
+        <a class="back">返回</a>
+        <p class="title">攻略</p>
+        <!-- <a class="right" href="holiday-list02.html" class="cf"><em></em><em></em><em></em></a> -->
+    </div>
+    <div class="secery bg-color">
+        <div class="banner">
+            <img src="images/banner4.jpg" alt="" width="100%" height="240">
+            <!-- <div class="info"></div> -->
+        </div>
+        <div class="part1 bg-f" id="part1">
+            <!-- <h3 class="title">
+                <p class="fl">丽江三日游</p>
+                <span class="fr">丽江</span>
+                <em class="fr"></em>
+            </h3>
+            <div class="user cf">
+                <p class="number2 fl">
+                    <em class="fl"></em>
+                    <span class="fl">8699877</span>
+                </p>
+                <p class="date fr">
+                    <em></em>
+                    <span>(189)</span>2015-09-01
+                </p>
+            </div> -->
+        </div>
+        <div class="part2 bg-f">
+            <h2 class="htitle-style cf" id="more_product">
+                <em class="fl"></em>
+                <span class="fl">相关产品</span>
+                <a href="related_products.html" class="arrow"></a>
+                <span class="fr"><a>更多</a></span>
+            </h2>
+            <div class="product pad-20">
+                <ul class="product-list mui-flex cf" id="route_list">
+                    <!-- <li class="cell">
+                        <img src="images/small-img1.jpg" alt="">
+                        <p class="cf">
+                            <span class="fl">丽江古城</span>
+                            <em class="fr">￥128</em>
+                        </p>
+                        <p class="manyi cf">99%满意度</p>
+                    </li>
+                    <li class="cell">
+                        <img src="images/small-img1.jpg" alt="">
+                        <p class="cf">
+                            <span class="fl">丽江古城</span>
+                            <em class="fr">￥128</em>
+                        </p>
+                        <p class="manyi cf">99%满意度</p>
+                    </li>
+                    <li class="cell">
+                        <img src="images/small-img1.jpg" alt="">
+                        <p class="cf">
+                            <span class="fl">丽江古城</span>
+                            <em class="fr">￥128</em>
+                        </p>
+                        <p class="manyi cf">99%满意度</p>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+        <div class="part3 bg-f">
+            <h2 class="htitle-style border-b cf">
+                <em class="fl"></em>
+                <span class="fl">游记</span>
+            </h2>
+            <div class="treval" id="trevalContent">
+                <!-- <div class="treval-day">2015-10-12</div>
+                <div class="treval-con">
+                    <p>游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字</p>
+                </div> -->
+                <!-- <p>游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字</p>
+                <img src="images/big-img.jpg" alt="">
+                <p>游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字游记文字</p> -->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/common.js"></script>
+<script>
+$(function(){
+    circleMask();
+    var strategy_id = getLocalStorage("strategy_id");
+    var token = getLocalStorage("token");
+    var is_logged;
+    var data = {strategy_id: strategy_id};
+    ajaxGetRequest(kBaseStrategDetailUrl+"?token="+token, data, handleStrDetail);
+    function handleStrDetail(result){
+        console.log(result);
+        if(result.errorCode == 0){
+            is_logged=result.message.is_logged;
+            var strategyJson = result.message.strategy;
+            var html = "";
+            html += '<h3 class="title">';
+            html +=     '<p class="fl">'+strategyJson.title+'</p>';
+            html +=     '<span class="fr">'+strategyJson.to_city+'</span>';
+            html +=     '<em class="fr"></em>';
+            html += '</h3>';
+            html += '<div class="user cf">';
+            html +=     '<p class="number2 fl">';
+            html +=         '<em class="fl"></em>';
+            html +=         '<span class="fl">'+strategyJson.username+'</span>';
+            html +=     '</p>';
+            html +=     '<p class="date fr">';
+            // html +=         '<em></em>';
+            html +=         '<span>('+strategyJson.reads_num+')</span><i>'+strategyJson.start_date+'</i>';
+            html +=     '</p>';
+            html += '</div>';
+            $("#part1").html(html);
+            $(".banner img").attr("src",kBaseImagePath + strategyJson.image_path);
+            // $(".secery .part1 .title p").text(strategyJson.title);
+            // $(".secery .part1 .title span").text(strategyJson.destination);
+            // $("p.number2 span").text(strategyJson.username);
+
+            var trevalDayJson = result.message.dates;
+            if(trevalDayJson.length>0){
+                var trevalDayHtml = "";
+                for(var i=0; i<trevalDayJson.length; i++){
+                    trevalDayHtml += '<div class="treval-day">'+trevalDayJson[i].create_time+'</div>';
+                    trevalDayHtml += '<div class="treval-con">';
+                    trevalDayHtml +=     '<p>'+trevalDayJson[i].content+'</p>';
+                    trevalDayHtml += '</div>';
+                }
+                $("#trevalContent").html(trevalDayHtml);
+                $("#trevalContent").find("img").each(function(){
+                    var this_src=$(this).attr("src");
+                    $(this).attr("src",kBaseImagePath02+this_src);
+                })
+            }
+            // 相关产品列表
+            var route_list=result.message.route_list;
+            if(route_list.length>0){
+                var route_list_html="";
+                for(var i=0;i<route_list.length;i++){
+                    route_list_html+='<li class="cell route_list_li" data-id="'+route_list[i].id+'"><img src="'+kBaseImagePath+route_list[i].image+'" alt=""><p class="cf"><span class="fl">'+route_list[i].name+'</span><em class="fr">￥'+route_list[i].price+'</em></p><p class="manyi cf">'+route_list[i].satisfaction+'%满意度</p></li>';
+                }
+                $("#route_list").append(route_list_html);
+            }
+            $("#circle_mask").hide();
+            $("#circle_img").hide();
+        }
+    }
+    // 点击相关产品进入路线详情页
+    $("body").on("click",".route_list_li",function(){
+        var route_id=$(this).data("id");
+        setLocalStorage("route_id",route_id);
+        // setLocalStorage("holiday_road_return",3);
+        location.href="holiday_road.html";
+    })
+    // 从攻略详情返回
+    $(".back").on("click",function(){
+        var from_strategy_detail_return=getLocalStorage('from_strategy_detail_return');
+        if(from_strategy_detail_return==1){
+            location.href="hot-bourn.html";
+        }else if(from_strategy_detail_return==2){
+            location.href="strategy.html";
+        }else{
+            location.href="city_strartey.html";
+        }
+    })
+    // 点击进入相关产品列表
+    $("#more_product").on("click",function(){
+        setLocalStorage("strategy_id",strategy_id);
+        location.href="related_products.html";
+    })
+    // 进入点评页面
+    $(".info").on("click",function(){
+        if(is_logged==1){
+            location.href="evaluate02.html";
+        }else if(is_logged==0){
+            ZMAlert("您还未登录，请登录后重试！");
+        }
+    })
+})
+</script>
+</html>

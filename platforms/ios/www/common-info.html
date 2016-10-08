@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/public.css">
+    <link rel="stylesheet" type="text/css" href="css/personal.css">
+    <title>常用信息</title>
+</head>
+<body>
+<div id="main" style="background: #e8ebef;">
+	<div class="header cf">
+		<a class="back" href="personal.html">返回</a>
+		<p class="title">常用信息</p>
+		<a class="add"></a>
+	</div>
+	<div class="contacts bg-color" id="contact">
+		<h3 class="htitle-style">常用联系人</h3>
+		<!-- <div class="contacts-info bg-f">
+			<p><span class="name wid-132">姓名</span><span>仙人掌</span></p>
+			<p><span class="card wid-132">身份证</span><span>340*********1314</span></p>
+			<p><span class="tel wid-132">联系电话</span><span>18132046478</span></p>
+			<em class="current"></em>
+		</div>
+		<div class="contacts-info bg-f">
+			<p><span class="name wid-132">姓名</span><span>仙人掌</span></p>
+			<p><span class="card wid-132">身份证</span><span>340*********1314</span></p>
+			<p><span class="tel wid-132">联系电话</span><span>18132046478</span></p>
+			<em></em>
+		</div> -->
+		<!-- <div class="contacts-info bg-f">
+			<p><span class="name wid-132">姓名</span><span><input type="text" value="" placeholder="请输入姓名"></span></p>
+			<p><span class="card wid-132">身份证</span><span><input type="text" value="" placeholder="请输入省份证"></span></p>
+			<p><span class="tel wid-132">联系电话</span><span><input type="text" value="" placeholder="请输入联系电话"></span></p>
+			<label style="display: inline-block;position: absolute;top: .1rem;right: .1rem;">确定</label>
+		</div> -->
+	</div>
+</div>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+$(function(){
+
+	var token = getLocalStorage('token');
+	console.log(token);
+	/*personal*/
+	var url = kBaseUserUrl + "contact/index?token=" + token;
+	ajaxGetRequest(url,{},callback);
+	function callback(result){
+		console.log(result);
+		if(result.errorCode == 0){
+			// 显示常用信息列表
+			var message=result.message.contact;
+			var html="";
+			if(message.length>0){
+				for(var i=0;i<message.length;i++){
+					html+='<div class="contacts-info bg-f">';
+					html+=	'<p><span class="name wid-132">姓名</span><span><input id="name" type="text" value="'+message[i].name+'" placeholder="请输入姓名" style="width:35%"></span></p>';
+					html+=	'<p><span class="card wid-132">身份证</span><span><input id="card" type="text" value="'+message[i].id_card+'" placeholder="请输入省份证" style="width:35%"></span></p>';
+					html+=	'<p><span class="tel wid-132">联系电话</span><span><input id="tel" type="text" value="'+message[i].contact_phone+'" placeholder="请输入联系电话" style="width:35%"></span></p>';
+					html+=	'<label style="display: inline-block;position: absolute;top: .1rem;right: .6rem;" class="update" data-id="'+message[i].id+'">修改</label>';
+					html+=	'<label style="display: inline-block;position: absolute;top: .1rem;right: .1rem;" class="delete" data-id="'+message[i].id+'">删除</label>';
+					html+='</div>';
+				}
+			}else{
+				html='<p style="color:#f00;margin-bottom:10px;">暂无常用联系人，点击右上角可增加联系人！</p>';
+			}
+			$("#contact").append(html);
+		}
+	}
+	// 增加
+	$(".add").on("click",function(){
+		var add_html='<div class="contacts-info bg-f"><p><span class="name wid-132">姓名</span><span><input id="name" type="text" value="" placeholder="请输入姓名" style="width:35%"></span></p><p><span class="card wid-132">身份证</span><span><input id="card" type="text" value="" placeholder="请输入省份证" style="width:35%"></span></p><p><span class="tel wid-132">联系电话</span><span><input id="tel" type="text" value="" placeholder="请输入联系电话" style="width:35%"></span></p><label style="display: inline-block;position: absolute;top: .1rem;right: .1rem;" class="confirm_btn">确定</label></div>';
+		$("#contact").append(add_html);
+	})
+	// 增加提交
+	$(".confirm_btn").live("click",function(){
+		var name=$(this).parent().find("#name").val();
+		var card=$(this).parent().find("#card").val();
+		var tel=$(this).parent().find("#tel").val();
+		data={
+			name:name,
+            id_card:card,
+            contact_phone:tel
+		}
+		var contact_url=kBaseUserUrl + "contact/info?token="+token+"&contact_id=";
+
+		var regIdcard=/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/;
+		var regContact =/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/;//联系方式
+		if(name==""||card==""||tel==""){
+			ZMAlert("请完善信息!")
+		}else if(!regIdcard.test(card)){
+			ZMAlert("无效身份证!")
+		}else if(!regContact.test(tel)){
+			ZMAlert("无效号码!")
+		}else{
+			ajaxPOSTRequest(contact_url,data,callback);
+		}
+		function callback(result){
+			console.log(result);
+			ZMAlert(result.message,successFunc);
+			function successFunc(){
+				if(result.errorCode == 0){
+					location.href="common-info.html";
+				}
+			}
+		}
+	})
+	// 修改
+	$(".update").live("click",function(){
+		var name=$(this).parent().find("#name").val();
+		var card=$(this).parent().find("#card").val();
+		var tel=$(this).parent().find("#tel").val();
+		var contact_id=$(this).data("id");
+		data={
+			name:name,
+            id_card:card,
+            contact_phone:tel
+		}
+		var contact_url=kBaseUserUrl + "contact/info?token="+token+"&contact_id=" + contact_id;
+		if(name==""||card==""||tel==""){
+			ZMAlert("请完善信息!")
+		}else if(!regIdcard.test(card)){
+			ZMAlert("无效身份证!")
+		}else if(!regContact.test(tel)){
+			ZMAlert("无效号码!")
+		}else{
+			ajaxPOSTRequest(contact_url,data,callback);
+		}
+		function callback(result){
+			console.log(result);
+			ZMAlert(result.message,successFunc);
+			function successFunc(){
+				if(result.errorCode == 0){
+					location.href="common-info.html";
+				}
+			}
+		}
+	})
+	// 删除
+	$(".delete").live("click",function(){
+		var contact_id=$(this).data("id");
+		var contact_url=kBaseUserUrl + "contact/delete?token="+token+"&contact_id=" + contact_id;
+		ajaxGetRequest(contact_url,{},callback);
+		function callback(result){
+			console.log(result);
+			ZMAlert(result.message,successFunc);
+			function successFunc(){
+				if(result.errorCode == 0){
+					location.href="common-info.html";
+				}
+			}
+		}
+	})
+	
+});
+	
+</script>
+</body>
+</html>
